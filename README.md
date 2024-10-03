@@ -20,7 +20,7 @@ Robot hand controlled by a haptic glove
 
 * Max Titov
 * Jacob Hall
-* Alex Shaefer 
+* Alex Schaefer 
 * Bhargav Moosani
 * Jackson Lamb
 
