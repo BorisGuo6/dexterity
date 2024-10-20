@@ -40,8 +40,8 @@ Servo servo1;
 Servo servo2;
 
 // Published values for SG90 servos; adjust if needed
-int minUs = 500;
-int maxUs = 2400;
+int minUs = 800;
+int maxUs = 2225;
 
 // These are all GPIO pins on the ESP32
 // Recommended pins include 2,4,12-19,21-23,25-27,32-33
@@ -56,13 +56,12 @@ int servo2Pin = 6;
 int pos = 0;      // position in degrees
 ESP32PWM pwm;
 void setup() {
-  Serial.
 	// Allow allocation of all timers
 	ESP32PWM::allocateTimer(0);
 	ESP32PWM::allocateTimer(1);
 	ESP32PWM::allocateTimer(2);
 	ESP32PWM::allocateTimer(3);
-	Serial.begin(115200);
+	Serial.begin(9600);
 	servo1.setPeriodHertz(50);      // Standard 50hz servo
 	servo2.setPeriodHertz(50);      // Standard 50hz servo
 	// servo3.setPeriodHertz(330);      // Standard 50hz servo
@@ -79,17 +78,26 @@ void loop() {
 
 	//servo2.attach(servo2Pin, minUs, maxUs);
 
+  // minUs-=25;
+  // if(minUs<600){
+  //   minUs=1000;
+  // }
+
 
 
 	for (pos = 0; pos <= 180; pos += 1) { // sweep from 0 degrees to 180 degrees
 		// in steps of 1 degree
 		servo1.write(pos);
-		delay(2);             // waits 20ms for the servo to reach the position
+    Serial.println(pos);
+		delay(5);             // waits 20ms for the servo to reach the position
 	}
+  delay(1000);
 	for (pos = 180; pos >= 0; pos -= 1) { // sweep from 180 degrees to 0 degrees
 		servo1.write(pos);
-		delay(2);
+    Serial.println(pos);
+		delay(5);
 	}
+  delay(1000);
 
 	// for (pos = 0; pos <= 180; pos += 1) { // sweep from 0 degrees to 180 degrees
 	// 	// in steps of 1 degree
@@ -104,13 +112,8 @@ void loop() {
 	servo1.detach();
 	//servo2.detach();;
 
-  minUs+=50;
-  if(minUs>1000){
-    minUs=800;
-  }
+  
 
-
-	delay(1000);
 
 }
 
