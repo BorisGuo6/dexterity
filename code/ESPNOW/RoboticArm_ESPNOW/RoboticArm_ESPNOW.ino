@@ -2,66 +2,82 @@
 #include <WiFi.h>
 #include <stdint.h>
 
+// General_ESPNOW.h: 
+
 #define ESPNOW_WIFI_CHANNEL 5            // WiFi channel to be used by ESP-NOW. The available channels will depend on your region.
 #define ESPNOW_WIFI_MODE    WIFI_STA     // WiFi mode to be used by ESP-NOW. Any mode can be used.
 #define ESPNOW_WIFI_IF      WIFI_IF_STA  // WiFi interface to be used by ESP-NOW. Any interface can be used.
 #define DATA_RATE           100          // In Hz
+#define SYNC_DELAY          10           // delay (in sec) between setting up ESPNOW and sending packets
+#define PEER_MAC_1          {0x3C, 0x84, 0x27, 0x14, 0x7B, 0xB0} // MAC for board 1
+#define PEER_MAC_2          {0x3C, 0x84, 0x27, 0xE1, 0xB3, 0x8C} // MAC for board 2
 
-// Define the data structure to send
+// Define the data packets
 typedef struct position_packet {
-  char str[32];
+  // remove when not monitoring success rate:
   int messages_rec;
-  uint8_t pos1;
-  uint8_t pos2;
-  uint8_t pos3;
-  uint8_t pos4;
-  uint8_t pos5;
-  uint8_t pos6;
-  uint8_t pos7;
-  uint8_t pos8;
-  uint8_t pos9;
-  uint8_t pos10;
-  uint8_t pos11;
-  uint8_t pos12;
-  uint8_t pos13;
-  uint8_t pos14;
-  uint8_t pos15;
-  uint8_t pos16;
+  // end remove
+  uint8_t finger_pos[10];
+  uint8_t wrist_pos[3];
+  uint8_t arm_pos[3];
 } position_packet;
 
 typedef struct haptic_packet {
-  char str[32];
+  // remove when not monitoring success rate:
   int messages_rec;
-  int finger_sensor_1;
-  int finger_sensor_2;
-  int finger_sensor_3;
+  // end remove
+  uint8_t force_index;
+  uint8_t force_middle;
+  uint8_t force_ring;
+  uint8_t force_pinky;
+  uint8_t force_thumb;
 } haptic_packet;
 
-// Create an instance of the struct to be sent
-position_packet inData;
-haptic_packet outData;
+// End General_ESPNOW.h
+
+// Start RoboticArm_ESPNOW.h:
+
+// Create an instance of the struct to be sent/received
+// Create it in public space so general arm code can access values
+position_packet arm_inData;
+haptic_packet arm_outData;
+
+// remove when not monitoring success rate:
+int arm_messages_send_attempt;
+int arm_messages_send_success;
+int arm_messages_rcv;
+
+// general arm code needs to initialize ESPNOW
+void arm_ESPNOWsetup(uint8_t board_num);
+
+// general arm code has access to sendData function
+void arm_sendData(uint8_t fi, uint8_t fm, uint8_t fr, uint8_t fp, uint8_t ft);
+
+// receive data function will call general arm code
+
+void arm_monitorSuccess();
+
+// End RoboticArm_ESPNOW.h
+
+// Start RoboticArm_ESPNOW.c:
+
+uint8_t peer_mac[6];
+
+// remove when not monitoring success rate:
 uint8_t pos5_in;
 int sizeIn;
-
-int messages_send_attempt;
-int messages_send_success;
-int messages_recv;
-int i;
-
-
-// Peer MAC Address
-uint8_t peer_mac[] = {0x3C, 0x84, 0x27, 0xE1, 0xB3, 0x8C};
+// end remove
 
 // Function to handle the result of data send
-void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
+void ArmOnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
   // Serial.print("\r\nLast Packet Send Status:\t");
   // Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
 }
 
 // Callback function that will be executed when data is received
-void OnDataRecv(const esp_now_recv_info *info, const uint8_t *incomingData, int len) {
-  if (len == sizeof(inData)) {
-      memcpy(&inData, incomingData, sizeof(inData));
+void ArmOnDataRecv(const esp_now_recv_info *info, const uint8_t *incomingData, int len) {
+  if (len == sizeof(arm_inData)) {
+      memcpy(&arm_inData, incomingData, sizeof(arm_inData));
       // Proceed with processing
   } else {
       Serial.println("Received data length does not match expected size.");
@@ -79,21 +95,37 @@ void OnDataRecv(const esp_now_recv_info *info, const uint8_t *incomingData, int 
   // Serial.print("wrist_angle: ");
   // Serial.println(inData.wrist_angle);
   // Serial.println();
-  messages_send_success = inData.messages_rec;
-  messages_recv++;
-  pos5_in = inData.pos5;
+  arm_messages_send_success = arm_inData.messages_rec;
+  arm_messages_rcv++;
+  pos5_in = arm_inData.finger_pos[5];
   sizeIn = len;
 }
 
+void arm_ESPNOWsetup(uint8_t board_num){
+  arm_messages_send_attempt = 0;
+  arm_messages_send_success = 0;
+  arm_messages_rcv = 0;
 
-void setup() {
-  // Start the Serial Monitor
-  Serial.begin(115200);
-
-  messages_send_attempt = 0;
-  messages_send_success = 0;
-  messages_recv = 0;
-  i = 0;
+  switch(board_num){
+    case(1): {
+      uint8_t temp[] = PEER_MAC_1;
+      for(int j=0; j<6; j++){
+        peer_mac[j] = temp[j];
+      }
+      break;
+    }
+    case(2): {
+      uint8_t temp[] = PEER_MAC_2;
+      for(int j=0; j<6; j++){
+        peer_mac[j] = temp[j];
+      }
+      break;
+    }
+    deafult:
+      Serial.print("ERROR: Board num not recognized in arm_ESPNOWsetup. Board received: ");
+      Serial.println(board_num);
+      while(1) delay(10000);
+  }
 
   while (!Serial) {
     delay(10);
@@ -120,10 +152,10 @@ void setup() {
   }
 
   // Register the send callback function
-  esp_now_register_send_cb(OnDataSent);
+  esp_now_register_send_cb(ArmOnDataSent);
 
   // Register the receive callback function
-  esp_now_register_recv_cb(OnDataRecv);
+  esp_now_register_recv_cb(ArmOnDataRecv);
 
   // Add the peer (receiver) device
   esp_now_peer_info_t peerInfo;
@@ -138,44 +170,68 @@ void setup() {
   }
 
   // DELAY: enter delay if trying to sync up MAC addresses
-  delay(10000);
+  delay(SYNC_DELAY*1000);
 }
 
-void loop() {
+void arm_sendData(uint8_t fi, uint8_t fm, uint8_t fr, uint8_t fp, uint8_t ft){
   // Set values to send
-  strcpy(outData.str, "Haptic Data");
-  outData.finger_sensor_2 = random(1, 20);
-  outData.finger_sensor_3 = random(1, 20);
-  outData.messages_rec = messages_recv;
+  arm_outData.force_index = fi;
+  arm_outData.force_middle = fm;
+  arm_outData.force_ring = fr;
+  arm_outData.force_pinky = fp;
+  arm_outData.force_thumb = ft;
+  arm_outData.messages_rec = arm_messages_rcv;
 
   // Send struct message via ESP-NOW
-  esp_err_t result = esp_now_send(peer_mac, (uint8_t *)&outData, sizeof(outData));
+  esp_err_t result = esp_now_send(peer_mac, (uint8_t *)&arm_outData, sizeof(arm_outData));
 
-  messages_send_attempt += 1;
+  arm_messages_send_attempt += 1;
 
   if (result == ESP_OK) {
     // Serial.println("Sent with success");
   } else {
     Serial.println("Error sending the data");
   }
+}
+
+void arm_monitorSuccess(){
+  Serial.println();
+  Serial.print("Messages Sent: ");
+  Serial.println(arm_messages_send_attempt);
+  Serial.print("Messages Delivered: ");
+  Serial.println(arm_messages_send_success);
+  Serial.print("Success rate: ");
+  Serial.print(arm_messages_send_success*100/arm_messages_send_attempt);
+  Serial.println(" %");
+  Serial.print("position 5: ");
+  Serial.println(pos5_in);
+  Serial.print("size in: ");
+  Serial.println(sizeIn);
+  Serial.println();
+}
+
+// End RoboticArm_ESPNOW.c
+
+// General Arduino Code for Demonstration
+
+int i;
+
+void setup() {
+  // Start the Serial Monitor
+  Serial.begin(115200);
+  arm_ESPNOWsetup(2);
+  i = 0;
+}
+
+void loop() {
+
+  arm_sendData(random(1, 100), random(1, 100), random(1, 100), random(1, 100), random(1, 100));
 
   delay(1000/DATA_RATE);  // Wait before sending again
 
   i += 1;
   if(i % 200 == 0){
-    Serial.println();
-    Serial.print("Messages Sent: ");
-    Serial.println(messages_send_attempt);
-    Serial.print("Messages Delivered: ");
-    Serial.println(messages_send_success);
-    Serial.print("Success rate: ");
-    Serial.print(messages_send_success*100/messages_send_attempt);
-    Serial.println(" %");
-    Serial.print("position 5: ");
-    Serial.println(pos5_in);
-    Serial.print("size in: ");
-    Serial.println(sizeIn);
-    Serial.println();
+    arm_monitorSuccess();
   }
 }
 
