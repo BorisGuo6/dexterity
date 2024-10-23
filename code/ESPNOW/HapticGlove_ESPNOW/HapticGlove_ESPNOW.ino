@@ -17,7 +17,7 @@ typedef struct position_packet {
   // remove when not monitoring success rate:
   int messages_rec;
   // end remove
-  uint8_t finger_pos[10];
+  uint8_t finger_pos[16];
   uint8_t wrist_pos[3];
   uint8_t arm_pos[3];
 } position_packet;
@@ -167,7 +167,7 @@ void glove_ESPNOWsetup(uint8_t board_num){
 
 void glove_sendData(uint8_t fpos[], uint8_t wpos[], uint8_t apos[]){
   // Set values to send
-  for(int j=0; j<10; j++){
+  for(int j=0; j<16; j++){
     glove_outData.finger_pos[j] = fpos[j];
   }
   for(int j=0; j<3; j++){
@@ -214,10 +214,10 @@ void setup() {
 }
 
 void loop() {
-  uint8_t fpos[10];
+  uint8_t fpos[16];
   uint8_t wpos[3];
   uint8_t apos[3];
-  for(int j=0; j<10; j++){
+  for(int j=0; j<16; j++){
     fpos[j] = random(1, 255);
   }
   for(int j=0; j<3; j++){
