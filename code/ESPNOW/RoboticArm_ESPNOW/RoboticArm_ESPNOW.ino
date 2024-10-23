@@ -17,7 +17,7 @@ typedef struct position_packet {
   // remove when not monitoring success rate:
   int messages_rec;
   // end remove
-  uint8_t finger_pos[10];
+  uint8_t finger_pos[16];
   uint8_t wrist_pos[3];
   uint8_t arm_pos[3];
 } position_packet;
@@ -225,13 +225,14 @@ void setup() {
 
 void loop() {
 
-  arm_sendData(random(1, 100), random(1, 100), random(1, 100), random(1, 100), random(1, 100));
+  // arm_sendData(random(1, 100), random(1, 100), random(1, 100), random(1, 100), random(1, 100));
 
-  delay(1000/DATA_RATE);  // Wait before sending again
+  // delay(1000/DATA_RATE);  // Wait before sending again
 
-  i += 1;
-  if(i % 200 == 0){
-    arm_monitorSuccess();
-  }
+
+  // i += 1;
+  // if(i % 200 == 0){
+  //   arm_monitorSuccess();
+  // }
 }
 
