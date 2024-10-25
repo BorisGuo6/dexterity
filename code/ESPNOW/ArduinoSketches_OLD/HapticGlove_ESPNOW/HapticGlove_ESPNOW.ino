@@ -35,49 +35,44 @@ typedef struct haptic_packet {
 
 // End General_ESPNOW.h
 
-// Start RoboticArm_ESPNOW.h:
+// Start HapticGlove_ESPNOW.h: 
 
 // Create an instance of the struct to be sent/received
-// Create it in public space so general arm code can access values
-position_packet arm_inData;
-haptic_packet arm_outData;
+// Create it in public space so general glove code can access values
+position_packet glove_outData;
+haptic_packet glove_inData;
 
 // remove when not monitoring success rate:
-int arm_messages_send_attempt;
-int arm_messages_send_success;
-int arm_messages_rcv;
+int glove_messages_send_attempt;
+int glove_messages_send_success;
+int glove_messages_rcv;
 
-// general arm code needs to initialize ESPNOW
-void arm_ESPNOWsetup(uint8_t board_num);
+// general glove code needs to initialize ESPNOW
+void glove_ESPNOWsetup(uint8_t board_num);
 
-// general arm code has access to sendData function
-void arm_sendData(uint8_t fi, uint8_t fm, uint8_t fr, uint8_t fp, uint8_t ft);
+// general glove code has access to sendData function
+void glove_sendData(uint8_t fpos[], uint8_t wpos[], uint8_t apos[]);
 
 // receive data function will call general arm code
 
-void arm_monitorSuccess();
+void glove_monitorSuccess();
 
-// End RoboticArm_ESPNOW.h
+// End HapticGlove_ESPNOW.h
 
-// Start RoboticArm_ESPNOW.c:
+// Start HapticGlove_ESPNOW.c:
 
 uint8_t peer_mac[6];
 
-// remove when not monitoring success rate:
-uint8_t pos5_in;
-int sizeIn;
-// end remove
-
 // Function to handle the result of data send
-void ArmOnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
+void GloveOnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
   // Serial.print("\r\nLast Packet Send Status:\t");
   // Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
 }
 
 // Callback function that will be executed when data is received
-void ArmOnDataRecv(const esp_now_recv_info *info, const uint8_t *incomingData, int len) {
-  if (len == sizeof(arm_inData)) {
-      memcpy(&arm_inData, incomingData, sizeof(arm_inData));
+void GloveOnDataRecv(const esp_now_recv_info *info, const uint8_t *incomingData, int len) {
+  if (len == sizeof(glove_inData)) {
+      memcpy(&glove_inData, incomingData, sizeof(glove_inData));
       // Proceed with processing
   } else {
       Serial.println("Received data length does not match expected size.");
@@ -86,25 +81,22 @@ void ArmOnDataRecv(const esp_now_recv_info *info, const uint8_t *incomingData, i
   // Serial.println(len);
   // Serial.print("Message: ");
   // Serial.println(inData.str);
-  // Serial.print("finger_position_1: ");
-  // Serial.println(inData.finger_position_1);
-  // Serial.print("finger_angle_1: ");
-  // Serial.println(inData.finger_angle_1);
-  // Serial.print("wrist_position: ");
-  // Serial.println(inData.wrist_position);
-  // Serial.print("wrist_angle: ");
-  // Serial.println(inData.wrist_angle);
+  // Serial.print("finger_sensor_1: ");
+  // Serial.println(inData.finger_sensor_1);
+  // Serial.print("finger_sensor_2: ");
+  // Serial.println(inData.finger_sensor_2);
+  // Serial.print("finger_sensor_3: ");
+  // Serial.println(inData.finger_sensor_3);
   // Serial.println();
-  arm_messages_send_success = arm_inData.messages_rec;
-  arm_messages_rcv++;
-  pos5_in = arm_inData.finger_pos[5];
-  sizeIn = len;
+  // sendData();
+  glove_messages_send_success = glove_inData.messages_rec;
+  glove_messages_rcv++;
 }
 
-void arm_ESPNOWsetup(uint8_t board_num){
-  arm_messages_send_attempt = 0;
-  arm_messages_send_success = 0;
-  arm_messages_rcv = 0;
+void glove_ESPNOWsetup(uint8_t board_num){
+  glove_messages_send_attempt = 0;
+  glove_messages_send_success = 0;
+  glove_messages_rcv = 0;
 
   switch(board_num){
     case(1): {
@@ -152,10 +144,10 @@ void arm_ESPNOWsetup(uint8_t board_num){
   }
 
   // Register the send callback function
-  esp_now_register_send_cb(ArmOnDataSent);
+  esp_now_register_send_cb(GloveOnDataSent);
 
   // Register the receive callback function
-  esp_now_register_recv_cb(ArmOnDataRecv);
+  esp_now_register_recv_cb(GloveOnDataRecv);
 
   // Add the peer (receiver) device
   esp_now_peer_info_t peerInfo;
@@ -173,19 +165,21 @@ void arm_ESPNOWsetup(uint8_t board_num){
   delay(SYNC_DELAY*1000);
 }
 
-void arm_sendData(uint8_t fi, uint8_t fm, uint8_t fr, uint8_t fp, uint8_t ft){
+void glove_sendData(uint8_t fpos[], uint8_t wpos[], uint8_t apos[]){
   // Set values to send
-  arm_outData.force_index = fi;
-  arm_outData.force_middle = fm;
-  arm_outData.force_ring = fr;
-  arm_outData.force_pinky = fp;
-  arm_outData.force_thumb = ft;
-  arm_outData.messages_rec = arm_messages_rcv;
+  for(int j=0; j<16; j++){
+    glove_outData.finger_pos[j] = fpos[j];
+  }
+  for(int j=0; j<3; j++){
+    glove_outData.wrist_pos[j] = wpos[j];
+    glove_outData.arm_pos[j] = apos[j];
+  }
+  glove_outData.messages_rec = glove_messages_rcv;
 
   // Send struct message via ESP-NOW
-  esp_err_t result = esp_now_send(peer_mac, (uint8_t *)&arm_outData, sizeof(arm_outData));
+  esp_err_t result = esp_now_send(peer_mac, (uint8_t *)&glove_outData, sizeof(glove_outData));
 
-  arm_messages_send_attempt += 1;
+  glove_messages_send_attempt += 1;
 
   if (result == ESP_OK) {
     // Serial.println("Sent with success");
@@ -194,23 +188,19 @@ void arm_sendData(uint8_t fi, uint8_t fm, uint8_t fr, uint8_t fp, uint8_t ft){
   }
 }
 
-void arm_monitorSuccess(){
+void glove_monitorSuccess(){
   Serial.println();
   Serial.print("Messages Sent: ");
-  Serial.println(arm_messages_send_attempt);
+  Serial.println(glove_messages_send_attempt);
   Serial.print("Messages Delivered: ");
-  Serial.println(arm_messages_send_success);
+  Serial.println(glove_messages_send_success);
   Serial.print("Success rate: ");
-  Serial.print(arm_messages_send_success*100/arm_messages_send_attempt);
+  Serial.print(glove_messages_send_success*100/glove_messages_send_attempt);
   Serial.println(" %");
-  Serial.print("position 5: ");
-  Serial.println(pos5_in);
-  Serial.print("size in: ");
-  Serial.println(sizeIn);
   Serial.println();
 }
 
-// End RoboticArm_ESPNOW.c
+// End HapticGlove_ESPNOW.c
 
 // General Arduino Code for Demonstration
 
@@ -219,20 +209,25 @@ int i;
 void setup() {
   // Start the Serial Monitor
   Serial.begin(115200);
-  arm_ESPNOWsetup(2);
+  glove_ESPNOWsetup(2);
   i = 0;
 }
 
 void loop() {
-
-  // arm_sendData(random(1, 100), random(1, 100), random(1, 100), random(1, 100), random(1, 100));
-
-  // delay(1000/DATA_RATE);  // Wait before sending again
-
-
-  // i += 1;
-  // if(i % 200 == 0){
-  //   arm_monitorSuccess();
-  // }
+  uint8_t fpos[16];
+  uint8_t wpos[3];
+  uint8_t apos[3];
+  for(int j=0; j<16; j++){
+    fpos[j] = random(1, 255);
+  }
+  for(int j=0; j<3; j++){
+    wpos[j] = random(1, 255);
+    apos[j] = random(1, 255);
+  }
+  glove_sendData(fpos, wpos, apos);
+  delay(1000/DATA_RATE);
+  i += 1;
+  if(i % 200 == 0){
+    glove_monitorSuccess();
+  }
 }
-
