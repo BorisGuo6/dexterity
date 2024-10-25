@@ -216,13 +216,14 @@
 		(tags "mounting hole 2.2mm no annular m2")
 		(property "Reference" "REF**"
 			(at 0 -3.2 0)
+			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
 			(uuid "177f6f8d-4324-408b-b2f1-0ea4d1d9f543")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 			)
 		)
@@ -324,12 +325,13 @@
 		(at 28.956 47.244 180)
 		(property "Reference" "U3"
 			(at -10.922 -13.97 0)
+			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "910e8fbc-1ec3-4b71-ae4a-3e681b553349")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 			)
 		)
@@ -1189,12 +1191,13 @@
 		(at 82.836 46.736 90)
 		(property "Reference" "FB4"
 			(at -0.635 -1.905 90)
+			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "7417850f-9c11-4894-9b2b-7cffdc0955ad")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 			)
 		)
@@ -1453,12 +1456,13 @@
 		(at 82.896 34.036 90)
 		(property "Reference" "FB2"
 			(at -0.762 -1.81 90)
+			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "6894f554-bfbf-4795-a49b-94d16913a691")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 			)
 		)
@@ -1719,12 +1723,13 @@
 		(tags "Through hole pin header THT 1x02 2.54mm single row")
 		(property "Reference" "J2"
 			(at 0 -2.33 0)
+			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "2cb16e5e-f6bf-46cf-9223-a9ac3c244734")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 			)
 		)
@@ -1984,12 +1989,13 @@
 		(at 82.836 21.336 90)
 		(property "Reference" "FB0"
 			(at -0.998 -1.556 90)
+			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "a50f50d0-636e-45c4-978d-d86535ffb6bc")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 			)
 		)
@@ -2248,12 +2254,13 @@
 		(at 82.836 27.686 90)
 		(property "Reference" "FB1"
 			(at -0.744 -1.556 90)
+			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "c745972b-bb1d-46f6-b7b3-45111dd09f56")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 			)
 		)
@@ -2511,13 +2518,14 @@
 		(uuid "63dcfefa-cd3e-42fc-8407-9157323c6b45")
 		(at 39.116 13.716 180)
 		(property "Reference" "HP3"
-			(at -0.762 -5.842 0)
+			(at -0.254 -5.842 0)
+			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "5711370b-5c5c-4acd-b012-a0a4729d3814")
 			(effects
 				(font
-					(size 0.64 0.64)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 			)
 		)
@@ -2835,13 +2843,14 @@
 		(uuid "6dd33de1-5885-4fbb-978a-d643331b6a3e")
 		(at 47.75 13.716 180)
 		(property "Reference" "HP4"
-			(at -1.018 -5.842 0)
+			(at -0.256 -5.842 0)
+			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "ccd5ea10-e432-4c08-b4dd-c1ac706353a5")
 			(effects
 				(font
-					(size 0.64 0.64)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 			)
 		)
@@ -3159,13 +3168,14 @@
 		(uuid "804258c1-119b-496c-b5bd-9099edd8d0d0")
 		(at 30.48 13.716 180)
 		(property "Reference" "HP2"
-			(at -0.794 -5.907 0)
+			(at -0.254 -5.842 0)
+			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "0c6867ed-7785-47d5-8ac1-50fd630ae2ab")
 			(effects
 				(font
-					(size 0.64 0.64)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 			)
 		)
@@ -3483,13 +3493,14 @@
 		(uuid "b19a4c0e-1793-453b-ac7e-a4976d60e455")
 		(at 21.844 13.716 180)
 		(property "Reference" "HP1"
-			(at -0.762 -5.797 0)
+			(at -0.508 -5.797 0)
+			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "712b38e9-7ffc-4a50-a8a4-385cb7244d39")
 			(effects
 				(font
-					(size 0.64 0.64)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 			)
 		)
@@ -3810,13 +3821,14 @@
 		(tags "mounting hole 2.2mm no annular m2")
 		(property "Reference" "REF**"
 			(at 0 -3.2 0)
+			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
 			(uuid "06b7b584-58b6-470a-99a0-5b3c8213169b")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 			)
 		)
@@ -3917,13 +3929,14 @@
 		(uuid "d40f66cd-2813-447e-876d-13663f5adc53")
 		(at 13.716 22.606 -90)
 		(property "Reference" "HP0"
-			(at -1.272 -5.842 90)
+			(at -0.254 -5.842 90)
+			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "55a90184-a02c-483f-a8a8-240a2d5b32ae")
 			(effects
 				(font
-					(size 0.64 0.64)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 			)
 		)
@@ -4244,13 +4257,14 @@
 		(tags "mounting hole 2.2mm no annular m2")
 		(property "Reference" "REF**"
 			(at 0 -3.2 0)
+			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
 			(uuid "c6dd6d6f-5ce9-470a-b55d-726ba515f304")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 			)
 		)
@@ -4352,12 +4366,13 @@
 		(at 82.896 40.386 90)
 		(property "Reference" "FB3"
 			(at -0.635 -1.905 90)
+			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "be3726e1-8cf8-4400-b529-4c182bbc3c37")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 			)
 		)
@@ -4618,13 +4633,14 @@
 		(tags "mounting hole 2.2mm no annular m2")
 		(property "Reference" "REF**"
 			(at 0 -3.2 0)
+			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
 			(uuid "6cca6d59-5b44-46f1-8349-44fc53300c0c")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 			)
 		)
@@ -4726,12 +4742,13 @@
 		(at 50.546 36.322 -90)
 		(property "Reference" "U2"
 			(at -9.775 -13.315 90)
+			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "7cc1cd45-5480-4c9c-91e9-e291ac9be764")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 			)
 		)
@@ -5391,8 +5408,8 @@
 			(uuid "6aac99d1-8959-4fd1-93de-4776f133265c")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 			)
 		)
@@ -5846,12 +5863,13 @@
 		(at 56.1086 17.5956)
 		(property "Reference" "H3F0"
 			(at -0.635 1.905 0)
+			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "cf246cdb-8d19-4b5a-b398-dbb524a442e1")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 				(justify mirror)
 			)
@@ -6115,12 +6133,13 @@
 		(at 73.184 29.464 -90)
 		(property "Reference" "SP2"
 			(at -0.635 1.905 90)
+			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "0f3a7367-17fb-4705-a4dd-d234b493a88a")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 				(justify mirror)
 			)
@@ -6384,12 +6403,13 @@
 		(at 17.526 28.6926 90)
 		(property "Reference" "H1F0"
 			(at -1.03 1.713 90)
+			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "ad0210c6-ef25-4ece-a509-140a17b520c4")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 				(justify mirror)
 			)
@@ -6653,12 +6673,13 @@
 		(at 46.736 29.529)
 		(property "Reference" "H3F2"
 			(at -0.635 1.905 0)
+			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "45020a2a-db02-4107-a476-623fa1d1d401")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 				(justify mirror)
 			)
@@ -6922,12 +6943,13 @@
 		(at 32.4866 17.6022)
 		(property "Reference" "H2F0"
 			(at -4.1148 -2.0828 90)
+			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "c156094c-09e3-4f3a-8239-dd7b370a26aa")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 				(justify mirror)
 			)
@@ -7191,12 +7213,13 @@
 		(at 28.7782 25.7607 90)
 		(property "Reference" "U1"
 			(at 4.1707 8.8138 90)
+			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "bf697b96-0696-46b6-af72-45150af04b56")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 				(justify mirror)
 			)
@@ -7761,12 +7784,13 @@
 		(at 73.152 22.622 -90)
 		(property "Reference" "SP1"
 			(at -0.635 1.905 90)
+			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "87e6d565-c132-4179-9fc2-015e78eb4438")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 				(justify mirror)
 			)
@@ -8030,12 +8054,13 @@
 		(at 73.184 36.322 -90)
 		(property "Reference" "SP3"
 			(at -0.635 1.905 90)
+			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "9ae987b8-ff5a-49f7-97eb-3b0eddd9858f")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 				(justify mirror)
 			)
@@ -8299,12 +8324,13 @@
 		(at 41.1226 17.5956)
 		(property "Reference" "H2F1"
 			(at -4.0386 -2.0254 90)
+			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "1d180875-40f2-4e65-9759-acc3a942ea34")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 				(justify mirror)
 			)
@@ -8568,12 +8594,13 @@
 		(at 73.184 43.194 -90)
 		(property "Reference" "SP4"
 			(at -1.032 1.778 90)
+			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "f47f7137-8447-4ccb-82be-2b567b3439a1")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 				(justify mirror)
 			)
@@ -8837,12 +8864,13 @@
 		(at 52.61 27.686 -90)
 		(property "Reference" "H4F0"
 			(at -0.635 1.905 90)
+			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "d991959b-e711-4ad6-ae1d-68286d738340")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 				(justify mirror)
 			)
@@ -9106,12 +9134,13 @@
 		(at 62.468 17.6022)
 		(property "Reference" "H3F1"
 			(at -0.762 1.81 0)
+			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "9d2b857e-6df6-48ea-a012-b6442fcac0bb")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 				(justify mirror)
 			)
@@ -9381,8 +9410,8 @@
 			(uuid "3e7b218f-2481-4adb-83b3-e989c7a05e2b")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 				(justify mirror)
 			)
@@ -9843,12 +9872,13 @@
 		(at 52.61 41.402 -90)
 		(property "Reference" "H4F2"
 			(at -0.635 1.905 90)
+			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "3c1724fc-bd51-4859-b8f1-e086e0e69dd4")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 				(justify mirror)
 			)
@@ -10112,12 +10142,13 @@
 		(at 17.6022 20.6154 90)
 		(property "Reference" "H1F1"
 			(at -0.635 1.905 90)
+			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "616e4164-c7c5-42dc-8ec2-df9fe5595553")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 				(justify mirror)
 			)
@@ -10381,12 +10412,13 @@
 		(at 17.526 41.386 90)
 		(property "Reference" "HTH1"
 			(at -0.635 1.905 90)
+			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "defcd8d4-1fcf-40c0-a8aa-420fb8325c41")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 				(justify mirror)
 			)
@@ -10650,12 +10682,13 @@
 		(at 17.526 47.736 90)
 		(property "Reference" "HTH2"
 			(at -0.635 1.905 90)
+			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "71d417d4-4276-4be7-81e0-3c6a47a46253")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 				(justify mirror)
 			)
@@ -10921,12 +10954,13 @@
 		(tags "capacitor")
 		(property "Reference" "C1"
 			(at -3.048 0 0)
+			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "f057fdff-a018-4d83-8a7e-a404c5da135b")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 				(justify mirror)
 			)
@@ -11138,12 +11172,13 @@
 		(at 49.7586 17.5956)
 		(property "Reference" "H2F2"
 			(at -3.9116 -2.0762 90)
+			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "5564b225-818c-4755-b241-292e6c696155")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 				(justify mirror)
 			)
@@ -11407,12 +11442,13 @@
 		(at 23.8412 17.6022)
 		(property "Reference" "H1F2"
 			(at -4.1562 -2.0066 90)
+			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "9da66df4-9f2f-49e2-976a-495a7b7eed11")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 				(justify mirror)
 			)
@@ -11676,12 +11712,13 @@
 		(at 17.526 54.086 90)
 		(property "Reference" "HTH3"
 			(at -0.635 1.905 90)
+			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "c254b624-1bd4-46c5-9e7f-d1d0d2595b92")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 				(justify mirror)
 			)
@@ -11947,12 +11984,13 @@
 		(tags "resistor")
 		(property "Reference" "R1"
 			(at 0 1.17 90)
+			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "26469fba-4d21-4195-a7df-293563d2b843")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 				(justify mirror)
 			)
@@ -12164,12 +12202,13 @@
 		(at 17.526 35.0426 90)
 		(property "Reference" "HTH0"
 			(at -0.635 1.905 90)
+			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "8e2b1249-c216-4705-9754-b29a9e38f949")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 				(justify mirror)
 			)
@@ -12433,12 +12472,13 @@
 		(at 73.1266 15.748 -90)
 		(property "Reference" "SP0"
 			(at -0.635 1.556 90)
+			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "f4faf6b5-27df-4fdc-a212-1eca2a5df799")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 				(justify mirror)
 			)
@@ -12702,12 +12742,13 @@
 		(at 52.61 34.544 -90)
 		(property "Reference" "H4F1"
 			(at -0.635 1.905 90)
+			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "0c946336-1806-4b87-901e-b63a5cacb8ec")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 				(justify mirror)
 			)
@@ -12975,6 +13016,18 @@
 		(fill none)
 		(layer "Edge.Cuts")
 		(uuid "97e10347-c5cf-4e8e-a539-46fcf7fcd37e")
+	)
+	(gr_text "Dexterity\nHand\nJLL"
+		(at 78.74 62.738 0)
+		(layer "F.SilkS")
+		(uuid "65597bc6-bae4-4fc8-bbcc-48c4063020d7")
+		(effects
+			(font
+				(size 1.016 1.016)
+				(thickness 0.1524)
+			)
+			(justify bottom)
+		)
 	)
 	(via
 		(at 73.1266 16.748)
