@@ -205,12 +205,13 @@
 		(tags "capacitor")
 		(property "Reference" "C1"
 			(at -3.253 0 180)
+			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "b58b3713-d048-4c3a-85a1-a319d4a8194e")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 			)
 		)
@@ -418,12 +419,13 @@
 		(tags "Through hole socket strip THT 1x01 2.54mm single row")
 		(property "Reference" "J9"
 			(at -0.0254 2.4892 0)
+			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "d86f4483-60fc-462f-8872-395255c4f974")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 			)
 		)
@@ -662,12 +664,13 @@
 		(at 62.7346 49.6178)
 		(property "Reference" "U1"
 			(at -14.224 -28.9032 0)
+			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "e903021c-dde1-42f6-92ff-4d862bfcae4d")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 			)
 		)
@@ -1555,12 +1558,13 @@
 		(at 19.9691 70.0918)
 		(property "Reference" "VR1"
 			(at -6.604 -2.032 -90)
+			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "622a2d76-6969-40de-a37c-7136c556c127")
 			(effects
 				(font
-					(size 1.4 1.4)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 			)
 		)
@@ -1971,13 +1975,14 @@
 		(tags "mounting hole 2.2mm no annular m2")
 		(property "Reference" "REF**"
 			(at 0 -3.2 0)
+			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
 			(uuid "8896fcb5-8e93-4932-b8b3-1e7267d35e07")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 			)
 		)
@@ -2081,12 +2086,13 @@
 		(tags "Through hole socket strip THT 1x02 2.54mm single row")
 		(property "Reference" "J1"
 			(at 0 -2.77 90)
+			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "da6b2853-1ae0-49ca-9219-553aa13d80d8")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 			)
 		)
@@ -2346,12 +2352,13 @@
 		(at 37.5016 68.3118 90)
 		(property "Reference" "U2"
 			(at 12.319 -12.573 0)
+			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "b22f2aaf-d893-4246-89fe-50302ade5b2e")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 			)
 		)
@@ -3007,12 +3014,13 @@
 		(tags "capacitor")
 		(property "Reference" "C2"
 			(at -3.302 0 180)
+			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "ab421d4d-3776-4aea-b2f1-366dfa06333f")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 			)
 		)
@@ -3220,13 +3228,14 @@
 		(tags "mounting hole 2.2mm no annular m2")
 		(property "Reference" "REF**"
 			(at 0 -3.2 0)
+			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
 			(uuid "d64f50fb-e8cc-4fad-914a-5baaaee76fea")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 			)
 		)
@@ -3330,13 +3339,14 @@
 		(tags "mounting hole 2.2mm no annular m2")
 		(property "Reference" "REF**"
 			(at 0 -3.2 0)
+			(unlocked yes)
 			(layer "F.SilkS")
 			(hide yes)
 			(uuid "777df5cc-e37d-44f1-bfa1-99cdc32cd68e")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 			)
 		)
@@ -3438,14 +3448,14 @@
 		(at 31.619615 24.648801 180)
 		(tags "522071633 ")
 		(property "Reference" "J2"
-			(at 0 -7.62 180)
+			(at -0.547985 0.406001 180)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "a909ad5d-b53c-404b-b681-389ecdcb179b")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 			)
 		)
@@ -3715,18 +3725,6 @@
 		(fp_text user "522071633"
 			(at 0 -10.16 180)
 			(unlocked yes)
-			(layer "F.SilkS")
-			(uuid "a811af35-e84f-4fcd-8141-8765221ff667")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(fp_text user "522071633"
-			(at 0 -10.16 180)
-			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "2322cb41-c1b5-4d9e-84ed-836241836b9f")
 			(effects
@@ -3913,12 +3911,13 @@
 		(tags "resistor")
 		(property "Reference" "RS0"
 			(at 0 1.17 90)
+			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "afe2aaad-4b0d-4093-8730-197f8c71a157")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 				(justify mirror)
 			)
@@ -4132,12 +4131,13 @@
 		(tags "Through hole socket strip THT 1x02 2.54mm single row")
 		(property "Reference" "B0"
 			(at 0 2.77 90)
+			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "84c10ab2-d7a7-4758-acc8-73aa47cca0f4")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 				(justify mirror)
 			)
@@ -4405,12 +4405,13 @@
 		(tags "resistor")
 		(property "Reference" "RLED0"
 			(at 0 1.17 0)
+			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "64f6d698-5b0d-49bf-9c14-e1ea0e3ecc85")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 				(justify mirror)
 			)
@@ -4624,12 +4625,13 @@
 		(tags "Through hole socket strip THT 1x02 2.54mm single row")
 		(property "Reference" "LED1"
 			(at 0 2.77 90)
+			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "4bf44959-8c02-4ed2-9bdf-be9316cd053d")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 				(justify mirror)
 			)
@@ -4895,14 +4897,14 @@
 		(at 31.619615 24.648801)
 		(tags "522071633 ")
 		(property "Reference" "J3"
-			(at 0 7.62 180)
+			(at 0.293985 -0.406001 180)
 			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "12b2b52c-55df-4d50-9382-0e12eb965afd")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 				(justify mirror)
 			)
@@ -5177,19 +5179,6 @@
 		(fp_text user "522071633"
 			(at 0 10.16 180)
 			(unlocked yes)
-			(layer "B.SilkS")
-			(uuid "befcaccf-5dba-4cbc-9990-79351e6cd48b")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-				(justify mirror)
-			)
-		)
-		(fp_text user "522071633"
-			(at 0 10.16 180)
-			(unlocked yes)
 			(layer "B.Fab")
 			(uuid "12fa3f22-f3b7-4595-9ecb-818cde55de99")
 			(effects
@@ -5378,12 +5367,13 @@
 		(tags "resistor")
 		(property "Reference" "RB0"
 			(at 0 1.17 90)
+			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "4becd54b-4cd8-495e-86ec-211aa721fd82")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 				(justify mirror)
 			)
@@ -5597,12 +5587,13 @@
 		(tags "Through hole socket strip THT 1x02 2.54mm single row")
 		(property "Reference" "LED0"
 			(at 0 2.77 90)
+			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "e7aae4b7-bf33-4eee-9141-0e3a45af658e")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 				(justify mirror)
 			)
@@ -5870,12 +5861,13 @@
 		(tags "resistor")
 		(property "Reference" "RLED1"
 			(at 0 1.17 0)
+			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "80e7d1bb-4561-4e15-a522-451e7f33f57e")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 				(justify mirror)
 			)
@@ -6089,12 +6081,13 @@
 		(tags "Through hole socket strip THT 1x02 2.54mm single row")
 		(property "Reference" "S0"
 			(at 0 2.77 90)
+			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "10d56396-db6a-4db4-82aa-a04ee4fb85f3")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 				(justify mirror)
 			)
@@ -6362,12 +6355,13 @@
 		(tags "resistor")
 		(property "Reference" "RB1"
 			(at 0 1.17 90)
+			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "45dfe05e-2d06-4558-99ff-9955ec14e8c0")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 				(justify mirror)
 			)
@@ -6581,12 +6575,13 @@
 		(tags "Through hole socket strip THT 1x02 2.54mm single row")
 		(property "Reference" "B1"
 			(at 0 2.77 90)
+			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "d152f028-5291-43b0-b6ec-7b2741dadaf6")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.016 1.016)
+					(thickness 0.1524)
 				)
 				(justify mirror)
 			)
@@ -6856,6 +6851,18 @@
 		(fill none)
 		(layer "Edge.Cuts")
 		(uuid "4f869013-7825-48ad-a0dc-91acd9e7cd61")
+	)
+	(gr_text "Dexterity\nForearm\nJLL"
+		(at 21.7536 81.3928 0)
+		(layer "F.SilkS")
+		(uuid "c0361c90-d0ae-4dc6-b01e-3cbfde42a963")
+		(effects
+			(font
+				(size 1.016 1.016)
+				(thickness 0.1524)
+			)
+			(justify bottom)
+		)
 	)
 	(segment
 		(start 19.5591 65.5198)
