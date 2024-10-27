@@ -49,8 +49,8 @@ int maxUs = 2225;
 // for the ESP32-S3 the GPIO pins are 1-21,35-45,47-48
 // for the ESP32-C3 the GPIO pins are 1-10,18-21
 
-int servo1Pin = 4;
-int servo2Pin = 6;
+int servo1Pin = 1;
+int servo2Pin = 2;
 
 
 int pos = 0;      // position in degrees
@@ -67,16 +67,13 @@ void setup() {
 	// servo3.setPeriodHertz(330);      // Standard 50hz servo
 	// servo4.setPeriodHertz(200);      // Standard 50hz servo
 	//servo5.setPeriodHertz(50);      // Standard 50hz servo
-
-
+  
+  servo1.attach(servo1Pin, minUs, maxUs);
+	servo2.attach(servo2Pin, minUs, maxUs);
 }
 
 void loop() {
-	servo1.attach(servo1Pin, minUs, maxUs);
-
-  
-
-	//servo2.attach(servo2Pin, minUs, maxUs);
+	
 
   // minUs-=25;
   // if(minUs<600){
@@ -84,16 +81,19 @@ void loop() {
   // }
 
 
-
-	for (pos = 0; pos <= 180; pos += 1) { // sweep from 0 degrees to 180 degrees
+  // servo1.write(180);
+  // servo2.write(pos);
+	for (pos = 0; pos <= 160; pos += 1) { // sweep from 0 degrees to 180 degrees
 		// in steps of 1 degree
-		servo1.write(pos);
+		servo1.write(180-pos);
+    servo2.write(pos);
     Serial.println(pos);
 		delay(5);             // waits 20ms for the servo to reach the position
 	}
   delay(1000);
-	for (pos = 180; pos >= 0; pos -= 1) { // sweep from 180 degrees to 0 degrees
-		servo1.write(pos);
+	for (pos = 160; pos >= 0; pos -= 1) { // sweep from 180 degrees to 0 degrees
+		servo1.write(180-pos);
+    servo2.write(pos);
     Serial.println(pos);
 		delay(5);
 	}
@@ -109,7 +109,7 @@ void loop() {
 	// 	delay(1);
 	// }
 
-	servo1.detach();
+	//servo1.detach();
 	//servo2.detach();;
 
   
