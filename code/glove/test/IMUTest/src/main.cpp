@@ -26,8 +26,26 @@
 #define BNO_ADDR1   0x4A          // I2C address of 1st BNO085 sensor (0x4A if SA0=0, 0x4B if SA0=1)
 #define BNO_ADDR2   0x4B          // I2C address of 2nd '''
 #define I2C_CLOCK   400000L       // I2C clock rate
-#define SERIAL_BAUD 230400L     // serial port baud rate
-#define SENSOR_US   10000L      // time between sensor reports, microseconds, 10000L is 100 Hz, 20000L is 50 Hz
+#define SERIAL_BAUD 9600L     // serial port baud rate
+#define SENSOR_US   20000L      // time between sensor reports, microseconds, 10000L is 100 Hz, 20000L is 50 Hz
+
+// _____________ OTHER MACROS ____________________
+#define SCALE_Q(n) (1.0f / (1 << n))
+
+// _____________ TYPE DEFINITIONS ____________________
+struct euler_t {
+  float yaw;
+  float pitch;
+  float roll;
+};
+
+// _____________ FUNCTION HEADERS ____________________
+static void request_reports(uint8_t);
+void uart_b64(int32_t);
+static void output_data(uint8_t);
+static void ensure_read_available(uint8_t, int16_t);
+static void check_report(uint8_t);
+void quaternionToEuler(float, float, float, float, euler_t*, bool);
 
 // *******************************
 // **  Request desired reports  **
@@ -47,15 +65,12 @@ int16_t igx[BNOs], igy[BNOs], igz[BNOs];             // gyro, integer
 int16_t imx[BNOs], imy[BNOs], imz[BNOs];             // magneto, integer
 int16_t ilx[BNOs], ily[BNOs], ilz[BNOs];             // linear accel, integer
 int16_t iqw[BNOs], iqx[BNOs], iqy[BNOs], iqz[BNOs];  // quaternion, integer
+float   fqw[BNOs], fqx[BNOs], fqy[BNOs], fqz[BNOs];  // quaternion, float
+euler_t ypr[BNOs];                                   // euler angles, float
 
 char obuf[70], *pbuf;           // ensure this output buffer is big enough for your output string!
 
-// _____________ FUNCTION HEADERS ____________________
-static void request_reports(uint8_t);
-void uart_b64(int32_t);
-static void output_data(uint8_t);
-static void ensure_read_available(uint8_t, int16_t);
-static void check_report(uint8_t);
+
 
 // _____________ SETUP ____________________
 void setup()
@@ -89,7 +104,11 @@ void setup()
 void loop()
 {
   for (uint8_t bno=0; bno<BNOs; bno++)  // check for reports from all BNOs
-      check_report(bno);
+  {
+    check_report(bno);
+    
+  }
+      
 }
 
 
@@ -143,26 +162,30 @@ void uart_b64(int32_t i)        // output 18-bit integer as compact 3-digit base
 
 static void output_data(uint8_t bno)
 {
-  float kACC = 1/9.80665/256 * 131072/10.0;     // scale units for my project
-  float kGYR =  180/M_PI/512 * 131072/4000.0;
-  float kMAG =       0.01/16 * 131072/1.0;
-  float kLAC = 1/9.80665/256 * 131072/10.0;
+  // Convert Quat int16 to floats
+  fqw[bno] = iqw[bno] * SCALE_Q(8);
+  fqx[bno] = iqx[bno] * SCALE_Q(8);
+  fqy[bno] = iqy[bno] * SCALE_Q(8);
+  fqz[bno] = iqz[bno] * SCALE_Q(8);
 
-  pbuf = obuf;                        // pointer into output buffer
-  *pbuf++ = 'k';  *pbuf++ = 'q'+bno;  // string header "kq" is BNO0, "kr" is BNO1, "ks" is BNO2, etc
-  uart_b64(kACC*iax[bno]);  uart_b64(-kACC*iay[bno]);  uart_b64(-kACC*iaz[bno]);  // accel,   convert from m/sec/sec*256 to       g*131072/10.0
-  uart_b64(kGYR*igx[bno]);  uart_b64(-kGYR*igy[bno]);  uart_b64(-kGYR*igz[bno]);  // gyro,    convert from   rad/sec*512 to deg/sec*131072/4000.0
-  uart_b64(kMAG*imx[bno]);  uart_b64(-kMAG*imy[bno]);  uart_b64(-kMAG*imz[bno]);  // magneto, convert from        uT*16  to   gauss*131072/1.0
-  uart_b64(kLAC*ilx[bno]);  uart_b64(-kLAC*ily[bno]);  uart_b64(-kLAC*ilz[bno]);  // linacc,  convert from m/sec/sec*256 to       g*131072/10.0
-  // my BNO08x orientation dot is towards left rear, rotate BNO08x quaternion to NED conventions
-  uart_b64(iqw[bno]+iqz[bno]); uart_b64(iqx[bno]+iqy[bno]); uart_b64(iqx[bno]-iqy[bno]); uart_b64(iqw[bno]-iqz[bno]);  // quat,    no conversion required becasue it'll be normalized
-  uart_b64(0);          // temp,    convert from    degC*128     to  degC*131072/100.0
-  uart_b64(0);          // baro,    convert from hectoPa*1048576 to  mbar*131072/2000.0
-  uart_b64(0xFF);       // status,  four 2-bit codes {sys,gyr,acc,mag}
-  *pbuf++ = 13;         // CR LF
-  *pbuf++ = 10;
-  *pbuf++ = 0;          // terminate string
-  Serial.write(obuf);   // writing one long string is *much* faster than printing individual values
+  // Calculate Euler Angles
+  quaternionToEuler(fqw[bno], fqx[bno], fqy[bno], fqz[bno], &ypr[bno], true);
+
+  // Output Data
+  Serial.print(">yaw");
+  Serial.print(bno);
+  Serial.print(":");
+  Serial.println(ypr[bno].yaw);
+
+  Serial.print(">pitch");
+  Serial.print(bno);
+  Serial.print(":");
+  Serial.println(ypr[bno].pitch);
+
+  Serial.print(">roll");
+  Serial.print(bno);
+  Serial.print(":");
+  Serial.println(ypr[bno].roll);
 }
 
 
@@ -320,4 +343,23 @@ static void check_report(uint8_t bno)
     continue;
   }
   return;
+}
+
+
+void quaternionToEuler(float qr, float qi, float qj, float qk, euler_t* ypr, bool degrees = false) {
+
+    float sqr = sq(qr);
+    float sqi = sq(qi);
+    float sqj = sq(qj);
+    float sqk = sq(qk);
+
+    ypr->yaw = atan2(2.0 * (qi * qj + qk * qr), (sqi - sqj - sqk + sqr));
+    ypr->pitch = asin(-2.0 * (qi * qk - qj * qr) / (sqi + sqj + sqk + sqr));
+    ypr->roll = atan2(2.0 * (qj * qk + qi * qr), (-sqi - sqj + sqk + sqr));
+
+    if (degrees) {
+      ypr->yaw *= RAD_TO_DEG;
+      ypr->pitch *= RAD_TO_DEG;
+      ypr->roll *= RAD_TO_DEG;
+    }
 }
