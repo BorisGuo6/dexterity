@@ -6,8 +6,9 @@ int i;
 
 void setup() {
   // Start the Serial Monitor
-  Serial.begin(115200);
-  arm_ESPNOWsetup(1);
+  uint8_t mac[] = PEER_MAC_1;
+  int baud_rate = 115200;
+  arm_ESPNOWsetup(mac, baud_rate);
   i = 0;
 }
 

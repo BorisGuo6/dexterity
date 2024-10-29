@@ -5,8 +5,9 @@ int i;
 
 void setup() {
   // Start the Serial Monitor
-  Serial.begin(115200);
-  glove_ESPNOWsetup(2);
+  uint8_t mac[] = PEER_MAC_2;
+  int baud_rate = 115200;
+  glove_ESPNOWsetup(mac, baud_rate);
   i = 0;
 }
 

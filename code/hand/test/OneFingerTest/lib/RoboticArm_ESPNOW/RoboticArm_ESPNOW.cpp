@@ -37,15 +37,30 @@ void ArmOnDataRecv(const uint8_t *mac_addr, const uint8_t *incomingData, int len
   sizeIn = len;
 }
 
-void arm_ESPNOWsetup(uint8_t mac_in[], int baud_rate){
-  Serial.begin(baud_rate);
-
+void arm_ESPNOWsetup(uint8_t board_num){
   arm_messages_send_attempt = 0;
   arm_messages_send_success = 0;
   arm_messages_rcv = 0;
-  
-  for(int i=0; i<6; i++){
-    peer_mac[i] = mac_in[i];
+
+  switch(board_num){
+    case(1): {
+      uint8_t temp[] = PEER_MAC_1;
+      for(int j=0; j<6; j++){
+        peer_mac[j] = temp[j];
+      }
+      break;
+    }
+    case(2): {
+      uint8_t temp[] = PEER_MAC_2;
+      for(int j=0; j<6; j++){
+        peer_mac[j] = temp[j];
+      }
+      break;
+    }
+    default:  // Fixed typo from 'deafult' to 'default'
+      Serial.print("ERROR: Board num not recognized in arm_ESPNOWsetup. Board received: ");
+      Serial.println(board_num);
+      while(1) delay(10000);
   }
 
   while (!Serial) {
