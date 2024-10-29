@@ -15,7 +15,7 @@ extern int glove_messages_send_success;
 extern int glove_messages_rcv;
 
 // general glove code needs to initialize ESPNOW
-void glove_ESPNOWsetup(uint8_t board_num);
+void glove_ESPNOWsetup(uint8_t mac_in[], int baud_rate);
 
 // general glove code has access to sendData function
 void glove_sendData(uint8_t fpos[], uint8_t wpos[], uint8_t apos[]);
