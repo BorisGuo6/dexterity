@@ -6,6 +6,8 @@
 
 // _____________  COMPILATION SETTINGS ____________________
 #define DEBUG       0           // output extra info: 0 off, 1 on. Beware this causes too much output data at low baud rates and/or high sensor rates.
+#define TELEPLOT    0           // output data in Teleplot format: 0 off, 1 on.
+
 #if DEBUG
   static uint8_t printbyte(uint8_t b)
   {
@@ -172,20 +174,32 @@ static void output_data(uint8_t bno)
   quaternionToEuler(fqw[bno], fqx[bno], fqy[bno], fqz[bno], &ypr[bno], true);
 
   // Output Data
-  Serial.print(">yaw");
-  Serial.print(bno);
-  Serial.print(":");
-  Serial.println(ypr[bno].yaw);
+  if (TELEPLOT)
+  {
+    // Print Data in Teleplot format if compiler flag is set to 1
+    Serial.print(">yaw");
+    Serial.print(bno);
+    Serial.print(":");
+    Serial.println(ypr[bno].yaw);
 
-  Serial.print(">pitch");
-  Serial.print(bno);
-  Serial.print(":");
-  Serial.println(ypr[bno].pitch);
+    Serial.print(">pitch");
+    Serial.print(bno);
+    Serial.print(":");
+    Serial.println(ypr[bno].pitch);
 
-  Serial.print(">roll");
-  Serial.print(bno);
-  Serial.print(":");
-  Serial.println(ypr[bno].roll);
+    Serial.print(">roll");
+    Serial.print(bno);
+    Serial.print(":");
+    Serial.println(ypr[bno].roll);
+  }
+  else
+  {
+    // Print data in CSV format
+    Serial.print(bno);            Serial.print("\t");
+    Serial.print(ypr[bno].yaw);   Serial.print("\t");
+    Serial.print(ypr[bno].pitch); Serial.print("\t");
+    Serial.println(ypr[bno].roll);
+  }
 }
 
 
