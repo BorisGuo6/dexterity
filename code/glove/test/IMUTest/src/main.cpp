@@ -48,6 +48,7 @@ struct euler_t {
 };
 
 // _____________ FUNCTION HEADERS ____________________
+uint8_t get_bno_addr(uint8_t);
 static void request_reports(uint8_t);
 void uart_b64(int32_t);
 static void output_data(uint8_t);
@@ -120,8 +121,8 @@ void loop()
 
 // _____________ FUNCTION DEFINITIONS _________________
 
-static void request_reports(uint8_t bno)
-{ 
+uint8_t get_bno_addr(uint8_t bno)
+{
   uint8_t BNO_ADDR;
   if (bno == 1) 
   {
@@ -131,7 +132,13 @@ static void request_reports(uint8_t bno)
   {
     BNO_ADDR = BNO_ADDR1;
   }
+  return BNO_ADDR;
+}
 
+static void request_reports(uint8_t bno)
+{ 
+  uint8_t BNO_ADDR = get_bno_addr(bno);
+  
   if (REQUEST_ACC_REPORTS)
   {
     // request acc reports, see 6.5.4
@@ -225,15 +232,7 @@ static void ensure_read_available(uint8_t bno, int16_t length)  // ensure a read
 {
   if (!Wire.available())
   {
-    uint8_t BNO_ADDR;
-    if (bno == 1) 
-    {
-      BNO_ADDR = BNO_ADDR2;
-    }
-    else 
-    {
-      BNO_ADDR = BNO_ADDR1;
-    }
+    uint8_t BNO_ADDR = get_bno_addr(bno);
     Wire.requestFrom(BNO_ADDR,4+length), Wire.read(), Wire.read(), Wire.read(), Wire.read();
   }
 }
@@ -245,15 +244,7 @@ static void check_report(uint8_t bno)
   uint8_t channel __attribute__((unused));
   uint8_t seqnum  __attribute__((unused));
 
-  uint8_t BNO_ADDR;
-  if (bno == 1) 
-  {
-    BNO_ADDR = BNO_ADDR2;
-  }
-  else 
-  {
-    BNO_ADDR = BNO_ADDR1;
-  }
+  uint8_t BNO_ADDR = get_bno_addr(bno);
 
   Wire.requestFrom(BNO_ADDR,4+1);       // read 4-byte SHTP header and first byte of cargo
   if (DEBUG) {Serial.print("SHTP");}
