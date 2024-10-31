@@ -5,3 +5,6 @@
 ._*
 .Spotlight-V100
 .Trashes
+
+# KiCAD files #
+.kicad_prl
