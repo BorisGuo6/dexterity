@@ -6,6 +6,14 @@
 
 // _____________  COMPILATION SETTINGS ____________________
 #define DEBUG       0           // output extra info: 0 off, 1 on. Beware this causes too much output data at low baud rates and/or high sensor rates.
+#define TELEPLOT    0           // output data in Teleplot format: 0 off, 1 on.
+#define REQUEST_ACC_REPORTS     0      // request accelerometer data from IMU
+#define REQUEST_GYRO_REPORTS    0      // request gyroscope data from IMU
+#define REQUEST_MAG_REPORTS     1      // request magnetometer data from IMU (THIS NEEDS TO BE 1 FOR QUAT OUTPUT FOR SOME REASON)
+#define REQUEST_LAC_REPORTS     0      // request linear acceleration data from IMU
+#define REQUEST_QUAT_REPORTS    1      // request quaternion data from IMU (THIS IS WHAT WE USE TO CALC EULER ANGLES)
+#define REQUEST_TIME_REPORTS    0      // request time data from IMU
+
 #if DEBUG
   static uint8_t printbyte(uint8_t b)
   {
@@ -26,18 +34,35 @@
 #define BNO_ADDR1   0x4A          // I2C address of 1st BNO085 sensor (0x4A if SA0=0, 0x4B if SA0=1)
 #define BNO_ADDR2   0x4B          // I2C address of 2nd '''
 #define I2C_CLOCK   400000L       // I2C clock rate
-#define SERIAL_BAUD 230400L     // serial port baud rate
-#define SENSOR_US   10000L      // time between sensor reports, microseconds, 10000L is 100 Hz, 20000L is 50 Hz
+#define SERIAL_BAUD 9600L     // serial port baud rate
+#define SENSOR_US   20000L      // time between sensor reports, microseconds, 10000L is 100 Hz, 20000L is 50 Hz
 
-// *******************************
-// **  Request desired reports  **
-// *******************************
-#define ACC_REPORT   0x01   // accel report, see 6.5.9
-#define GYRO_REPORT  0x02   // gyro report, see 6.5.13
-#define MAG_REPORT   0x03   // magneto report, see 6.5.16
-#define LAC_REPORT   0x04   // linear accel report, see 6.5.10
-#define QUAT_REPORT  0x05   // quaternion report, see 6.5.18
-#define TIME_REPORT  0xFB   // time report, see 7.2.1
+// _____________ OTHER MACROS ____________________
+#define SCALE_Q(n) (1.0f / (1 << n))
+
+// _____________ TYPE DEFINITIONS ____________________
+struct euler_t {
+  float yaw;
+  float pitch;
+  float roll;
+};
+
+// _____________ FUNCTION HEADERS ____________________
+uint8_t get_bno_addr(uint8_t);
+static void request_reports(uint8_t);
+void uart_b64(int32_t);
+static void output_data(uint8_t);
+static void ensure_read_available(uint8_t, int16_t);
+static void check_report(uint8_t);
+void quaternionToEuler(float, float, float, float, euler_t*, bool);
+
+// _____________ IMU REQUEST IDS ____________________
+#define ACC_REPORT_REQUEST_ID   0x01   // accel report, see 6.5.9
+#define GYRO_REPORT_REQUEST_ID  0x02   // gyro report, see 6.5.13
+#define MAG_REPORT_REQUEST_ID   0x03   // magneto report, see 6.5.16
+#define LAC_REPORT_REQUEST_ID   0x04   // linear accel report, see 6.5.10
+#define QUAT_REPORT_REQUEST_ID  0x05   // quaternion report, see 6.5.18
+#define TIME_REPORT_REQUEST_ID  0xFB   // time report, see 7.2.1
 
 // *******************
 // **  Output data  **
@@ -47,15 +72,12 @@ int16_t igx[BNOs], igy[BNOs], igz[BNOs];             // gyro, integer
 int16_t imx[BNOs], imy[BNOs], imz[BNOs];             // magneto, integer
 int16_t ilx[BNOs], ily[BNOs], ilz[BNOs];             // linear accel, integer
 int16_t iqw[BNOs], iqx[BNOs], iqy[BNOs], iqz[BNOs];  // quaternion, integer
+float   fqw[BNOs], fqx[BNOs], fqy[BNOs], fqz[BNOs];  // quaternion, float
+euler_t ypr[BNOs];                                   // euler angles, float
 
 char obuf[70], *pbuf;           // ensure this output buffer is big enough for your output string!
 
-// _____________ FUNCTION HEADERS ____________________
-static void request_reports(uint8_t);
-void uart_b64(int32_t);
-static void output_data(uint8_t);
-static void ensure_read_available(uint8_t, int16_t);
-static void check_report(uint8_t);
+
 
 // _____________ SETUP ____________________
 void setup()
@@ -89,14 +111,18 @@ void setup()
 void loop()
 {
   for (uint8_t bno=0; bno<BNOs; bno++)  // check for reports from all BNOs
-      check_report(bno);
+  {
+    check_report(bno);
+    
+  }
+      
 }
 
 
 // _____________ FUNCTION DEFINITIONS _________________
 
-static void request_reports(uint8_t bno)
-{ 
+uint8_t get_bno_addr(uint8_t bno)
+{
   uint8_t BNO_ADDR;
   if (bno == 1) 
   {
@@ -106,27 +132,47 @@ static void request_reports(uint8_t bno)
   {
     BNO_ADDR = BNO_ADDR1;
   }
+  return BNO_ADDR;
+}
 
-  // request acc reports, see 6.5.4
-  static const uint8_t cmd_acc[]  = {21, 0, 2, 0, 0xFD, ACC_REPORT,  0, 0, 0, (SENSOR_US>>0)&255, (SENSOR_US>>8)&255, (SENSOR_US>>16)&255, (SENSOR_US>>24)&255, 0, 0, 0, 0, 0, 0, 0, 0};
-  Wire.beginTransmission(BNO_ADDR);  Wire.write(cmd_acc, sizeof(cmd_acc));  Wire.endTransmission();
+static void request_reports(uint8_t bno)
+{ 
+  uint8_t BNO_ADDR = get_bno_addr(bno);
+  
+  if (REQUEST_ACC_REPORTS)
+  {
+    // request acc reports, see 6.5.4
+    static const uint8_t cmd_acc[]  = {21, 0, 2, 0, 0xFD, ACC_REPORT_REQUEST_ID,  0, 0, 0, (SENSOR_US>>0)&255, (SENSOR_US>>8)&255, (SENSOR_US>>16)&255, (SENSOR_US>>24)&255, 0, 0, 0, 0, 0, 0, 0, 0};
+    Wire.beginTransmission(BNO_ADDR);  Wire.write(cmd_acc, sizeof(cmd_acc));  Wire.endTransmission();
+  }
 
-  // request gyro reports, see 6.5.4
-  static const uint8_t cmd_gyro[] = {21, 0, 2, 0, 0xFD, GYRO_REPORT, 0, 0, 0, (SENSOR_US>>0)&255, (SENSOR_US>>8)&255, (SENSOR_US>>16)&255, (SENSOR_US>>24)&255, 0, 0, 0, 0, 0, 0, 0, 0};
-  Wire.beginTransmission(BNO_ADDR);  Wire.write(cmd_gyro, sizeof(cmd_gyro));  Wire.endTransmission();
+  if (REQUEST_GYRO_REPORTS)
+  {
+    // request gyro reports, see 6.5.4
+    static const uint8_t cmd_gyro[] = {21, 0, 2, 0, 0xFD, GYRO_REPORT_REQUEST_ID, 0, 0, 0, (SENSOR_US>>0)&255, (SENSOR_US>>8)&255, (SENSOR_US>>16)&255, (SENSOR_US>>24)&255, 0, 0, 0, 0, 0, 0, 0, 0};
+    Wire.beginTransmission(BNO_ADDR);  Wire.write(cmd_gyro, sizeof(cmd_gyro));  Wire.endTransmission();
+  }
 
-  // request magneto reports, see 6.5.4
-  static const uint8_t cmd_mag[]  = {21, 0, 2, 0, 0xFD, MAG_REPORT,  0, 0, 0, (SENSOR_US>>0)&255, (SENSOR_US>>8)&255, (SENSOR_US>>16)&255, (SENSOR_US>>24)&255, 0, 0, 0, 0, 0, 0, 0, 0};
-  Wire.beginTransmission(BNO_ADDR);  Wire.write(cmd_mag, sizeof(cmd_mag));  Wire.endTransmission();
+  if (REQUEST_MAG_REPORTS)
+  {
+    // request magneto reports, see 6.5.4
+    static const uint8_t cmd_mag[]  = {21, 0, 2, 0, 0xFD, MAG_REPORT_REQUEST_ID,  0, 0, 0, (SENSOR_US>>0)&255, (SENSOR_US>>8)&255, (SENSOR_US>>16)&255, (SENSOR_US>>24)&255, 0, 0, 0, 0, 0, 0, 0, 0};
+    Wire.beginTransmission(BNO_ADDR);  Wire.write(cmd_mag, sizeof(cmd_mag));  Wire.endTransmission();
+  }
 
-  // request linear acc reports, see 6.5.4
-  static const uint8_t cmd_lac[]  = {21, 0, 2, 0, 0xFD, LAC_REPORT,  0, 0, 0, (SENSOR_US>>0)&255, (SENSOR_US>>8)&255, (SENSOR_US>>16)&255, (SENSOR_US>>24)&255, 0, 0, 0, 0, 0, 0, 0, 0};
-  Wire.beginTransmission(BNO_ADDR);  Wire.write(cmd_lac, sizeof(cmd_lac));  Wire.endTransmission();
+  if (REQUEST_LAC_REPORTS)
+  {
+    // request linear acc reports, see 6.5.4
+    static const uint8_t cmd_lac[]  = {21, 0, 2, 0, 0xFD, LAC_REPORT_REQUEST_ID,  0, 0, 0, (SENSOR_US>>0)&255, (SENSOR_US>>8)&255, (SENSOR_US>>16)&255, (SENSOR_US>>24)&255, 0, 0, 0, 0, 0, 0, 0, 0};
+    Wire.beginTransmission(BNO_ADDR);  Wire.write(cmd_lac, sizeof(cmd_lac));  Wire.endTransmission();
+  }
 
-  // request quaternion reports, see 6.5.4
-  static const uint8_t cmd_quat[] = {21, 0, 2, 0, 0xFD, QUAT_REPORT, 0, 0, 0, (SENSOR_US>>0)&255, (SENSOR_US>>8)&255, (SENSOR_US>>16)&255, (SENSOR_US>>24)&255, 0, 0, 0, 0, 0, 0, 0, 0};
-  Wire.beginTransmission(BNO_ADDR);  Wire.write(cmd_quat, sizeof(cmd_quat));  Wire.endTransmission();
-
+  if (REQUEST_QUAT_REPORTS)
+  {
+    // request quaternion reports, see 6.5.4
+    static const uint8_t cmd_quat[] = {21, 0, 2, 0, 0xFD, QUAT_REPORT_REQUEST_ID, 0, 0, 0, (SENSOR_US>>0)&255, (SENSOR_US>>8)&255, (SENSOR_US>>16)&255, (SENSOR_US>>24)&255, 0, 0, 0, 0, 0, 0, 0, 0};
+    Wire.beginTransmission(BNO_ADDR);  Wire.write(cmd_quat, sizeof(cmd_quat));  Wire.endTransmission();
+  }
   // At 10ms rate, BNO08x outputs most reports in one burst, Gyro-Quat-Lac-Mag, however Acc is asynchronous and a few percent faster. Situation may vary with SENSOR_US and maximum sensor rates.
 }
 
@@ -143,26 +189,42 @@ void uart_b64(int32_t i)        // output 18-bit integer as compact 3-digit base
 
 static void output_data(uint8_t bno)
 {
-  float kACC = 1/9.80665/256 * 131072/10.0;     // scale units for my project
-  float kGYR =  180/M_PI/512 * 131072/4000.0;
-  float kMAG =       0.01/16 * 131072/1.0;
-  float kLAC = 1/9.80665/256 * 131072/10.0;
+  // Convert Quat int16 to floats
+  fqw[bno] = iqw[bno] * SCALE_Q(8);
+  fqx[bno] = iqx[bno] * SCALE_Q(8);
+  fqy[bno] = iqy[bno] * SCALE_Q(8);
+  fqz[bno] = iqz[bno] * SCALE_Q(8);
 
-  pbuf = obuf;                        // pointer into output buffer
-  *pbuf++ = 'k';  *pbuf++ = 'q'+bno;  // string header "kq" is BNO0, "kr" is BNO1, "ks" is BNO2, etc
-  uart_b64(kACC*iax[bno]);  uart_b64(-kACC*iay[bno]);  uart_b64(-kACC*iaz[bno]);  // accel,   convert from m/sec/sec*256 to       g*131072/10.0
-  uart_b64(kGYR*igx[bno]);  uart_b64(-kGYR*igy[bno]);  uart_b64(-kGYR*igz[bno]);  // gyro,    convert from   rad/sec*512 to deg/sec*131072/4000.0
-  uart_b64(kMAG*imx[bno]);  uart_b64(-kMAG*imy[bno]);  uart_b64(-kMAG*imz[bno]);  // magneto, convert from        uT*16  to   gauss*131072/1.0
-  uart_b64(kLAC*ilx[bno]);  uart_b64(-kLAC*ily[bno]);  uart_b64(-kLAC*ilz[bno]);  // linacc,  convert from m/sec/sec*256 to       g*131072/10.0
-  // my BNO08x orientation dot is towards left rear, rotate BNO08x quaternion to NED conventions
-  uart_b64(iqw[bno]+iqz[bno]); uart_b64(iqx[bno]+iqy[bno]); uart_b64(iqx[bno]-iqy[bno]); uart_b64(iqw[bno]-iqz[bno]);  // quat,    no conversion required becasue it'll be normalized
-  uart_b64(0);          // temp,    convert from    degC*128     to  degC*131072/100.0
-  uart_b64(0);          // baro,    convert from hectoPa*1048576 to  mbar*131072/2000.0
-  uart_b64(0xFF);       // status,  four 2-bit codes {sys,gyr,acc,mag}
-  *pbuf++ = 13;         // CR LF
-  *pbuf++ = 10;
-  *pbuf++ = 0;          // terminate string
-  Serial.write(obuf);   // writing one long string is *much* faster than printing individual values
+  // Calculate Euler Angles
+  quaternionToEuler(fqw[bno], fqx[bno], fqy[bno], fqz[bno], &ypr[bno], true);
+
+  // Output Data
+  if (TELEPLOT)
+  {
+    // Print Data in Teleplot format if compiler flag is set to 1
+    Serial.print(">yaw");
+    Serial.print(bno);
+    Serial.print(":");
+    Serial.println(ypr[bno].yaw);
+
+    Serial.print(">pitch");
+    Serial.print(bno);
+    Serial.print(":");
+    Serial.println(ypr[bno].pitch);
+
+    Serial.print(">roll");
+    Serial.print(bno);
+    Serial.print(":");
+    Serial.println(ypr[bno].roll);
+  }
+  else
+  {
+    // Print data in CSV format
+    Serial.print(bno);            Serial.print("\t");
+    Serial.print(ypr[bno].yaw);   Serial.print("\t");
+    Serial.print(ypr[bno].pitch); Serial.print("\t");
+    Serial.println(ypr[bno].roll);
+  }
 }
 
 
@@ -170,15 +232,7 @@ static void ensure_read_available(uint8_t bno, int16_t length)  // ensure a read
 {
   if (!Wire.available())
   {
-    uint8_t BNO_ADDR;
-    if (bno == 1) 
-    {
-      BNO_ADDR = BNO_ADDR2;
-    }
-    else 
-    {
-      BNO_ADDR = BNO_ADDR1;
-    }
+    uint8_t BNO_ADDR = get_bno_addr(bno);
     Wire.requestFrom(BNO_ADDR,4+length), Wire.read(), Wire.read(), Wire.read(), Wire.read();
   }
 }
@@ -190,15 +244,7 @@ static void check_report(uint8_t bno)
   uint8_t channel __attribute__((unused));
   uint8_t seqnum  __attribute__((unused));
 
-  uint8_t BNO_ADDR;
-  if (bno == 1) 
-  {
-    BNO_ADDR = BNO_ADDR2;
-  }
-  else 
-  {
-    BNO_ADDR = BNO_ADDR1;
-  }
+  uint8_t BNO_ADDR = get_bno_addr(bno);
 
   Wire.requestFrom(BNO_ADDR,4+1);       // read 4-byte SHTP header and first byte of cargo
   if (DEBUG) {Serial.print("SHTP");}
@@ -225,7 +271,7 @@ static void check_report(uint8_t bno)
     length--;
 
     // known reports
-    if (channel==3 && buf[0]==TIME_REPORT && length >= 5-1)
+    if (channel==3 && buf[0]==TIME_REPORT_REQUEST_ID && length >= 5-1)
     {
       for (uint8_t n=1; n<5; n++)       // read remainder of report
       {
@@ -236,7 +282,7 @@ static void check_report(uint8_t bno)
       if (DEBUG) {Serial.println(" Time");}
       continue;
     }
-    if (channel==3 && buf[0]==ACC_REPORT && length >= 10-1)
+    if (channel==3 && buf[0]==ACC_REPORT_REQUEST_ID && length >= 10-1)
     {
       for (uint8_t n=1; n<10; n++)      // read remainder of report
       {
@@ -250,7 +296,7 @@ static void check_report(uint8_t bno)
       if (DEBUG) {Serial.println(" Acc");}
       continue;
     }
-    if (channel==3 && buf[0]==GYRO_REPORT && length >= 10-1)
+    if (channel==3 && buf[0]==GYRO_REPORT_REQUEST_ID && length >= 10-1)
     {
       for (uint8_t n=1; n<10; n++)      // read remainder of report
       {
@@ -264,7 +310,7 @@ static void check_report(uint8_t bno)
       if (DEBUG) {Serial.println(" Gyro");}
       continue;
     }
-    if (channel==3 && buf[0]==MAG_REPORT && length >= 10-1)
+    if (channel==3 && buf[0]==MAG_REPORT_REQUEST_ID && length >= 10-1)
     {
       for (uint8_t n=1; n<10; n++)      // read remainder of report
       {
@@ -279,7 +325,7 @@ static void check_report(uint8_t bno)
       output_data(bno);                 // magneto seems to be last report of burst, so use it to trigger data output
       continue;
     }
-    if (channel==3 && buf[0]==LAC_REPORT && length >= 10-1)
+    if (channel==3 && buf[0]==LAC_REPORT_REQUEST_ID && length >= 10-1)
     {
       for (uint8_t n=1; n<10; n++)      // read remainder of report
       {
@@ -293,7 +339,7 @@ static void check_report(uint8_t bno)
       if (DEBUG) {Serial.println(" Lac");}
       continue;
     }
-    if (channel==3 && buf[0]==QUAT_REPORT && length >= 14-1)
+    if (channel==3 && buf[0]==QUAT_REPORT_REQUEST_ID && length >= 14-1)
     {
       for (uint8_t n=1; n<14; n++)      // read remainder of report
       {
@@ -320,4 +366,23 @@ static void check_report(uint8_t bno)
     continue;
   }
   return;
+}
+
+
+void quaternionToEuler(float qr, float qi, float qj, float qk, euler_t* ypr, bool degrees = false) {
+
+    float sqr = sq(qr);
+    float sqi = sq(qi);
+    float sqj = sq(qj);
+    float sqk = sq(qk);
+
+    ypr->yaw = atan2(2.0 * (qi * qj + qk * qr), (sqi - sqj - sqk + sqr));
+    ypr->pitch = asin(-2.0 * (qi * qk - qj * qr) / (sqi + sqj + sqk + sqr));
+    ypr->roll = atan2(2.0 * (qj * qk + qi * qr), (-sqi - sqj + sqk + sqr));
+
+    if (degrees) {
+      ypr->yaw *= RAD_TO_DEG;
+      ypr->pitch *= RAD_TO_DEG;
+      ypr->roll *= RAD_TO_DEG;
+    }
 }
