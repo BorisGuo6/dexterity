@@ -104,7 +104,7 @@ void arm_ESPNOWsetup(uint8_t board_num){
   }
 
   // DELAY: enter delay if trying to sync up MAC addresses
-  delay(SYNC_DELAY*1000);
+  //delay(SYNC_DELAY*1000);
 }
 
 void arm_sendData(uint8_t fi, uint8_t fm, uint8_t fr, uint8_t fp, uint8_t ft){
