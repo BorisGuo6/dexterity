@@ -17,13 +17,24 @@ uint8_t receiver_mac[] = {0x3C, 0x84, 0x27, 0xE1, 0xC2, 0x30};//{0x3C, 0x84, 0x2
 
 #define SENSOR_COUNT 16
 
+#define MCP_FLEXION_MIN 0
+#define MCP_FLEXION_MAX 160
+
+#define MCP_ABDUCTION_MIN -40
+#define MCP_ABDUCTION_MAX 40
+
+
 ResponsiveAnalogRead analog(A1, true);
 
 int rawVals[SENSOR_COUNT];
 int angles[SENSOR_COUNT];
+int adjusted_angles[SENSOR_COUNT];
+
 
 int min_angles[SENSOR_COUNT];
 int max_angles[SENSOR_COUNT];
+
+
 
 String dataOut = "";
 
@@ -59,12 +70,12 @@ void printRawVals() {
   }
 }
 
-void printAngles() {
+void printAngles(int vals[]) {
   for (uint8_t i = 0; i < SENSOR_COUNT; i++){
     Serial.print(">Joint_");
     Serial.print(i);
     Serial.print(":");
-    Serial.println(angles[i]);
+    Serial.println(vals[i]);
   }
 }
 
@@ -111,13 +122,66 @@ void calibration(){
     }else if(angles[i]>max_angles[i]){
       max_angles[i] = angles[i];
     }
+    // Serial.print(i);
+    // Serial.print(": ");
+    // Serial.print(min_angles[i]);
+    // Serial.print("   ");
+    // Serial.println(min_angles[i]);
   }
 }
 
-void adjustAngles(){
-  for (uint8_t i = 0; i < SENSOR_COUNT; i++){
+int adjustMCPAbductionAngle(int i){
+  int angle = angles[i];
+  double max_angle = max_angles[i];
+  double min_angle = min_angles[i];
+  int adjusted_angle = (int)((angle - min_angle)/(max_angle-min_angle) * (2*MCP_ABDUCTION_MAX));
+  return adjusted_angle;
+}
 
-  }
+int adjustMCPFlexionAngle(int i){
+  int angle = angles[i];
+  double max_angle = max_angles[i];
+  double min_angle = min_angles[i];
+  int adjusted_angle = (int)((angle - min_angle)/(max_angle-min_angle) * MCP_FLEXION_MAX);
+  return adjusted_angle;
+}
+
+//TODO do this properly
+int adjustPIPFlexionAngle(int i){
+  int angle = angles[i];
+  double max_angle = max_angles[i];
+  double min_angle = min_angles[i];
+  int adjusted_angle = (int)((angle - min_angle)/(max_angle-min_angle) * MCP_FLEXION_MAX);
+  return adjusted_angle;
+}
+
+void adjustAngles(){
+  //pinkie
+  adjusted_angles[0] = adjustMCPAbductionAngle(0);
+  adjusted_angles[1] = adjustMCPFlexionAngle(1);
+  adjusted_angles[2] = adjustPIPFlexionAngle(2);
+
+  //ring
+  adjusted_angles[3] = adjustMCPAbductionAngle(3);
+  adjusted_angles[4] = adjustMCPFlexionAngle(4);
+  adjusted_angles[5] = adjustPIPFlexionAngle(5);
+
+  //middle
+  adjusted_angles[6] = adjustMCPAbductionAngle(6);
+  adjusted_angles[7] = adjustMCPFlexionAngle(7);
+  adjusted_angles[8] = adjustPIPFlexionAngle(8);
+
+  //index
+  adjusted_angles[9] = adjustMCPAbductionAngle(9);
+  adjusted_angles[10] = adjustMCPFlexionAngle(10);
+  adjusted_angles[11] = adjustPIPFlexionAngle(11);
+
+  //TODO
+  //thumb
+  adjusted_angles[12] = angles[12];
+  adjusted_angles[13] = angles[13];
+  adjusted_angles[14] = angles[14];
+  adjusted_angles[15] = angles[15];
 }
 
 void sendData(int finger_pos[]){
@@ -141,8 +205,8 @@ void sendData(int finger_pos[]){
 
 void initializeCalibrationValues(){
   for (uint8_t i = 0; i < SENSOR_COUNT; i++){
-    min_angles[i] = -10000;
-    max_angles[i] = 10000;
+    min_angles[i] = 10000;
+    max_angles[i] = -10000;
   }
 }
 
@@ -175,11 +239,13 @@ void loop() {
 
   adjustAngles();
 
+  adjustAngles();
+
   //printRawVals();
-  printAngles();
+  printAngles(adjusted_angles);
   // printDataOut();
 
-  sendData(angles);
+  sendData(adjusted_angles);
 
   delay(1000/DATA_RATE);
 

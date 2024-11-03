@@ -108,7 +108,7 @@ void glove_ESPNOWsetup(uint8_t board_num){
   }
 
   // DELAY: enter delay if trying to sync up MAC addresses
-  delay(SYNC_DELAY*1000);
+  //delay(SYNC_DELAY*1000);
 }
 
 void glove_sendData(uint8_t fpos[], uint8_t wpos[], uint8_t apos[]){
