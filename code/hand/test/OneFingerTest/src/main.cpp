@@ -7,8 +7,11 @@
 #define NUM_LEDS 1
 CRGB leds[NUM_LEDS];
 
-#define SERVO_MIN 0
-#define SERVO_MAX 160
+#define MCP_FLEXION_MIN 0
+#define MCP_FLEXION_MAX 160
+
+#define MCP_ABDUCTION_MIN -40
+#define MCP_ABDUCTION_MAX 40
 
 // create four servo objects
 Servo servo0;
@@ -72,37 +75,32 @@ void loop()
 
 	//printAngles();
 
-	int joint_10 = arm_inData.finger_pos[10]; // MCP flexion
-	int joint_9 = arm_inData.finger_pos[9]; // MCP abduction
-
-	//hardcoded values
-	int converted_flexion_angle = (int)((double)(joint_10 - 33) / 107.0 * SERVO_MAX);
-	int converted_abduction_angle = (joint_9 - 71)*2;
+	int MCP_flexion = arm_inData.finger_pos[10]; // MCP flexion
+	int MCP_abduction = arm_inData.finger_pos[9]+MCP_ABDUCTION_MIN; // MCP abduction
 
 	//servo offset for abduction
 	int servo0_offset = 0;
 	int servo1_offset = 0;
 
-	if(converted_abduction_angle < 0){ //right
-		converted_abduction_angle = max(converted_abduction_angle,-40);
-		servo1_offset=-converted_abduction_angle;
+	if(MCP_abduction < 0){ //right
+		MCP_abduction = max(MCP_abduction,MCP_ABDUCTION_MIN);
+		servo1_offset=-MCP_abduction;
 	}else{ //left
-		converted_abduction_angle = min(converted_abduction_angle,40);
-		servo0_offset=converted_abduction_angle;
+		MCP_abduction = min(MCP_abduction,MCP_ABDUCTION_MAX);
+		servo0_offset=MCP_abduction;
 	}
 
-	if(converted_flexion_angle < SERVO_MIN){
-		converted_flexion_angle = SERVO_MIN;
-	}else if (converted_flexion_angle > SERVO_MAX){
-		converted_flexion_angle = SERVO_MAX;
-	}
 
-	Serial.print(converted_flexion_angle);
+	Serial.print(MCP_flexion);
 	Serial.print(" ");
-	Serial.println(converted_abduction_angle);
+	Serial.println(MCP_abduction);
 
-	servoWrite(0,converted_flexion_angle+servo0_offset);
-	servoWrite(1,converted_flexion_angle+servo1_offset);
+	int servo0_pos = constrain(MCP_flexion+servo0_offset,MCP_FLEXION_MIN,MCP_FLEXION_MAX);
+	int servo1_pos = constrain(MCP_flexion+servo1_offset,MCP_FLEXION_MIN,MCP_FLEXION_MAX);
+
+
+	servoWrite(0,servo0_pos);
+	servoWrite(1,servo1_pos);
 
 
 	// for (pos = 0; pos <= 160; pos += 1) { // sweep from 0 degrees to 180 degrees
