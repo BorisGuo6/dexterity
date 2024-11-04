@@ -24,11 +24,19 @@ void fingerControlSetup(){
     IM1_servo.setPeriodHertz(50); 
     MM0_servo.setPeriodHertz(50); 
     MM1_servo.setPeriodHertz(50);
+    RM0_servo.setPeriodHertz(50); 
+    RM1_servo.setPeriodHertz(50);
+    PM0_servo.setPeriodHertz(50); 
+    PM1_servo.setPeriodHertz(50);
 
     IM0_servo.attach(IM0_SERVO_PIN, MIN_US, MAX_US);
     IM1_servo.attach(IM1_SERVO_PIN, MIN_US, MAX_US);
     MM0_servo.attach(MM0_SERVO_PIN, MIN_US, MAX_US);
     MM1_servo.attach(MM1_SERVO_PIN, MIN_US, MAX_US);
+    RM0_servo.attach(RM0_SERVO_PIN, MIN_US, MAX_US);
+    RM1_servo.attach(RM1_SERVO_PIN, MIN_US, MAX_US);
+    PM0_servo.attach(PM0_SERVO_PIN, MIN_US, MAX_US);
+    PM1_servo.attach(PM1_SERVO_PIN, MIN_US, MAX_US);
 }
 
 int* metacarpalServoCalc(int MCP_flexion, int MCP_abduction, bool flip_abduction, bool flip_M0_servo, bool flip_M1_servo){
@@ -93,21 +101,21 @@ void controlFingers(uint8_t finger_pos[]){
 	Serial.println(M_servo_positions[1]);
     delete[] M_servo_positions;
 
-    // //ring
-	// int R_MCP_flexion = finger_pos[4];
-	// int R_MCP_abduction = finger_pos[3]+MCP_ABDUCTION_MIN;
-    // int* R_servo_positions = metacarpalServoCalc(R_MCP_flexion,R_MCP_abduction,false,false);
-    // RM0_servo.write(R_servo_positions[0]);
-    // RM1_servo.write(R_servo_positions[1]);
-    // delete[] R_servo_positions;
+    //ring
+	int R_MCP_flexion = finger_pos[4];
+	int R_MCP_abduction = finger_pos[3]+MCP_ABDUCTION_MIN;
+    int* R_servo_positions = metacarpalServoCalc(R_MCP_flexion,R_MCP_abduction,false,true,true);
+    RM0_servo.write(R_servo_positions[0]);
+    RM1_servo.write(R_servo_positions[1]);
+    delete[] R_servo_positions;
 
-    // //pinkie
-	// int P_MCP_flexion = finger_pos[1];
-	// int P_MCP_abduction = finger_pos[0]+MCP_ABDUCTION_MIN;
-    // int* P_servo_positions = metacarpalServoCalc(P_MCP_flexion,P_MCP_abduction,false,false);
-    // PM0_servo.write(P_servo_positions[0]);
-    // PM1_servo.write(P_servo_positions[1]);
-    // delete[] P_servo_positions;
+    //pinkie
+	int P_MCP_flexion = finger_pos[1];
+	int P_MCP_abduction = finger_pos[0]+MCP_ABDUCTION_MIN;
+    int* P_servo_positions = metacarpalServoCalc(P_MCP_flexion,P_MCP_abduction,false,false,true);
+    PM0_servo.write(P_servo_positions[0]);
+    PM1_servo.write(P_servo_positions[1]);
+    delete[] P_servo_positions;
 }
 
 
