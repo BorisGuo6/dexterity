@@ -3,7 +3,7 @@
 
 #include <ESP32Servo.h>
 
-//min and max times for PWN signal to be high
+//min and max pulse width for PWM signal
 #define MIN_US 800
 #define MAX_US 2225
 
@@ -13,20 +13,20 @@
 #define MCP_ABDUCTION_MAX 40
 
 //IM0 = Index Metacarpal 0
-#define IM0_SERVO_PIN 1
-#define IM1_SERVO_PIN 2
+#define IM0_SERVO_PIN 4
+#define IM1_SERVO_PIN 5
 
 //Middle
-#define MM0_SERVO_PIN 41
-#define MM1_SERVO_PIN 40
+#define MM0_SERVO_PIN 7
+#define MM1_SERVO_PIN 15
 
 //Ring
-#define RM0_SERVO_PIN 38
-#define RM1_SERVO_PIN 37
+#define RM0_SERVO_PIN 17
+#define RM1_SERVO_PIN 18
 
 //Pinkie
-#define PM0_SERVO_PIN 47
-#define PM1_SERVO_PIN 21
+#define PM0_SERVO_PIN 3
+#define PM1_SERVO_PIN 9
 
 // set up for servos
 void fingerControlSetup();
