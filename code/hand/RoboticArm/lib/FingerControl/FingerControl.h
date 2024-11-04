@@ -28,22 +28,11 @@
 #define PM0_SERVO_PIN 47
 #define PM1_SERVO_PIN 21
 
-Servo IM0_servo;
-Servo IM1_servo;
-
-Servo MM0_servo;
-Servo MM1_servo;
-
-Servo RM0_servo;
-Servo RM1_servo;
-
-Servo PM0_servo;
-Servo PM1_servo;
-
-ESP32PWM pwm;
-
 // set up for servos
 void fingerControlSetup();
+
+// helper function for calculating metacarpal servo positions based on flexion and abduction
+int* metacarpalServoCalc(int MCP_flexion, int MCP_abduction, bool flip_M0_servo, bool flip_M1_servo);
 
 // code to control finger position based on data from control glove
 void controlFingers(uint8_t finger_pos[]);
