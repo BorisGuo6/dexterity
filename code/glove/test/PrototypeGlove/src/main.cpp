@@ -7,8 +7,6 @@
 //#include <ESPNowW.h>
 #include <HapticGlove_ESPNOW.h>
 
-uint8_t receiver_mac[] = {0x3C, 0x84, 0x27, 0xE1, 0xC2, 0x30};//{0x3C, 0x84, 0x27, 0x14, 0x7B, 0xB0};
-
 //define multiplexer input pins
 #define S0 D3
 #define S1 D4
@@ -22,6 +20,8 @@ uint8_t receiver_mac[] = {0x3C, 0x84, 0x27, 0xE1, 0xC2, 0x30};//{0x3C, 0x84, 0x2
 
 #define MCP_ABDUCTION_MIN -40
 #define MCP_ABDUCTION_MAX 40
+
+#define PEER_MAC {0x3C, 0x84, 0x27, 0xE1, 0xC2, 0x30}
 
 
 ResponsiveAnalogRead analog(A1, true);
@@ -228,7 +228,8 @@ void setup() {
 
   initializeCalibrationValues();
 
-  glove_ESPNOWsetup(2);
+	uint8_t mac[] = PEER_MAC;
+  glove_ESPNOWsetup(mac, 115200);
 }
 
 void loop() {

@@ -13,6 +13,8 @@ CRGB leds[NUM_LEDS];
 #define MCP_ABDUCTION_MIN -40
 #define MCP_ABDUCTION_MAX 40
 
+#define PEER_MAC {0x54, 0x32, 0x04, 0x89, 0x70, 0x54}
+
 // create four servo objects
 Servo servo0;
 Servo servo1;
@@ -29,13 +31,14 @@ ESP32PWM pwm;
 void setup()
 {
 
-	Serial.begin(115200);
+	//Serial.begin(115200);
 	// setup onboard RGB LED
 	FastLED.addLeds<WS2812, PIN_NEOPIXEL, GRB>(leds, NUM_LEDS); // RGB ou GRB ??
 	FastLED.setBrightness(RGB_BRIGHTNESS);
 
-	//setup ESP32
-	arm_ESPNOWsetup(1);
+	//setup ESPNOW
+	uint8_t mac[] = PEER_MAC;
+	arm_ESPNOWsetup(mac,115200);
 
 	// Allow allocation of all timers
 	ESP32PWM::allocateTimer(0);
