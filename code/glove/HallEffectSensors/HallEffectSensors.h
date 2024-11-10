@@ -12,13 +12,60 @@
 
 class HallEffectSensors {
     public:
+
+        /**
+         * Publicly accessible array for obtaining the current (adjusted) angles. The array is organized as follows:
+         * Indices:      Finger
+         * 0-2:          pinkie
+         * 3-5:          ring
+         * 6-8:          middle
+         * 9-11:         index
+         * 12-15:        thumb
+         * The first 3 indices of each give the MCP abduction, MCP flexion, and PIP flexion angles, in that order
+         */
         int32_t angles[SENSOR_COUNT];
+
+        /**
+	    * Default constructor which initializes the angles array and sets the following default parameters:
+        * s0 = D3
+        * s1 = D4
+        * s2 = D5
+        * s3 = D6
+        * MCP_flexion_min = 0
+        * MCP_flexion_max = 160
+        * MCP_abduction_min = -40
+        * MCP_abduction_max = 40
+	    */
         HallEffectSensors();
+
+        /**
+         * Overloaded constructor for specifying parameter values other than the defaults
+         */
         HallEffectSensors(uint8_t s0, uint8_t s1, uint8_t s2, uint8_t s3, int32_t MCP_flexion_min,
-        int32_t MCP_flexion_max, int32_t MCP_abduction_min, int32_t MCP_abduction_max, uint8_t peer_mac_addr[6]);
+        int32_t MCP_flexion_max, int32_t MCP_abduction_min, int32_t MCP_abduction_max);
+
+        ~HallEffectSensors();
+
+        /**
+         * Initializes the Hall effect sensors.
+         */
         void initialize();
+
+        /**
+         * Reads the raw angle values, adjusts them, and stores them in the angles array. Calling this function requires
+         * initialize() to have already been called.
+         */
         void updateAngles();
+
+        /**
+         * Prints the contents of the angles array over Serial
+         */
         void printAngles();
+
+        /**
+         * Sends the current angle data to the robotic hand. Calling this function requires an ESPNow
+         * connection to have already been established with the hand.
+         */
         void sendData();
 
     private:
@@ -30,8 +77,8 @@ class HallEffectSensors {
         int32_t MCP_flexion_max;
         int32_t MCP_abduction_min;
         int32_t MCP_abduction_max;
-        uint8_t peer_mac_addr[6];
 
+        int32_t angles[SENSOR_COUNT];
         int32_t rawVals[SENSOR_COUNT];
         int32_t proto_angles[SENSOR_COUNT];
         int32_t min_angles[SENSOR_COUNT];
@@ -57,13 +104,13 @@ class HallEffectSensors {
             {0.000029299702805,-0.235958663536102,473.892439373476074}  //thumb 15
         };
 
-        int32_t adjustMCPAbductionAngle(int_32 i);
-        int32_t adjustMCPFlexionAngle(int_32 i);
-        int32_t adjustPIPFlexionAngle(int_32 i);
+        void initializeCalibrationValues();
         void measureAngles();
         void calibrate();
         void adjustAngles();
-        void initializeCalibrationValues();
+        int32_t adjustMCPAbductionAngle(int_32 i);
+        int32_t adjustMCPFlexionAngle(int_32 i);
+        int32_t adjustPIPFlexionAngle(int_32 i);
 }
 
 #endif
