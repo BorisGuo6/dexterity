@@ -131,7 +131,7 @@
 			(psnegative no)
 			(psa4output no)
 			(plotreference yes)
-			(plotvalue yes)
+			(plotvalue no)
 			(plotfptext yes)
 			(plotinvisibletext no)
 			(sketchpadsonfab no)
@@ -140,7 +140,7 @@
 			(mirror no)
 			(drillshape 0)
 			(scaleselection 1)
-			(outputdirectory "/Users/jacksonlamb/Desktop/night man/")
+			(outputdirectory "/Users/max/Files/Y4S1/Capstone/gerber/Forearm-v2/")
 		)
 	)
 	(net 0 "")
@@ -3447,7 +3447,7 @@
 		(at 55.527614 22.870801 180)
 		(tags "522071633 ")
 		(property "Reference" "J2"
-			(at -0.547985 0.406001 180)
+			(at -0.134986 0.152001 0)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "a909ad5d-b53c-404b-b681-389ecdcb179b")
@@ -3909,7 +3909,7 @@
 		(descr "Resistor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "resistor")
 		(property "Reference" "RS0"
-			(at 0 1.17 -90)
+			(at -0.089079 2.020202 0)
 			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "afe2aaad-4b0d-4093-8730-197f8c71a157")
@@ -4129,7 +4129,7 @@
 		(descr "Through hole straight socket strip, 1x02, 2.54mm pitch, single row (from Kicad 4.0.7), script generated")
 		(tags "Through hole socket strip THT 1x02 2.54mm single row")
 		(property "Reference" "B0"
-			(at 0 2.77 -90)
+			(at 0 2.77 0)
 			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "84c10ab2-d7a7-4758-acc8-73aa47cca0f4")
@@ -4403,7 +4403,7 @@
 		(descr "Resistor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "resistor")
 		(property "Reference" "RLED0"
-			(at 0 1.17 180)
+			(at 0 1.17 0)
 			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "64f6d698-5b0d-49bf-9c14-e1ea0e3ecc85")
@@ -4623,7 +4623,7 @@
 		(descr "Through hole straight socket strip, 1x02, 2.54mm pitch, single row (from Kicad 4.0.7), script generated")
 		(tags "Through hole socket strip THT 1x02 2.54mm single row")
 		(property "Reference" "LED1"
-			(at 0 2.77 -90)
+			(at -1.93 -1.123 0)
 			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "4bf44959-8c02-4ed2-9bdf-be9316cd053d")
@@ -4896,7 +4896,7 @@
 		(at 55.481584 22.870801)
 		(tags "522071633 ")
 		(property "Reference" "J3"
-			(at 0.293985 -0.406001 180)
+			(at 0.293985 -0.406001 0)
 			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "12b2b52c-55df-4d50-9382-0e12eb965afd")
@@ -5365,7 +5365,7 @@
 		(descr "Resistor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "resistor")
 		(property "Reference" "RB0"
-			(at 0 1.17 -90)
+			(at -0.05615 2.020202 0)
 			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "4becd54b-4cd8-495e-86ec-211aa721fd82")
@@ -5585,7 +5585,7 @@
 		(descr "Through hole straight socket strip, 1x02, 2.54mm pitch, single row (from Kicad 4.0.7), script generated")
 		(tags "Through hole socket strip THT 1x02 2.54mm single row")
 		(property "Reference" "LED0"
-			(at 0 2.77 -90)
+			(at -2.032 -1.27 0)
 			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "e7aae4b7-bf33-4eee-9141-0e3a45af658e")
@@ -5859,7 +5859,7 @@
 		(descr "Resistor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "resistor")
 		(property "Reference" "RLED1"
-			(at 0 1.17 180)
+			(at 0 1.17 0)
 			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "80e7d1bb-4561-4e15-a522-451e7f33f57e")
@@ -6079,7 +6079,7 @@
 		(descr "Through hole straight socket strip, 1x02, 2.54mm pitch, single row (from Kicad 4.0.7), script generated")
 		(tags "Through hole socket strip THT 1x02 2.54mm single row")
 		(property "Reference" "S0"
-			(at 0 2.77 -90)
+			(at 0 2.77 0)
 			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "10d56396-db6a-4db4-82aa-a04ee4fb85f3")
@@ -6353,7 +6353,7 @@
 		(descr "Resistor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "resistor")
 		(property "Reference" "RB1"
-			(at 0 1.17 -90)
+			(at -0.053129 1.893202 0)
 			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "45dfe05e-2d06-4558-99ff-9955ec14e8c0")
@@ -6573,7 +6573,7 @@
 		(descr "Through hole straight socket strip, 1x02, 2.54mm pitch, single row (from Kicad 4.0.7), script generated")
 		(tags "Through hole socket strip THT 1x02 2.54mm single row")
 		(property "Reference" "B1"
-			(at 0 2.77 -90)
+			(at 0 2.77 0)
 			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "d152f028-5291-43b0-b6ec-7b2741dadaf6")
