@@ -12,7 +12,7 @@
 #define MCP_ABDUCTION_MIN -40
 #define MCP_ABDUCTION_MAX 40
 
-//IM0 = Index Metacarpal 0
+//IM0 = Index Metacarpal 0 (0 is next to fingers, 1 is next to wrist)
 #define IM0_SERVO_PIN 4
 #define IM1_SERVO_PIN 5
 
@@ -26,7 +26,7 @@
 
 //Pinkie
 #define PM0_SERVO_PIN 3
-#define PM1_SERVO_PIN 9
+#define PM1_SERVO_PIN 10
 
 // set up for servos
 void fingerControlSetup();
