@@ -14,7 +14,7 @@ Servo servo0;
 int minUs = 800;
 int maxUs = 2225;
 
-int servo1Pin = 10;
+int servo1Pin = 11;
 // int servo2Pin = 2;
 
 int pos = 0; // position in degrees
