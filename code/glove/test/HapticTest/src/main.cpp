@@ -1,4 +1,6 @@
 #include <Arduino.h>
+#include <Wire.h>
+#include <Adafruit_DRV2605.h>
 #include <FastLED.h>
 #include <ResponsiveAnalogRead.h>
 
@@ -12,79 +14,115 @@ CRGB leds[NUM_LEDS];
 #define TEST3 46
 #define TEST4 1
 
-//array of test pins
-uint8_t test_pins[5] = {TEST0,TEST1,TEST2,TEST3,TEST4};
+Adafruit_DRV2605 drv;  // used to interface with the DRV chip
+uint8_t effect;    // selected Waveform effect from DRV chip
 
-// uncomment for ADC testing
-// ResponsiveAnalogRead analog0(TEST0, true);
-// ResponsiveAnalogRead analog1(TEST1, true);
-// ResponsiveAnalogRead analog2(TEST2, true);
-
+//define data and clock I2C pins and create I2C bus
+#define I2C_SDA 20
+#define I2C_SCL 21
+TwoWire I2C_LRA = TwoWire(0);
 
 void setup()
 {
+  
   Serial.begin(115200);
-  //setup onboard RGB LED
-  FastLED.addLeds<WS2812, PIN_NEOPIXEL, GRB>(leds, NUM_LEDS); // RGB ou GRB ??
-  FastLED.setBrightness(RGB_BRIGHTNESS);
-  Serial.println("setup");
+  
+  //Initialize I2C communication
+  I2C_LRA.begin(I2C_SDA, I2C_SCL, 400000);
 
-  //setup test pins as digital outputs
-  for (uint8_t i=0; i<5;i++){
-    pinMode(test_pins[i], OUTPUT);
-  }  
+  drv.begin(&I2C_LRA);
+
+  drv.selectLibrary(6);
+  drv.setMode(DRV2605_MODE_INTTRIG);
+  drv.useLRA();
+
+  Serial.println("setup"); 
+
 }
+
 void loop()
 {
-  leds[0] = CRGB(random(0, 255),random(0, 255),random(0, 255));
-  FastLED.show();
+  setup();
 
-  // LED cycle loop
+  //Cycle through 6 pressure settings
 
-  // leds[0] = CRGB::Green;
-  // FastLED.show();
-  // Serial.println("green");
-  // delay(500);
-  // leds[0] = CRGB::Blue;
-  // FastLED.show();
-  // Serial.println("blue");
-  // delay(500);
-  // leds[0] = CRGB::Black;
-  // FastLED.show();
-  // delay(500);
+  effect = 6;  //sharp click - 30%
+  Serial.print("Effect #");
+  Serial.println(effect);
+  drv.setWaveform(0, effect);  // Set effect
+  drv.setWaveform(1, 0);       // End waveform
+  for (int i = 0; i < 5; i++) {
 
-  //testing digital of pins
-
-  for (uint8_t i=0; i<5;i++){
-    digitalWrite(test_pins[i], HIGH);
+    drv.go();
+    delay(500);
   }
-  delay(500);
-  for (uint8_t i=0; i<5;i++){
-    digitalWrite(test_pins[i], LOW);
+
+  effect = 23;  //medium click = 60%
+  Serial.print("Effect #");
+  Serial.println(effect);
+  drv.setWaveform(0, effect);  // Set effect
+  drv.setWaveform(1, 0);       // End waveform
+  for (int i = 0; i < 6; i++) {
+
+    drv.go();
+    delay(350);
   }
-  delay(500);
 
-  //3 analog channel test
-  //the prints are set up to work with Teleplot
-  
-  // analog0.update();
-  // Serial.print(">a0r:");
-  // Serial.println(analog0.getRawValue());
-  // Serial.print(">a0v:");
-  // Serial.println(analog0.getValue());
+  effect = 19;  //strong click - 60%
+  Serial.print("Effect #");
+  Serial.println(effect);
+  drv.setWaveform(0, effect);  // Set effect
+  drv.setWaveform(1, 0);       // End waveform
+  for (int i = 0; i < 8; i++) {
 
-  // analog1.update();
-  // Serial.print(">a1r:");
-  // Serial.println(analog1.getRawValue());
-  // Serial.print(">a1v:");
-  // Serial.println(analog1.getValue());
+    drv.go();
+    delay(250);
+  }
 
-  // analog2.update();
-  // Serial.print(">a2r:");
-  // Serial.println(analog2.getRawValue());
-  // Serial.print(">a2v:");
-  // Serial.println(analog2.getValue());
+  effect = 18;  //strong click - 100%
+  Serial.print("Effect #");
+  Serial.println(effect);
+  drv.setWaveform(0, effect);  // Set effect
+  drv.setWaveform(1, 0);       // End waveform
+  for (int i = 0; i < 12; i++) {
 
-  //delay(50);
+    drv.go();
+    delay(150);
+  }
 
-}
+  effect = 27;  //short double click strong - 100%
+  Serial.print("Effect #");
+  Serial.println(effect);
+  drv.setWaveform(0, effect);  // Set effect
+  drv.setWaveform(1, 0);       // End waveform
+  for (int i = 0; i < 20; i++) {
+
+    drv.go();
+    delay(150);
+  }
+
+  effect = 118;  //Long buzz (max pressure)
+  Serial.print("Effect #");
+  Serial.println(effect);
+  drv.setWaveform(0, effect);  // Set effect
+  drv.setWaveform(1, 0);       // End waveform
+  for (int i = 0; i < 50; i++) {
+
+    drv.go();
+    delay(0);
+  }
+
+
+  // Pause for differentiation between effects (OG)
+  delay(5000);
+
+  //Cycle
+  //effect++;
+  //if (effect > 118) effect = 1;
+
+  /*Comparator
+  if (effect == 57) effect = 54;
+  else if (effect == 54) effect = 52;
+  else effect = 57;  */
+
+  }
