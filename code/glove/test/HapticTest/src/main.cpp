@@ -113,12 +113,12 @@ void loop()
   }
 
 
-  // Pause for differentiation between effects (OG)
+  // Pause for differentiation between effects
   delay(5000);
 
-  //Cycle
+  /*Cycle
   //effect++;
-  //if (effect > 118) effect = 1;
+  //if (effect > 118) effect = 1; */
 
   /*Comparator
   if (effect == 57) effect = 54;
