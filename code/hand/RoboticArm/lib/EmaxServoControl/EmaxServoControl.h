@@ -12,8 +12,8 @@
 // want these to be as small/large as possible without hitting the hard stop
 // for max range. You'll have to tweak them as necessary to match the servos you
 // have!
-#define SERVOMIN  150 // This is the 'minimum' pulse length count (out of 4096)
-#define SERVOMAX  550 // This is the 'maximum' pulse length count (out of 4096)
+#define SERVOMIN  170 // This is the 'minimum' pulse length count (out of 4096)
+#define SERVOMAX  440 // This is the 'maximum' pulse length count (out of 4096)
 #define USMIN  800 // This is the rounded 'minimum' microsecond length based on the minimum pulse of 150
 #define USMAX  2220 // This is the rounded 'maximum' microsecond length based on the maximum pulse of 600
 #define SERVO_FREQ 50 // Analog servos run at ~50 Hz updates
@@ -21,7 +21,7 @@
 
 // max and min values for finger pos inputs from control glove
 #define GLOVE_INPUT_MIN 0
-#define GLOVE_INPUT_MAX 200
+#define GLOVE_INPUT_MAX 240
 
 //IM0 = Index Metacarpal 0 (0 is next to fingers, 1 is next to wrist)
 //IT = Index Tip
@@ -49,6 +49,6 @@
 // set up for servos
 void emaxServoControlSetup();
 
-void controlEmaxServo(uint8_t servo_sum);
+void controlEmaxServo(uint8_t servo_num, uint16_t pos);
 
 #endif

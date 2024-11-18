@@ -18,8 +18,8 @@ Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver(0x40, Wire);
 // want these to be as small/large as possible without hitting the hard stop
 // for max range. You'll have to tweak them as necessary to match the servos you
 // have!
-#define SERVOMIN  150 // This is the 'minimum' pulse length count (out of 4096)
-#define SERVOMAX  550 // This is the 'maximum' pulse length count (out of 4096)
+#define SERVOMIN  170 // This is the 'minimum' pulse length count (out of 4096)
+#define SERVOMAX  440 // This is the 'maximum' pulse length count (out of 4096)
 #define USMIN  800 // This is the rounded 'minimum' microsecond length based on the minimum pulse of 150
 #define USMAX  2220 // This is the rounded 'maximum' microsecond length based on the maximum pulse of 600
 #define SERVO_FREQ 50 // Analog servos run at ~50 Hz updates
@@ -40,19 +40,41 @@ void setup() {
 }
 
 void loop() {
-  // Drive each servo one at a time using setPWM()
-  Serial.println(servonum);
-  for (uint16_t pulselen = SERVOMIN; pulselen < SERVOMAX; pulselen++) {
-    pwm.setPWM(servonum, 0, pulselen);
+  Serial.println("Enter position: ");
+  while(Serial.available() == 0){};
+  int pos = Serial.readString().toInt();
+  if (pos >= 0 && pos <= SERVOMAX-SERVOMIN){
+    pwm.setPWM(14, 0, pos+SERVOMIN);
+    pwm.setPWM(15, 0, SERVOMAX-pos);
+    Serial.print("Turned to: ");
+    Serial.println(pos);
+  }
+  else {
+    Serial.println("Invalid postition!");
   }
 
-  delay(500);
-  for (uint16_t pulselen = SERVOMAX; pulselen > SERVOMIN; pulselen--) {
-    pwm.setPWM(servonum, 0, pulselen);
-  }
+  // // Drive each servo one at a time using setPWM()
+  // Serial.println(servonum);
+  // for (uint16_t pulselen = 0; pulselen < SERVOMAX-SERVOMIN; pulselen+=10) {
+  //   pwm.setPWM(14, 0, pulselen+SERVOMIN);
+  //   pwm.setPWM(15, 0, SERVOMAX-pulselen+SERVOMIN);
+  //   Serial.println(pulselen);
+  //   delay(50);
+  // }
 
-  delay(50);
+  // delay(1000);
 
-  servonum++;
-  if (servonum > 15) servonum = 0; // Testing the first 8 servo channels
+  // pwm.setPWM(14, 0, SERVOMIN);
+  // pwm.setPWM(15, 0, SERVOMAX);
+
+
+
+  // for (uint16_t pulselen = SERVOMAX; pulselen > SERVOMIN; pulselen--) {
+  //   pwm.setPWM(servonum, 0, pulselen);
+  // }
+
+  // delay(50);
+
+  // servonum++;
+  // if (servonum > 15) servonum = 0; // Testing the first 8 servo channels
 }
