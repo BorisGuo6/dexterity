@@ -1,6 +1,7 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "Arduino.h"
+#include "haptic_glove_pins.h"
 
 TaskHandle_t sensorProcessing;
 TaskHandle_t hapticControl;
