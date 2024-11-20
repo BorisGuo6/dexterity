@@ -18,10 +18,15 @@
 #define MCP_FLEXION_MIN 0
 #define MCP_FLEXION_MAX 240
 
+#define PIP_FLEXION_MIN 0
+#define PIP_FLEXION_MAX 255
+
 #define MCP_ABDUCTION_MIN -60
 #define MCP_ABDUCTION_MAX 60
 
-#define PEER_MAC {0x3C, 0x84, 0x27, 0xE1, 0xC2, 0x30}
+#define PEER_MAC {0x3C, 0x84, 0x27, 0x14, 0x7B, 0xB0}
+// old: {0x3C, 0x84, 0x27, 0xE1, 0xC2, 0x30}
+// 3C:84:27:14:7B:B0
 
 
 ResponsiveAnalogRead analog(A1, true);
@@ -146,12 +151,11 @@ int adjustMCPFlexionAngle(int i){
   return adjusted_angle;
 }
 
-//TODO do this properly
 int adjustPIPFlexionAngle(int i){
   int angle = angles[i];
   double max_angle = max_angles[i];
   double min_angle = min_angles[i];
-  int adjusted_angle = (int)((angle - min_angle)/(max_angle-min_angle) * MCP_FLEXION_MAX);
+  int adjusted_angle = (int)((angle - min_angle)/(max_angle-min_angle) * PIP_FLEXION_MAX);
   return adjusted_angle;
 }
 

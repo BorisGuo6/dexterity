@@ -12,6 +12,8 @@
 #define MCP_FLEXION_MAX 240
 #define MCP_ABDUCTION_MIN -60
 #define MCP_ABDUCTION_MAX 60
+#define PIP_FLEXION_MIN 0
+#define PIP_FLEXION_MAX 255
 
 //IM0 = Index Metacarpal 0 (0 is next to fingers, 1 is next to wrist)
 //IT = Index Tip
