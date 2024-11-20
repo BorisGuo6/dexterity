@@ -10,10 +10,17 @@
 
 #define MCP_FLEXION_MIN 0
 #define MCP_FLEXION_MAX 240
-#define MCP_ABDUCTION_MIN -60
-#define MCP_ABDUCTION_MAX 60
+#define MCP_ABDUCTION_MIN -80
+#define MCP_ABDUCTION_MAX 80
 #define PIP_FLEXION_MIN 0
 #define PIP_FLEXION_MAX 255
+
+#define THUMB_CMC_FLEXION_MIN 0 
+#define THUMB_CMC_FLEXION_MAX 200
+#define THUMB_CMC_ABDUCTION_MIN -60 
+#define THUMB_CMC_ABDUCTION_MAX 60
+#define THUMB_PIP_FLEXION_MIN 0
+#define THUMB_PIP_FLEXION_MAX 255
 
 //IM0 = Index Metacarpal 0 (0 is next to fingers, 1 is next to wrist)
 //IT = Index Tip
@@ -55,5 +62,8 @@ void controlFingers(uint8_t finger_pos[]);
 // 2 = ring
 // 3 = pinkie
 void controlFinger(uint8_t finger_num, uint8_t finger_pos[]);
+
+// move the thumb given the 4 finger_pos data points
+void controlThumb(uint8_t finger_pos[]);
 
 #endif

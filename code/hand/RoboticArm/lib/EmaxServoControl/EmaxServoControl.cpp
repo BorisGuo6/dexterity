@@ -3,7 +3,7 @@
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver(0x40, Wire);
 
 bool flip_servo_map[SERVO_COUNT] = {
-  0,0,0,0,
+  0,0,1,0,
   1,1,0,0,
   1,1,0,1,
   0,1,0,0

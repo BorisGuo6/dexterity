@@ -21,8 +21,19 @@
 #define PIP_FLEXION_MIN 0
 #define PIP_FLEXION_MAX 255
 
-#define MCP_ABDUCTION_MIN -60
-#define MCP_ABDUCTION_MAX 60
+#define MCP_ABDUCTION_MIN -80
+#define MCP_ABDUCTION_MAX 80
+
+#define THUMB_CMC_FLEXION_MIN 0 
+#define THUMB_CMC_FLEXION_MAX 200
+
+#define THUMB_CMC_ABDUCTION_MIN -60 
+#define THUMB_CMC_ABDUCTION_MAX 60
+
+#define THUMB_PIP_FLEXION_MIN 0
+#define THUMB_PIP_FLEXION_MAX 255
+
+
 
 #define PEER_MAC {0x3C, 0x84, 0x27, 0x14, 0x7B, 0xB0}
 // old: {0x3C, 0x84, 0x27, 0xE1, 0xC2, 0x30}
@@ -118,6 +129,11 @@ void measureAngles(){
       dataOut += " ";
     }
   }
+
+  //jank solution to having the angles for the thumb backwards
+  angles[12] = 250-angles[12];
+  angles[14] = 250-angles[14];
+  angles[15] = 250-angles[15];
 }
 
 void calibration(){
@@ -159,6 +175,30 @@ int adjustPIPFlexionAngle(int i){
   return adjusted_angle;
 }
 
+int adjustThumbCMCAbductionAngle(int i){
+  int angle = angles[i];
+  double max_angle = max_angles[i];
+  double min_angle = min_angles[i];
+  int adjusted_angle = (int)((angle - min_angle)/(max_angle-min_angle) * (2*THUMB_CMC_ABDUCTION_MAX));
+  return adjusted_angle;
+}
+
+int adjustThumbCMCFlexionAngle(int i){
+  int angle = angles[i];
+  double max_angle = max_angles[i];
+  double min_angle = min_angles[i];
+  int adjusted_angle = (int)((angle - min_angle)/(max_angle-min_angle) * THUMB_CMC_FLEXION_MAX);
+  return adjusted_angle;
+}
+
+int adjustThumbPIPFlexionAngle(int i){
+  int angle = angles[i];
+  double max_angle = max_angles[i];
+  double min_angle = min_angles[i];
+  int adjusted_angle = (int)((angle - min_angle)/(max_angle-min_angle) * THUMB_PIP_FLEXION_MAX);
+  return adjusted_angle;
+}
+
 void adjustAngles(){
   //pinkie
   adjusted_angles[0] = adjustMCPAbductionAngle(0);
@@ -180,12 +220,11 @@ void adjustAngles(){
   adjusted_angles[10] = adjustMCPFlexionAngle(10);
   adjusted_angles[11] = adjustPIPFlexionAngle(11);
 
-  //TODO
   //thumb
-  adjusted_angles[12] = angles[12];
-  adjusted_angles[13] = angles[13];
-  adjusted_angles[14] = angles[14];
-  adjusted_angles[15] = angles[15];
+  adjusted_angles[12] = adjustThumbCMCFlexionAngle(12);
+  adjusted_angles[13] = adjustThumbCMCAbductionAngle(13);
+  adjusted_angles[14] = adjustThumbPIPFlexionAngle(14);
+  adjusted_angles[15] = angles[15]; //not using this data currently
 }
 
 void sendData(int finger_pos[]){
