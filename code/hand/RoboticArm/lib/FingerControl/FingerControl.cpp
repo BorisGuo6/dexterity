@@ -52,7 +52,7 @@ int* thumbCMCServoCalc(int CMC_flexion, int CMC_abduction, bool flip_abduction){
 	int servo1_offset = 0;
 
     //calculate how much the servos should offset from each other for abduction
-	if(CMC_abduction < 0){ //right
+	if(CMC_abduction > 0){ //right
 		CMC_abduction = max(CMC_abduction,THUMB_CMC_ABDUCTION_MIN);
 		servo1_offset=-CMC_abduction;
 	}else{ //left
@@ -83,6 +83,12 @@ int* thumbCMCServoCalc(int CMC_flexion, int CMC_abduction, bool flip_abduction){
 int thumbTipServoCalc(int flexion){
     int servo_pos = flexion;
     servo_pos=constrain(servo_pos,THUMB_PIP_FLEXION_MIN,THUMB_PIP_FLEXION_MAX);
+    return servo_pos;
+}
+
+int thumbRotationServoCalc(int rotation){
+    int servo_pos = rotation*2;
+    servo_pos=constrain(servo_pos,THUMB_ROTATION_MIN,THUMB_ROTATION_MAX);
     return servo_pos;
 }
 
@@ -170,23 +176,25 @@ void controlFinger(uint8_t finger_num, uint8_t finger_pos[]){
 
     int tip_pos = tipServoCalc(PIP_flexion);
     controlEmaxServo(T_servo_num, tip_pos);
-    Serial.printf("%d | %d\n",finger_num, tip_pos);
 
 }
 
 void controlThumb(uint8_t finger_pos[]){
 
     int CMC_flexion = finger_pos[12];
-    int CMC_abduction = finger_pos[13];
+    int CMC_abduction = finger_pos[13] + THUMB_CMC_ABDUCTION_MIN;
     int PIP_flexion = finger_pos[14];
 
-    int* servo_positions = thumbCMCServoCalc(CMC_flexion,CMC_abduction,false);
+    int* servo_positions = thumbCMCServoCalc(CMC_flexion,CMC_abduction,true);
     controlEmaxServo(1, servo_positions[0]);
     controlEmaxServo(2, servo_positions[1]);
 
-    int tip_pos = tipServoCalc(PIP_flexion);
+    int tip_pos = thumbTipServoCalc(PIP_flexion);
     controlEmaxServo(3, tip_pos);
-    Serial.printf("%d | %d | %d\n",servo_positions[0], servo_positions[1], tip_pos);
+
+    int rotation_pos = thumbRotationServoCalc(finger_pos[13]);
+    controlEmaxServo(0, rotation_pos);
+    Serial.printf("CMC1: %d | CMC2: %d | TIP: %d | ROT: %d | abd: %d\n",servo_positions[0], servo_positions[1], tip_pos, rotation_pos,CMC_abduction);
 
     delete[] servo_positions;
 

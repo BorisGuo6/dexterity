@@ -25,10 +25,10 @@
 #define MCP_ABDUCTION_MAX 80
 
 #define THUMB_CMC_FLEXION_MIN 0 
-#define THUMB_CMC_FLEXION_MAX 200
+#define THUMB_CMC_FLEXION_MAX 255
 
-#define THUMB_CMC_ABDUCTION_MIN -60 
-#define THUMB_CMC_ABDUCTION_MAX 60
+#define THUMB_CMC_ABDUCTION_MIN -125
+#define THUMB_CMC_ABDUCTION_MAX 125
 
 #define THUMB_PIP_FLEXION_MIN 0
 #define THUMB_PIP_FLEXION_MAX 255
@@ -131,9 +131,10 @@ void measureAngles(){
   }
 
   //jank solution to having the angles for the thumb backwards
-  angles[12] = 250-angles[12];
-  angles[14] = 250-angles[14];
-  angles[15] = 250-angles[15];
+  angles[12] = 150-angles[12];
+  angles[13] = 150-angles[12];
+  angles[14] = 150-angles[14];
+  angles[15] = 150-angles[15];
 }
 
 void calibration(){

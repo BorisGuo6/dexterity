@@ -16,11 +16,13 @@
 #define PIP_FLEXION_MAX 255
 
 #define THUMB_CMC_FLEXION_MIN 0 
-#define THUMB_CMC_FLEXION_MAX 200
-#define THUMB_CMC_ABDUCTION_MIN -60 
-#define THUMB_CMC_ABDUCTION_MAX 60
+#define THUMB_CMC_FLEXION_MAX 255
+#define THUMB_CMC_ABDUCTION_MIN -125 
+#define THUMB_CMC_ABDUCTION_MAX 125
 #define THUMB_PIP_FLEXION_MIN 0
 #define THUMB_PIP_FLEXION_MAX 255
+#define THUMB_ROTATION_MIN 0
+#define THUMB_ROTATION_MAX 250
 
 //IM0 = Index Metacarpal 0 (0 is next to fingers, 1 is next to wrist)
 //IT = Index Tip
