@@ -9,8 +9,8 @@ GloveControlPanel::GloveControlPanel(void (*button_0_isr)(), void (*button_1_isr
     this->led_1_pin = LED_1;
     this->button_0_isr = button_0_isr;
     this->button_1_isr = button_1_isr;
-    this->button_0_mode = RISING;
-    this->button_1_mode = RISING;
+    this->button_0_mode = FALLING;
+    this->button_1_mode = FALLING;
 }
 
 GloveControlPanel::GloveControlPanel(uint8_t switch_pin, uint8_t button_0_pin, uint8_t button_1_pin, uint8_t led_0_pin, uint8_t led_1_pin,

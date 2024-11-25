@@ -24,9 +24,9 @@ class GloveControlPanel {
          * 
          * led_1_pin = LED_1 (13)
          * 
-         * button_0_mode = RISING
+         * button_0_mode = FALLING
          * 
-         * button_1_mode = RISING
+         * button_1_mode = FALLING
          * 
          * @param button_0_isr Function pointer to the ISR to be run when button 0 is pressed
          * @param button_1_isr Function pointer to the ISR to be run when button 1 is pressed
