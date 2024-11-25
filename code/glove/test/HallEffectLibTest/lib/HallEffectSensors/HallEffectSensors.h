@@ -6,10 +6,10 @@
 #include <ResponsiveAnalogRead.h>
 
 //TODO define multiplexer input pins
-#define S0 1
-#define S1 2
-#define S2 3
-#define S3 4
+#define S0 5
+#define S1 6
+#define S2 7
+#define S3 21
 
 #define SENSOR_COUNT 16
 

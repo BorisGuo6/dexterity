@@ -131,7 +131,7 @@ void measureAngles()
 }
 
 int32_t adjustMCPAbductionAngle(int32_t i){
-  int32_t angle = angles[i];
+  int32_t angle = proto_angles[i];
   float max_angle = max_angles[i];
   float min_angle = min_angles[i];
   int32_t adjusted_angle = (int32_t)((angle - min_angle)/(max_angle-min_angle) * (2*MCP_ABDUCTION_MAX));
@@ -139,7 +139,7 @@ int32_t adjustMCPAbductionAngle(int32_t i){
 }
 
 int32_t adjustMCPFlexionAngle(int32_t i){
-  int32_t angle = angles[i];
+  int32_t angle = proto_angles[i];
   float max_angle = max_angles[i];
   float min_angle = min_angles[i];
   int32_t adjusted_angle = (int32_t)((angle - min_angle)/(max_angle-min_angle) * MCP_FLEXION_MAX);
@@ -147,7 +147,7 @@ int32_t adjustMCPFlexionAngle(int32_t i){
 }
 
 int32_t adjustPIPFlexionAngle(int32_t i){
-  int32_t angle = angles[i];
+  int32_t angle = proto_angles[i];
   float max_angle = max_angles[i];
   float min_angle = min_angles[i];
   int32_t adjusted_angle = (int32_t)((angle - min_angle)/(max_angle-min_angle) * PIP_FLEXION_MAX);
@@ -155,7 +155,7 @@ int32_t adjustPIPFlexionAngle(int32_t i){
 }
 
 int32_t adjustThumbCMCAbductionAngle(int32_t i){
-  int32_t angle = angles[i];
+  int32_t angle = proto_angles[i];
   float max_angle = max_angles[i];
   float min_angle = min_angles[i];
   int32_t adjusted_angle = (int32_t)((angle - min_angle)/(max_angle-min_angle) * (2*THUMB_CMC_ABDUCTION_MAX));
@@ -163,7 +163,7 @@ int32_t adjustThumbCMCAbductionAngle(int32_t i){
 }
 
 int32_t adjustThumbCMCFlexionAngle(int32_t i){
-  int32_t angle = angles[i];
+  int32_t angle = proto_angles[i];
   float max_angle = max_angles[i];
   float min_angle = min_angles[i];
   int32_t adjusted_angle = (int32_t)((angle - min_angle)/(max_angle-min_angle) * THUMB_CMC_FLEXION_MAX);
@@ -171,7 +171,7 @@ int32_t adjustThumbCMCFlexionAngle(int32_t i){
 }
 
 int32_t adjustThumbPIPFlexionAngle(int32_t i){
-  int32_t angle = angles[i];
+  int32_t angle = proto_angles[i];
   float max_angle = max_angles[i];
   float min_angle = min_angles[i];
   int32_t adjusted_angle = (int32_t)((angle - min_angle)/(max_angle-min_angle) * THUMB_PIP_FLEXION_MAX);
@@ -205,6 +205,6 @@ void adjustAngles()
     angles[12] = adjustThumbCMCFlexionAngle(12);
     angles[13] = adjustThumbCMCAbductionAngle(13);
     angles[14] = adjustThumbPIPFlexionAngle(14);
-    angles[15] = angles[15]; //not using this data currently
+    angles[15] = proto_angles[15]; //not using this data currently
 }
 
