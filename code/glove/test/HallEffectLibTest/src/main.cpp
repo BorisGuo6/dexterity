@@ -1,18 +1,18 @@
 #include <Arduino.h>
 
-// put function declarations here:
-int myFunction(int, int);
+#include <HapticGlove_ESPNOW.h>
+#include <HallEffectSensors.h>
+
+#define PEER_MAC {0x3C, 0x84, 0x27, 0x14, 0x7B, 0xB0}
 
 void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+	uint8_t mac[] = PEER_MAC;
+	glove_ESPNOWsetup(mac, 115200);
+	hallEffectSensorsSetup();
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-}
-
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
+  updateAngles();
+  printAngles();
 }
