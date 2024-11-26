@@ -47,36 +47,36 @@ class GloveControlPanel {
         void initialize();
 
         /**
-         * @return The current digital value (0 or 1) on the switch's pin
+         * @return The current digital value (0 or 1) of the switch
          */
         int8_t readSwitch();
 
         /**
-         * Read the current digital value on `button_pin`
-         * @param button_pin Pin number for the button
-         * @return `button_pin`'s current digital value (0 or 1), or -1 if the value of `button_pin` is invalid
+         * Read the current digital value on the pin corresponding to `button_num`
+         * @param button_num 0 for button 0, 1 for button 1
+         * @return The button's current digital value (0 or 1), or -1 if the value of `button_num` is invalid
          */
-        int8_t readButton(uint8_t button_pin);
+        int8_t readButton(uint8_t button_num);
+
+       /**
+         * Toggle (external) LED number `led_num`
+         * @param led_num 0 for LED 0, 1 for LED 1
+         */
+        void toggleExtLED(uint8_t led_num);
 
         /**
-         * Toggle the (external) LED connected to `led_pin`
-         * @param led_pin Pin number for the LED
-         */
-        void toggleExtLED(uint8_t led_pin);
-
-        /**
-         * Set the digital value of `led_pin` to `val`
-         * @param led_pin Pin number for the LED
+         * Set the digital value of LED number `led_num` to `val`
+         * @param led_num 0 for LED 0, 1 for LED 1
          * @param val Digital value (0 or 1) to which to set the LED
          */
-        void setExtLED(uint8_t led_pin, uint8_t val);
+        void setExtLED(uint8_t led_num, uint8_t val);
 
         /**
-         * Read the current digital value on `led_pin`
-         * @param led_pin Pin number for the LED
-         * @return `LED_pin`'s current digital value (0 or 1), or -1 if the value of `LED_pin` is invalid
+         * Read the current digital value on the pin corresponding to `led_num`
+         * @param led_num 0 for LED 0, 1 for LED 1
+         * @return The LED's current digital value (0 or 1), or -1 if the value of `led_num` is invalid
          */
-        int8_t readExtLED(uint8_t led_pin);
+        int8_t readExtLED(uint8_t led_num);
 
          /**
          * Toggle the internal LED, preserving the color it has when on

@@ -12,7 +12,7 @@ void IRAM_ATTR button_1_isr() {
   button_1_pressed = true;
 }
 
-GloveControlPanel control_panel = GloveControlPanel(button_0_isr, button_1_isr);
+HandControlPanel control_panel = HandControlPanel(button_0_isr, button_1_isr);
 
 void setup() {
   Serial.begin(115200);

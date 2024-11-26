@@ -49,37 +49,37 @@ int8_t GloveControlPanel::readSwitch()
     return digitalRead(switch_pin);
 }
 
-int8_t GloveControlPanel::readButton(uint8_t button_pin)
+int8_t GloveControlPanel::readButton(uint8_t button_num)
 {
-    if (button_pin == button_0_pin) {
+    if (button_num == 0) {
         return digitalRead(button_0_pin);
-    } else if (button_pin == button_1_pin) {
+    } else if (button_num == 1) {
         return digitalRead(button_1_pin);
     }
     return -1;
 }
 
-void GloveControlPanel::toggleExtLED(uint8_t led_pin)
+void GloveControlPanel::toggleExtLED(uint8_t led_num)
 {
-    int8_t read = readExtLED(led_pin);
+    int8_t read = readExtLED(led_num);
     if (read == -1) return;
-    digitalWrite(led_pin, !read);
+    setExtLED(led_num, !read);
 }
 
-void GloveControlPanel::setExtLED(uint8_t led_pin, uint8_t val)
+void GloveControlPanel::setExtLED(uint8_t led_num, uint8_t val)
 {
-    if (led_pin == led_0_pin) {
+    if (led_num == 0) {
         digitalWrite(led_0_pin, val);
-    } else if (led_pin == led_1_pin) {
+    } else if (led_num == 1) {
         digitalWrite(led_1_pin, val);
     }
 }
 
-int8_t GloveControlPanel::readExtLED(uint8_t led_pin)
+int8_t GloveControlPanel::readExtLED(uint8_t led_num)
 {
-    if (led_pin == led_0_pin) {
+    if (led_num == 0) {
         return digitalRead(led_0_pin);
-    } else if (led_pin == led_1_pin) {
+    } else if (led_num == 1) {
         return digitalRead(led_1_pin);
     }
     return -1;
