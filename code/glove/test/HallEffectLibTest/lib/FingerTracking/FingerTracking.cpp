@@ -102,6 +102,7 @@ void adjustAngles()
 void calcFingerAngles()
 {
     measureHallEffectSensors();
+    calibrateHallEffectSensors();
     adjustAngles();
 }
 

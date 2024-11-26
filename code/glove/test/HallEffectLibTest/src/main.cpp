@@ -33,7 +33,6 @@ void setup() {
 
 void loop() {
 	calcFingerAngles();
-	calibrateHallEffectSensors();
 	printFingerAngles();
 
 	sendData();
