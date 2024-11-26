@@ -13,23 +13,10 @@
 
 #define SENSOR_COUNT 16
 
-#define MCP_FLEXION_MIN 0
-#define MCP_FLEXION_MAX 240
-
-#define PIP_FLEXION_MIN 0
-#define PIP_FLEXION_MAX 255
-
-#define MCP_ABDUCTION_MIN -80
-#define MCP_ABDUCTION_MAX 80
-
-#define THUMB_CMC_FLEXION_MIN 0 
-#define THUMB_CMC_FLEXION_MAX 255
-
-#define THUMB_CMC_ABDUCTION_MIN -125
-#define THUMB_CMC_ABDUCTION_MAX 125
-
-#define THUMB_PIP_FLEXION_MIN 0
-#define THUMB_PIP_FLEXION_MAX 255
+extern int32_t rawVals[SENSOR_COUNT];
+extern int32_t proto_angles[SENSOR_COUNT];
+extern int32_t min_angles[SENSOR_COUNT];
+extern int32_t max_angles[SENSOR_COUNT];
 
 /**
  * Initializes the Hall effect sensors.
@@ -37,34 +24,16 @@
 void hallEffectSensorsSetup();
 
 /**
- * Reads the raw angle values, adjusts them, and stores them in the angles array. Calling this function requires
- * initialize() to have already been called.
- */
-void updateAngles();
-
-/**
- * Prints the contents of the angles array over Serial
- */
-void printAngles();
-
-/**
  * Sends the current angle data to the robotic hand. Calling this function requires an ESPNow
  * connection to have already been established with the hand.
  */
 void sendData();
 
-
-
-void initializeCalibrationValues();
-void measureAngles();
-void calibrate();
-void adjustAngles();
-int32_t adjustMCPAbductionAngle(int32_t i);
-int32_t adjustMCPFlexionAngle(int32_t i);
-int32_t adjustPIPFlexionAngle(int32_t i);
-int32_t adjustThumbCMCFlexionAngle(int32_t i);
-int32_t adjustThumbCMCAbductionAngle(int32_t i);
-int32_t adjustThumbPIPFlexionAngle(int32_t i);
+/**
+ * Reads the raw angle values, adjusts them, and stores them in the proto_angles array
+ */
+void measureHallEffectSensors();
+void calibrateHallEffectSensors();
 
 float poly(double x, double a,double b,double c);
 

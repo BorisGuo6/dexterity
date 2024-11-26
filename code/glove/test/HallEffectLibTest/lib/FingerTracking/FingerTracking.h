@@ -1,15 +1,9 @@
-#ifndef HALL_EFFECT_SENSORS_H
-#define HALL_EFFECT_SENSORS_H
+#ifndef FINGER_TRACKING_H
+#define FINGER_TRACKING_H
 
 #include <Arduino.h>
 #include <stdint.h>
 #include <ResponsiveAnalogRead.h>
-
-//TODO define multiplexer input pins
-#define S0 5
-#define S1 6
-#define S2 7
-#define S3 21
 
 #define SENSOR_COUNT 16
 
@@ -31,33 +25,24 @@
 #define THUMB_PIP_FLEXION_MIN 0
 #define THUMB_PIP_FLEXION_MAX 255
 
+extern int32_t angles[SENSOR_COUNT];
+
 /**
  * Initializes the Hall effect sensors.
  */
-void hallEffectSensorsSetup();
+void fingerTrackingSetup();
 
 /**
  * Reads the raw angle values, adjusts them, and stores them in the angles array. Calling this function requires
  * initialize() to have already been called.
  */
-void updateAngles();
+void calcFingerAngles();
 
 /**
  * Prints the contents of the angles array over Serial
  */
-void printAngles();
+void printFingerAngles();
 
-/**
- * Sends the current angle data to the robotic hand. Calling this function requires an ESPNow
- * connection to have already been established with the hand.
- */
-void sendData();
-
-
-
-void initializeCalibrationValues();
-void measureAngles();
-void calibrate();
 void adjustAngles();
 int32_t adjustMCPAbductionAngle(int32_t i);
 int32_t adjustMCPFlexionAngle(int32_t i);
@@ -65,7 +50,5 @@ int32_t adjustPIPFlexionAngle(int32_t i);
 int32_t adjustThumbCMCFlexionAngle(int32_t i);
 int32_t adjustThumbCMCAbductionAngle(int32_t i);
 int32_t adjustThumbPIPFlexionAngle(int32_t i);
-
-float poly(double x, double a,double b,double c);
 
 #endif

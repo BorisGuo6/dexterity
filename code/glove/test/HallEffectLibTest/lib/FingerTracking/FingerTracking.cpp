@@ -5,40 +5,19 @@ int32_t angles[SENSOR_COUNT];
 
 void fingerTrackingSetup(){
     hallEffectSensorsSetup();
+
+    for (uint8_t i = 0; i < SENSOR_COUNT; i++){
+        angles[i] = 0;
+    }
 }
 
-void calcFingerAngles()
-{
-    //TODO measureAngles();
-    adjustAngles();
-}
-
-void printAngles() {
+void printFingerAngles() {
     for (uint8_t i = 0; i < SENSOR_COUNT; i++){
         Serial.print(">Joint_");
         Serial.print(i);
         Serial.print(":");
         Serial.println(angles[i]);
     }
-}
-
-void sendData() {
-    uint8_t fpos[SENSOR_COUNT];
-    uint8_t wpos[3];
-    uint8_t apos[3];
-    for(int i = 0; i < SENSOR_COUNT; i++){
-        fpos[i] = (uint8_t)angles[i];
-    }
-    for(int i = 0; i < 3; i ++){
-        wpos[i] = random(1, 255);
-        apos[i] = random(1, 255);
-    }
-
-    //position_packet.messages_rec = glove_messages_rcv;
-
-    //glove_sendData(fpos, wpos, apos);
-
-    //glove_messages_send_attempt += 1;
 }
 
 
@@ -118,5 +97,11 @@ void adjustAngles()
     angles[13] = adjustThumbCMCAbductionAngle(13);
     angles[14] = adjustThumbPIPFlexionAngle(14);
     angles[15] = proto_angles[15]; //not using this data currently
+}
+
+void calcFingerAngles()
+{
+    measureHallEffectSensors();
+    adjustAngles();
 }
 
