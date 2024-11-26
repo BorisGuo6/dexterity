@@ -14,9 +14,9 @@
 #define SENSOR_COUNT 16
 
 extern int32_t rawVals[SENSOR_COUNT];
-extern int32_t proto_angles[SENSOR_COUNT];
-extern int32_t min_angles[SENSOR_COUNT];
-extern int32_t max_angles[SENSOR_COUNT];
+extern float proto_angles[SENSOR_COUNT];
+extern float min_angles[SENSOR_COUNT];
+extern float max_angles[SENSOR_COUNT];
 
 /**
  * Initializes the Hall effect sensors.

@@ -3,9 +3,9 @@
 ResponsiveAnalogRead analog(A1, true);
 
 int32_t rawVals[SENSOR_COUNT];
-int32_t proto_angles[SENSOR_COUNT];
-int32_t min_angles[SENSOR_COUNT];
-int32_t max_angles[SENSOR_COUNT];
+float proto_angles[SENSOR_COUNT];
+float min_angles[SENSOR_COUNT];
+float max_angles[SENSOR_COUNT];
 
 float polyVals[16][3] = {
     {-0.000050156739812,0.308087774294671,-325.54858934169279}, //pinkie 0
@@ -75,7 +75,7 @@ void measureHallEffectSensors()
      }
 
     for (uint8_t i = 0; i < SENSOR_COUNT; i++){
-        int32_t angle = (int32_t)poly(rawVals[i],polyVals[i][0],polyVals[i][1],polyVals[i][2]);
+        float angle = poly(rawVals[i],polyVals[i][0],polyVals[i][1],polyVals[i][2]);
         proto_angles[i] = angle;
     }
     //jank solution to having the angles for the thumb backwards
