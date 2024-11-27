@@ -33,14 +33,14 @@ void hapticControlCode(void* params){
   glove_ESPNOWsetup(mac);
   ESPNOW_setup = true;
 
-  Timer1 = timerBegin(1, 80, true); // timer speed (Hz) = Timer clock speed (Mhz) / prescaler --> 1 MHz
-  timerAttachInterrupt(Timer1, &Timer1_ISR, true); // Attach ISR to Timer0
-  timerAlarmWrite(Timer1, 1000000/ISR1_FREQ, true); // Set timer to trigger every 1,000,000/ISR_FREQ microseconds (1 s/f)
-  timerAlarmEnable(Timer1); // Enable the timer alarm
+  Timer0 = timerBegin(0, 80, true); // timer speed (Hz) = Timer clock speed (Mhz) / prescaler --> 1 MHz
+  timerAttachInterrupt(Timer0, &Timer0_ISR, true); // Attach ISR to Timer0
+  timerAlarmWrite(Timer0, 1000000/ISR0_FREQ, true); // Set timer to trigger every 1,000,000/ISR0_FREQ microseconds (1 s/f)
+  timerAlarmEnable(Timer0); // Enable the timer alarm
 
   while (1) {
-      if (timer1_triggered) { 
-          timer1_triggered = false; // Reset the flag
+      if (timer0_triggered) { 
+          timer0_triggered = false; // Reset the flag
           triggerHapticFeedback();
       }
       vTaskDelay(10 / portTICK_PERIOD_MS); // Yield CPU for 10 ms to prevent blocking other tasks
@@ -56,14 +56,14 @@ void sensorProcessingCode(void* params){
   Serial.print("Setting up sensorProcessing from core ");
   Serial.println(xPortGetCoreID());
 
-  Timer0 = timerBegin(0, 80, true); // timer speed (Hz) = Timer clock speed (Mhz) / prescaler --> 1 MHz
-  timerAttachInterrupt(Timer0, &Timer0_ISR, true); // Attach ISR to Timer0
-  timerAlarmWrite(Timer0, 1000000/ISR0_FREQ, true); // Set timer to trigger every 1,000,000/ISR_FREQ microseconds (1 s/f)
-  timerAlarmEnable(Timer0); // Enable the timer alarm
+  Timer1 = timerBegin(1, 80, true); // timer speed (Hz) = Timer clock speed (Mhz) / prescaler --> 1 MHz
+  timerAttachInterrupt(Timer1, &Timer1_ISR, true); // Attach ISR to Timer1
+  timerAlarmWrite(Timer1, 1000000/ISR1_FREQ, true); // Set timer to trigger every 1,000,000/ISR1_FREQ microseconds (1 s/f)
+  timerAlarmEnable(Timer1); // Enable the timer alarm
 
   while (1) {
-      if (timer0_triggered) { 
-          timer0_triggered = false; // Reset the flag
+      if (timer1_triggered) { 
+          timer1_triggered = false; // Reset the flag
           triggerGloveControl();
       }
       vTaskDelay(10 / portTICK_PERIOD_MS); // Yield CPU for 10 ms to prevent blocking other tasks
