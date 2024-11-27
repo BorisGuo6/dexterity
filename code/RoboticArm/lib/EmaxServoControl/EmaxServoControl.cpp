@@ -1,6 +1,8 @@
 #include "EmaxServoControl.h"
 
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver(0x40, Wire);
+int16_t all_servo_positions[SERVO_COUNT];
+int16_t servo_position_num = 0;
 
 bool flip_servo_map[SERVO_COUNT] = {
   0,0,1,0,
@@ -21,6 +23,7 @@ void emaxServoControlSetup(){
 
 void controlEmaxServo(uint8_t servo_num, uint16_t pos){
   pos = constrain(pos, GLOVE_INPUT_MIN, GLOVE_INPUT_MAX);
+  all_servo_positions[servo_position_num++] = pos;
   uint16_t pulse_len;
   if (flip_servo_map[servo_num]){
     pulse_len = SERVOMAX - pos;
