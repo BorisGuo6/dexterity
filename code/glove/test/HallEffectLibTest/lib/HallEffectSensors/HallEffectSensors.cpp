@@ -80,9 +80,9 @@ void measureHallEffectSensors()
     }
     //jank solution to having the angles for the thumb backwards
     //TODO remove with glove v2
-    proto_angles[12] = 150-proto_angles[12];
-    proto_angles[13] = 150-proto_angles[12];
-    proto_angles[14] = 150-proto_angles[14];
-    proto_angles[15] = 150-proto_angles[15];
+    // proto_angles[12] = 150-proto_angles[12];
+    // proto_angles[13] = 150-proto_angles[12];
+    // proto_angles[14] = 150-proto_angles[14];
+    // proto_angles[15] = 150-proto_angles[15];
 }
 
