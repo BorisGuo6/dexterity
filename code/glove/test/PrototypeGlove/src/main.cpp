@@ -284,8 +284,6 @@ void loop() {
 
   adjustAngles();
 
-  adjustAngles();
-
   //printRawVals();
   printAngles(adjusted_angles);
   // printDataOut();
