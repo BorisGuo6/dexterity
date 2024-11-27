@@ -32,6 +32,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 Inspiration, code snippets, etc.
 * [Dexhand](https://github.com/TheRobotStudio/V1.0-Dexhand?tab=readme-ov-file)
-* [Prototype Finger Tracket](https://github.com/max-titov/finger-tracker)
+* [Prototype Finger Tracker](https://github.com/max-titov/finger-tracker)
 * [Nepyope Youtube](https://www.youtube.com/watch?v=iPtgvh6fNdQ)
 * [Nepyope Github](https://github.com/nepyope/Project-Homunculus/tree/main)
