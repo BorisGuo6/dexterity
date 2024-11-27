@@ -11,4 +11,12 @@ void armControlSetup() {
 void controlArm(position_packet* arm_inData){
   controlFingers(arm_inData->finger_pos);
   controlWrist(arm_inData->wrist_pos);
+  if(ENABLE_CONTROL_PRINT){
+    printServoPositions();
+  }
+}
+
+void printServoPositions(){
+  printEmaxServoPositions();
+
 }

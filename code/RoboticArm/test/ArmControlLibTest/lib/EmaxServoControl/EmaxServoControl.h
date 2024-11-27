@@ -21,30 +21,52 @@
 
 // max and min values for finger pos inputs from control glove
 #define GLOVE_INPUT_MIN 0
-#define GLOVE_INPUT_MAX 240
+#define GLOVE_INPUT_MAX 255
+
 
 //IM0 = Index Metacarpal 0 (0 is next to fingers, 1 is next to wrist)
 //IT = Index Tip
-#define IM0_SERVO_PIN 4
-#define IM1_SERVO_PIN 5
-#define IT_SERVO_PIN 6
+
+#define SERVO_COUNT 16
+
+//servo pins on the PWM board
+
+//Index
+#define IM0_SERVO_PIN 13
+#define IM1_SERVO_PIN 12
+#define IT_SERVO_PIN 7
 
 //Middle
-#define MM0_SERVO_PIN 7
-#define MM1_SERVO_PIN 15
-#define MT_SERVO_PIN 16
+#define MM0_SERVO_PIN 15
+#define MM1_SERVO_PIN 14
+#define MT_SERVO_PIN 6
 
 //Ring
-#define RM0_SERVO_PIN 17
-#define RM1_SERVO_PIN 18
-#define RT_SERVO_PIN 8
-
+#define RM0_SERVO_PIN 9
+#define RM1_SERVO_PIN 8
+#define RT_SERVO_PIN 5
 
 //Pinkie
-#define PM0_SERVO_PIN 3
-#define PM1_SERVO_PIN 10
-#define PT_SERVO_PIN 11
+#define PM0_SERVO_PIN 10
+#define PM1_SERVO_PIN 11
+#define PT_SERVO_PIN 4
 
+//Pinkie
+#define PM0_SERVO_PIN 10
+#define PM1_SERVO_PIN 11
+#define PT_SERVO_PIN 4
+
+//Thumb
+#define TM0_SERVO_PIN 1
+#define TM1_SERVO_PIN 2
+#define TT_SERVO_PIN 3
+#define TROT_SERVO_PIN 0
+
+// servo positions are stored here for easy printing
+extern int16_t all_servo_positions[SERVO_COUNT];
+
+//number to keep track of position in all_servo_positions array
+extern int16_t servo_position_num;
 
 // set up for servos
 void emaxServoControlSetup();

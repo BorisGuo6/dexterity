@@ -100,22 +100,9 @@ void controlFingers(uint8_t finger_pos[]){
 
     controlThumb(finger_pos);
 
-    // Serial.println("Enter servo: ");
-    // while(Serial.available() == 0){};
-    // int servo = Serial.readString().toInt();
-    // Serial.println("Enter position: ");
-    // while(Serial.available() == 0){};
-    // int pos = Serial.readString().toInt();
-    // if (pos >= 0 && pos <= 270){
-    //     controlEmaxServo(servo, pos);
-    //     Serial.print("Turned ");
-    //     Serial.print(servo);
-    //     Serial.print(" to: ");
-    //     Serial.println(pos);
-    // }
-    // else {
-    //     Serial.println("Invalid postition!");
-    // }
+    //reset counter
+    servo_position_num=0;
+
 }
 
 void controlFinger(uint8_t finger_num, uint8_t finger_pos[]){
@@ -124,44 +111,44 @@ void controlFinger(uint8_t finger_num, uint8_t finger_pos[]){
     uint8_t M0_servo_num, M1_servo_num, T_servo_num;
     bool flip_abduction = false;
     switch(finger_num){
-        case 0: // Index Finger
+        case 3: // Index Finger
             PIP_flexion = finger_pos[11];
             MCP_flexion = finger_pos[10];
             MCP_abduction = finger_pos[9] + MCP_ABDUCTION_MIN;
             flip_abduction = true; // Example logic
-            M0_servo_num = 13;
-            M1_servo_num = 12;
-            T_servo_num = 7;
+            M0_servo_num = IM0_SERVO_PIN;
+            M1_servo_num = IM1_SERVO_PIN;
+            T_servo_num = IT_SERVO_PIN;
             break;
 
-        case 1: // Middle Finger
+        case 2: // Middle Finger
             PIP_flexion = finger_pos[8];
             MCP_flexion = finger_pos[7];
             MCP_abduction = finger_pos[6] + MCP_ABDUCTION_MIN;
             flip_abduction = true;
-            M0_servo_num = 15;
-            M1_servo_num = 14;
-            T_servo_num = 6;
+            M0_servo_num = MM0_SERVO_PIN;
+            M1_servo_num = MM1_SERVO_PIN;
+            T_servo_num = MT_SERVO_PIN;
             break;
 
-        case 2: // Ring Finger
+        case 1: // Ring Finger
             PIP_flexion = finger_pos[5];
             MCP_flexion = finger_pos[4];
             MCP_abduction = finger_pos[3] + MCP_ABDUCTION_MIN;
             flip_abduction = false;
-            M0_servo_num = 9;
-            M1_servo_num = 8;
-            T_servo_num = 5;
+            M0_servo_num = RM0_SERVO_PIN;
+            M1_servo_num = RM1_SERVO_PIN;
+            T_servo_num = RT_SERVO_PIN;
             break;
 
-        case 3: // Pinkie Finger
+        case 0: // Pinkie Finger
             PIP_flexion = finger_pos[2];
             MCP_flexion = finger_pos[1];
             MCP_abduction = finger_pos[0] + MCP_ABDUCTION_MIN;
             flip_abduction = false;
-            M0_servo_num = 10;
-            M1_servo_num = 11;
-            T_servo_num = 4;
+            M0_servo_num = PM0_SERVO_PIN;
+            M1_servo_num = PM1_SERVO_PIN;
+            T_servo_num = PT_SERVO_PIN;
             break;
 
         default: // Unknown Finger
@@ -172,11 +159,11 @@ void controlFinger(uint8_t finger_num, uint8_t finger_pos[]){
     controlEmaxServo(M0_servo_num, servo_positions[0]);
     controlEmaxServo(M1_servo_num, servo_positions[1]);
 
+
     delete[] servo_positions;
 
     int tip_pos = tipServoCalc(PIP_flexion);
     controlEmaxServo(T_servo_num, tip_pos);
-
 }
 
 void controlThumb(uint8_t finger_pos[]){
@@ -186,18 +173,51 @@ void controlThumb(uint8_t finger_pos[]){
     int PIP_flexion = finger_pos[14];
 
     int* servo_positions = thumbCMCServoCalc(CMC_flexion,CMC_abduction,true);
-    controlEmaxServo(1, servo_positions[0]);
-    controlEmaxServo(2, servo_positions[1]);
+    controlEmaxServo(TM0_SERVO_PIN, servo_positions[0]);
+    controlEmaxServo(TM1_SERVO_PIN, servo_positions[1]);
 
     int tip_pos = thumbTipServoCalc(PIP_flexion);
-    controlEmaxServo(3, tip_pos);
+    controlEmaxServo(TT_SERVO_PIN, tip_pos);
 
     int rotation_pos = thumbRotationServoCalc(finger_pos[13]);
-    controlEmaxServo(0, rotation_pos);
-    Serial.printf("CMC1: %d | CMC2: %d | TIP: %d | ROT: %d | abd: %d\n",servo_positions[0], servo_positions[1], tip_pos, rotation_pos,CMC_abduction);
+    controlEmaxServo(TROT_SERVO_PIN, rotation_pos);
 
     delete[] servo_positions;
 
 }
+
+void moveServoThroughSerial(){
+    while(1){
+        Serial.println("Enter servo: ");
+        while(Serial.available() == 0){};
+        int servo = Serial.readString().toInt();
+        Serial.println("Enter position: ");
+        while(Serial.available() == 0){};
+        int pos = Serial.readString().toInt();
+        if (pos >= 0 && pos <= 255){
+            controlEmaxServo(servo, pos);
+            Serial.print("Turned ");
+            Serial.print(servo);
+            Serial.print(" to: ");
+            Serial.println(pos);
+        }
+        else {
+            Serial.println("Invalid postition!");
+        }
+    }
+}
+
+void printEmaxServoPositions(){
+    servo_position_num=0;
+    Serial.printf(">PM0:%d \n>PM1:%d \n>PT:%d \n",all_servo_positions[servo_position_num++], all_servo_positions[servo_position_num++], all_servo_positions[servo_position_num++]);
+    Serial.printf(">RM0:%d \n>RM1:%d \n>RT:%d \n",all_servo_positions[servo_position_num++], all_servo_positions[servo_position_num++], all_servo_positions[servo_position_num++]);
+    Serial.printf(">MM0:%d \n>MM1:%d \n>MT:%d \n",all_servo_positions[servo_position_num++], all_servo_positions[servo_position_num++], all_servo_positions[servo_position_num++]);
+    Serial.printf(">IM0:%d \n>IM1:%d \n>IT:%d \n",all_servo_positions[servo_position_num++], all_servo_positions[servo_position_num++], all_servo_positions[servo_position_num++]);
+
+    Serial.printf(">TM0:%d \n>TM1:%d \n>TT:%d \n>TR:%d \n",all_servo_positions[servo_position_num++], all_servo_positions[servo_position_num++], all_servo_positions[servo_position_num++], all_servo_positions[servo_position_num++]);
+
+    servo_position_num=0;
+}
+
 
 
