@@ -1,70 +1,83 @@
-#include "RoboticArm.h"
+#include <RoboticArm_ESPNOW.h>
+#include <RoboticArm.h>
 #include "PressureSensors.h"
 #include "ArmControl.h"
 
 TaskHandle_t pressureSensor;
 TaskHandle_t armControl;
-hw_timer_t *Timer0;
-volatile bool timerTriggered;
 
-void IRAM_ATTR pressureSensorISR()
-{
-  timerTriggered = true;
+volatile bool ESPNOW_setup;
+
+hw_timer_t *Timer0 = NULL;
+volatile bool timer0_triggered = false; // Flag to indicate timer interrupt occurrence
+hw_timer_t *Timer1 = NULL;
+volatile bool timer1_triggered = false; // Flag to indicate timer interrupt occurrence
+
+void IRAM_ATTR Timer0_ISR();
+void IRAM_ATTR Timer1_ISR();
+
+void triggerArmControl(){
+  controlArm();
 }
 
-// call pollPressureSensors -->
-void pressureSensorISR_Action(){
-  // TODO: Write code to poll force sensors, handle and send data
+void triggerPressureSensors() {
   sendPressureData();
 }
 
-// core 0
-// call arm_ESPNOWsetup
-// call armControlSetup
 void armControlCode(void* params){
-  uint8_t peer_mac[] = PEER_MAC;
-  //setup ESPNOW
-	arm_ESPNOWsetup(peer_mac);
+  Serial.print("Setting up armControl from core ");
+  Serial.println(xPortGetCoreID());
   armControlSetup();
+  uint8_t mac[] = PEER_MAC;
+  arm_ESPNOWsetup(mac);
+  ESPNOW_setup = true;
+
+  Timer1 = timerBegin(1, 80, true); // timer speed (Hz) = Timer clock speed (Mhz) / prescaler --> 1 MHz
+  timerAttachInterrupt(Timer1, &Timer1_ISR, true); // Attach ISR to Timer0
+  timerAlarmWrite(Timer1, 1000000/ISR1_FREQ, true); // Set timer to trigger every 1,000,000/ISR_FREQ microseconds (1 s/f)
+  timerAlarmEnable(Timer1); // Enable the timer alarm
+
+  while (1) {
+      if (timer1_triggered) { 
+          timer1_triggered = false; // Reset the flag
+          triggerArmControl();
+      }
+      vTaskDelay(10 / portTICK_PERIOD_MS); // Yield CPU for 10 ms to prevent blocking other tasks
+  }
+
 }
 
-// core 1
-// set up 50 Hz ISR, call pressureSensorISR_Action when ISR is triggered
 void pressureSensorCode(void* params){
-  // Set up Timer-Based ISR
+  Serial.print("Setting up pressureSensor ISR from core ");
+  Serial.println(xPortGetCoreID());
+  setupPressureSensors();
+  while(!ESPNOW_setup){
+    vTaskDelay(10 / portTICK_PERIOD_MS); // Yield CPU for 20 ms
+  }
+  Serial.print("Setting up pressureSensor ISR");
+
   Timer0 = timerBegin(0, 80, true); // timer speed (Hz) = Timer clock speed (Mhz) / prescaler --> 1 MHz
-  timerAttachInterrupt(Timer0, &pressureSensorISR, true); // Attach ISR to Timer0
-  timerAlarmWrite(Timer0, 20000, true); // Set timer to trigger every 20,000 microseconds (20 ms)
+  timerAttachInterrupt(Timer0, &Timer0_ISR, true); // Attach ISR to Timer0
+  timerAlarmWrite(Timer0, 1000000/ISR0_FREQ, true); // Set timer to trigger every 1,000,000/ISR_FREQ microseconds (1 s/f)
   timerAlarmEnable(Timer0); // Enable the timer alarm
 
-  while(1){
-        if (timerTriggered) { 
-            timerTriggered = false; // Reset the flag
-            pressureSensorISR_Action();
-        }
-        vTaskDelay(10 / portTICK_PERIOD_MS); // Yield CPU for 10 ms to prevent blocking other tasks
+  while (1) {
+      if (timer0_triggered) { 
+          timer0_triggered = false; // Reset the flag
+          triggerPressureSensors();
+      }
+      vTaskDelay(10 / portTICK_PERIOD_MS); // Yield CPU for 10 ms to prevent blocking other tasks
   }
 }
 
-// initialize UART0 w/ 115200 baud
-// start pressureSensorCode in core 1
-// start armControlCode in core 0
 void setup() {
-  Serial.begin(115200);
+  // Start the Serial Monitor
+  int baud_rate = 115200;
+  Serial.begin(baud_rate);
   Serial.println("initializing . . .");
+  ESPNOW_setup = false;
 
-  Timer0 = NULL;
-  timerTriggered = false; // Flag to indicate timer interrupt occurrence
-  
-  xTaskCreatePinnedToCore(
-      pressureSensorCode,   // function
-      "pressureSensor",     // name
-      10000,       // stack depth
-      NULL,        // parameters (void*)
-      1,           // uxPriority
-      &pressureSensor,      // task handle (tracking)
-      1);          // coreID
-
+    // assign armControl to core 0
   xTaskCreatePinnedToCore(
       armControlCode,   // function
       "armControl",     // name
@@ -73,9 +86,26 @@ void setup() {
       1,           // uxPriority
       &armControl,      // task handle (tracking)
       0);          // coreID
+
+    // assign pressureSensor to core 1
+  xTaskCreatePinnedToCore(
+      pressureSensorCode,   // function
+      "pressureSensor",     // name
+      10000,       // stack depth
+      NULL,        // parameters (void*)
+      1,           // uxPriority
+      &pressureSensor,      // task handle (tracking)
+      1);          // coreID
 }
 
-// don't do anything
-void loop() {
-
+// Interrupt Service Routine (ISR) for Timer0
+void IRAM_ATTR Timer0_ISR() {
+  timer0_triggered = true;  // Set a flag for the task to handle instead of printing directly
 }
+
+// Interrupt Service Routine (ISR) for Timer1
+void IRAM_ATTR Timer1_ISR() {
+  timer1_triggered = true;  // Set a flag for the task to handle instead of printing directly
+}
+
+void loop() {}

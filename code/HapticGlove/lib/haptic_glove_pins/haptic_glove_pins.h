@@ -1,3 +1,6 @@
+#ifndef _HAPTIC_GLOVE_PINS_H_
+#define _HAPTIC_GLOVE_PINS_H_
+
 // file to define pins on ESP32 board
 
 // left side pins
@@ -39,3 +42,5 @@
 #define HAPTIC_S0 21            // 21
 #define USB_D_PLUS 20           // 20
 #define USB_D_MINUS 19          // 19
+
+#endif

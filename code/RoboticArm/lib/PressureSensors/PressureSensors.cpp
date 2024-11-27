@@ -7,6 +7,10 @@ uint8_t fr;
 uint8_t fp;
 uint8_t ft;
 
+void setupPressureSensors(){
+    return;
+}
+
 // IMPORTANT: IMPLEMENT PRESSURE SENSOR READINGS
 void pollPressureSensors(){
     fi = 0;
@@ -18,6 +22,10 @@ void pollPressureSensors(){
 }
 
 void sendPressureData(){
+    if(ENABLE_PRESSURE_PRINT){
+        Serial.print("Sending pressure data from core ");
+        Serial.println(xPortGetCoreID());
+    }
     pollPressureSensors();
     arm_sendData(fi, fm, fr, fp, ft);
     return;
