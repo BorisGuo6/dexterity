@@ -11,7 +11,8 @@
 #define ENABLE_HAPTICS_PRINT 0
 #define ENABLE_SENSORS_PRINT 0 
 #define ENABLE_ESPNOW_PRINT 1
-#define ISR_FREQ 50 // in Hz
+#define ISR0_FREQ 50 // in Hz
+#define ISR1_FREQ 50 // in Hz
 
 void sensorProcessingCode(void* params);
 void hapticControlCode(void* params);
