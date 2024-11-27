@@ -10,7 +10,7 @@
 #define ESPNOW_WIFI_MODE    WIFI_STA     // WiFi mode to be used by ESP-NOW. Any mode can be used.
 #define ESPNOW_WIFI_IF      WIFI_IF_STA  // WiFi interface to be used by ESP-NOW. Any interface can be used.
 #define DATA_RATE           100          // In Hz
-#define SYNC_DELAY          10           // delay (in sec) between setting up ESPNOW and sending packets
+#define SYNC_DELAY          2           // delay (in sec) between setting up ESPNOW and sending packets
 #define PEER_MAC_1          {0x3C, 0x84, 0x27, 0x14, 0x7B, 0xB0} // MAC for board 1
 #define PEER_MAC_2          {0x3C, 0x84, 0x27, 0xE1, 0xB3, 0x8C} // MAC for board 2
 
