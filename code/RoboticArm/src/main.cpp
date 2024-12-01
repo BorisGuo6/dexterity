@@ -2,6 +2,7 @@
 #include <RoboticArm.h>
 #include "PressureSensors.h"
 #include "ArmControl.h"
+#include <SPI.h>
 
 TaskHandle_t pressureSensor;
 TaskHandle_t armControl;

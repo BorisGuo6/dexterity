@@ -5,6 +5,6 @@
 #include "RoboticArm.h"
 
 void wristControlSetup();
-void controlWrist(uint8_t* wrist_pos);
+void controlWrist(uint32_t* wrist_pos);
 
 #endif
