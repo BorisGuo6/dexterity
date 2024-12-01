@@ -13,7 +13,7 @@
 void armControlSetup();
 
 //controls fingers and wrist based on data from control glove
-void controlArm(position_packet* arm_inData);
+void controlArm();
 
 //prints servo position data to serial in a teleplot compatable format
 void printServoPositions();
