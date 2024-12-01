@@ -4,12 +4,14 @@ HapticFeedback::HapticFeedback()
 {
     this->sda_pin = HAPTIC_SDA;
     this->scl_pin = HAPTIC_SCL;
+    this->mux_addr = 0x70;
 }
 
-HapticFeedback::HapticFeedback(uint8_t sda_pin, uint8_t scl_pin)
+HapticFeedback::HapticFeedback(uint8_t sda_pin, uint8_t scl_pin, uint8_t mux_addr)
 {
     this->sda_pin = sda_pin;
     this->scl_pin = scl_pin;
+    this->mux_addr = mux_addr;
 }
 
 HapticFeedback::~HapticFeedback() {}
@@ -47,14 +49,19 @@ void HapticFeedback::triggerFeedbackFinger(Finger finger)
     switch (finger) {
         case THUMB:
             finger_state_ptr = &this->thumb_state;
+            mux_select(THUMB);
         case INDEX:
             finger_state_ptr = &this->index_state;
+            mux_select(INDEX);
         case MIDDLE:
             finger_state_ptr = &this->middle_state;
+            mux_select(MIDDLE);
         case RING:
             finger_state_ptr = &this->ring_state;
+            mux_select(RING);
         case PINKY:
             finger_state_ptr = &this->pinky_state;
+            mux_select(PINKY);
     }
 
     if (force >= LOW_FORCE && force < LOW_MED_FORCE) {
@@ -86,4 +93,12 @@ void HapticFeedback::updateFingerState(uint8_t new_mode, uint8_t mode_cycles, Fi
         drv.go();
         finger_state_ptr->cycles = 0;
     }
+}
+
+void HapticFeedback::mux_select(uint8_t channel) {
+    if (channel > 7) return;
+
+    i2c_wire.beginTransmission(mux_addr);
+    i2c_wire.write(1 << channel);
+    i2c_wire.endTransmission();  
 }

@@ -54,7 +54,7 @@ enum Finger {
 class HapticFeedback {
     public:
         HapticFeedback();
-        HapticFeedback(uint8_t sda_pin, uint8_t scl_pin);
+        HapticFeedback(uint8_t sda_pin, uint8_t scl_pin, uint8_t mux_addr);
         ~HapticFeedback();
         void setupFeedback();
         void triggerFeedback();
@@ -63,6 +63,7 @@ class HapticFeedback {
         uint8_t sda_pin;
         uint8_t scl_pin;
         TwoWire i2c_wire = TwoWire(0);
+        uint8_t mux_addr;
         FingerState thumb_state;
         FingerState index_state;
         FingerState middle_state;
@@ -71,6 +72,7 @@ class HapticFeedback {
         void setHapticMode(uint8_t mode);
         void triggerFeedbackFinger(Finger finger);
         void updateFingerState(uint8_t new_mode, uint8_t mode_cycles, FingerState* finger_state_ptr);
+        void mux_select(uint8_t channel);
 };
 
 #endif _HAPTICFEEDBACK_H_
