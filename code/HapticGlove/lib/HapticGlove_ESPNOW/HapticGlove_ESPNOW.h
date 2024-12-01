@@ -19,7 +19,7 @@ void glove_ESPNOWsetup(uint8_t mac_in[], int baud_rate); // Starts UART0
 void glove_ESPNOWsetup(uint8_t mac_in[]); // UART0 already started
 
 // general glove code has access to sendData function
-void glove_sendData(uint8_t fpos[], uint8_t wpos[], uint8_t apos[]);
+void glove_sendData(uint8_t fpos[], uint32_t wpos[], uint8_t apos[]);
 
 // receive data function will call general arm code
 

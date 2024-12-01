@@ -20,7 +20,7 @@ typedef struct position_packet {
   int messages_rec;
   // end remove
   uint8_t finger_pos[16];
-  uint8_t wrist_pos[3];
+  uint32_t wrist_pos[3];
   uint8_t arm_pos[3];
 } position_packet;
 
