@@ -6,7 +6,7 @@ iquat_t iq[BNOs];           // int quaternion, reported by sensor
 fquat_t fq[BNOs];           // float quaternion, converted from int quat
 fquat_t fq_ref[BNOs];       // reference quaternions for calibration
 
-int imu_cal_button_state = 0;
+int imu_cal_button_state = LOW;
 
 TwoWire IMUWire = TwoWire(TWOWIRE_INSTANCE_ADDRESS); 
 
@@ -42,6 +42,16 @@ void calibrateIMUs()
     check_report(1);
   }
 
+  Serial.println("_____IMU NON ZERO_____");
+  Serial.print(iq[0].qr);   Serial.print(" ");
+  Serial.print(iq[0].qi);   Serial.print(" ");
+  Serial.print(iq[0].qj);   Serial.print(" ");
+  Serial.print(iq[0].qk);   Serial.print(" ");
+  Serial.print(iq[1].qr);   Serial.print(" ");
+  Serial.print(iq[1].qi);   Serial.print(" ");
+  Serial.print(iq[1].qj);   Serial.print(" ");
+  Serial.print(iq[1].qk);   Serial.println();
+  
   // get reports until calibration button is pressed
   while (imu_cal_button_state == LOW) 
   {
@@ -52,6 +62,8 @@ void calibrateIMUs()
     imu_cal_button_state = digitalRead(IMU_CAL_BUTTON);
   }
 
+  Serial.println("_____IMU CAL BUT PUSHED_____");
+
   // set float quaternions
   set_fquat(0);
   set_fquat(1);
@@ -59,6 +71,16 @@ void calibrateIMUs()
   // set calibration quaternions
   set_cal_quat(0);
   set_cal_quat(1);
+
+  Serial.print(fq_ref[0].qr);   Serial.print(" ");
+  Serial.print(fq_ref[0].qi);   Serial.print(" ");
+  Serial.print(fq_ref[0].qj);   Serial.print(" ");
+  Serial.print(fq_ref[0].qk);   Serial.print(" ");
+  Serial.print(fq_ref[1].qr);   Serial.print(" ");
+  Serial.print(fq_ref[1].qi);   Serial.print(" ");
+  Serial.print(fq_ref[1].qj);   Serial.print(" ");
+  Serial.print(fq_ref[1].qk);   Serial.println();
+  Serial.println("_____IMU CAL SET_____");
 }
 
 bool isIntQuatZero(uint8_t bno)

@@ -144,7 +144,7 @@ void glove_ESPNOWsetup(uint8_t mac_in[]){
   delay(SYNC_DELAY*1000);
 }
 
-void glove_sendData(uint8_t fpos[], uint32_t wpos[], uint8_t apos[]){
+void glove_sendData(uint8_t fpos[], float wpos[], uint8_t apos[]){
   // Set values to send
   for(int j=0; j<16; j++){
     glove_outData.finger_pos[j] = fpos[j];
