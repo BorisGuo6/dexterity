@@ -3,8 +3,9 @@
 
 #include "Arduino.h"
 #include "RoboticArm.h"
+#include "SCServo.h"
 
 void wristControlSetup();
-void controlWrist(uint32_t* wrist_pos);
+void controlWrist(float* wrist_pos);
 
 #endif
