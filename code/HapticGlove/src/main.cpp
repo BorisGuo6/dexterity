@@ -79,8 +79,10 @@ void setup() {
   ESPNOW_setup = false;
 
   // IMU initialization and calibration
-  initializeIMUs();
-  calibrateIMUs();
+  if(IMUS_CONNECTED){
+    initializeIMUs();
+    calibrateIMUs();
+  }
 
       // assign armControl to core 0
     xTaskCreatePinnedToCore(
