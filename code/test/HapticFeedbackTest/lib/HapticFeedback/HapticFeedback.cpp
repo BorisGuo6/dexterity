@@ -18,6 +18,13 @@ HapticFeedback::~HapticFeedback() {}
 
 void HapticFeedback::setupFeedback()
 {
+    pinMode(HAPTIC_S0, OUTPUT);
+    pinMode(HAPTIC_S1, OUTPUT);
+    pinMode(HAPTIC_S2, OUTPUT);
+    digitalWrite(HAPTIC_S0, LOW);
+    digitalWrite(HAPTIC_S1, LOW);
+    digitalWrite(HAPTIC_S2, LOW);
+
     i2c_wire.begin(sda_pin, scl_pin, 400000);
 
     drv.begin(&i2c_wire);
