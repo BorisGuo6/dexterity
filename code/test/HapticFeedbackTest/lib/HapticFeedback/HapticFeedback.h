@@ -73,6 +73,7 @@ class HapticFeedback {
         void triggerFeedbackFinger(Finger finger);
         void updateFingerState(uint8_t new_mode, uint8_t mode_cycles, FingerState* finger_state_ptr);
         void mux_select(uint8_t channel);
+        void initFinger(Finger finger);
 };
 
 #endif _HAPTICFEEDBACK_H_

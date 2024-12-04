@@ -27,11 +27,11 @@ void HapticFeedback::setupFeedback()
 
     i2c_wire.begin(sda_pin, scl_pin, 400000);
 
-    drv.begin(&i2c_wire);
-
-    drv.selectLibrary(6);
-    drv.setMode(DRV2605_MODE_INTTRIG);
-    drv.useLRA();
+    initFinger(THUMB);
+    initFinger(INDEX);
+    initFinger(MIDDLE);
+    initFinger(RING);
+    initFinger(PINKY);
 }
 
 void HapticFeedback::triggerFeedback()
@@ -102,10 +102,22 @@ void HapticFeedback::updateFingerState(uint8_t new_mode, uint8_t mode_cycles, Fi
     }
 }
 
-void HapticFeedback::mux_select(uint8_t channel) {
+void HapticFeedback::mux_select(uint8_t channel)
+{
     if (channel > 7) return;
 
     i2c_wire.beginTransmission(mux_addr);
     i2c_wire.write(1 << channel);
     i2c_wire.endTransmission();  
+}
+
+void HapticFeedback::initFinger(Finger finger)
+{
+    mux_select(finger);
+
+    drv.begin(&i2c_wire);
+
+    drv.selectLibrary(6);
+    drv.setMode(DRV2605_MODE_INTTRIG);
+    drv.useLRA();
 }
