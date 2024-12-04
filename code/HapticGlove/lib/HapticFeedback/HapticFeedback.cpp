@@ -6,7 +6,6 @@ Adafruit_DRV2605 drv;
 uint8_t index_setting;
 
 void setupFeedback(){
-  i = 1;
   I2C_LRA.begin(I2C_SDA, I2C_SCL, 400000);
   drv.begin(&I2C_LRA);
   drv.selectLibrary(6);
@@ -45,4 +44,13 @@ void triggerFeedback(){
     i = 1;
   }
   i += 1;
+}
+
+void mux_select(uint8_t channel, TwoWire i2c_wire)
+{
+    if (channel > 7) return;
+
+    i2c_wire.beginTransmission(0x70);
+    i2c_wire.write(1 << channel);
+    i2c_wire.endTransmission();  
 }
