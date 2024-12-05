@@ -37,13 +37,10 @@ void loop()
 
   cycleHaptics(drv, effect);
 
-
-<<<<<<< HEAD
-=======
   // Pause for differentiation between effects
   delay(5000);
 
->>>>>>> f79918691cef2955d453ac4b1f338433b3e98b78
+
   /*Cycle
   //effect++;
   //if (effect > 118) effect = 1; */

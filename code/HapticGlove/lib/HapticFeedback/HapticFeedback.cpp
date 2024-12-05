@@ -46,11 +46,12 @@ void triggerFeedback(){
   i += 1;
 }
 
-void mux_select(uint8_t channel, TwoWire i2c_wire)
+void mux_select(uint8_t channel)
 {
     if (channel > 7) return;
 
-    i2c_wire.beginTransmission(0x70);
-    i2c_wire.write(1 << channel);
-    i2c_wire.endTransmission();  
+    I2C_LRA.beginTransmission(0x70);
+    I2C_LRA.write(1 << channel);
+    I2C_LRA.endTransmission();  
 }
+
