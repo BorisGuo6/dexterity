@@ -2,12 +2,20 @@
 #include "IMU.hpp"
 
 float wpos[3];
+uint8_t fpos[16];
+uint8_t apos[3];
 
 void gloveControlSetup(){
   // initialize IMUs, Hall-Effect Sensors, etc
-  wpos[0] = 0;
-  wpos[1] = 0;
-  wpos[2] = 0;
+  fingerTrackingSetup();
+  // initialize position data
+  for(int j=0; j<3; j++){
+    apos[j] = 0;
+    wpos[j] = 0;
+  }
+  for(int j=0; j<SENSOR_COUNT; j++){
+    fpos[j] = 0;
+  }
   // NOTE: IMUs init and cal need to be ran prior to ISRs
   return;
 }
@@ -22,25 +30,24 @@ void sendPositionData(){
     wpos[2] = ypr.roll;
   }
 
-  // format data
-  uint8_t fpos[16];
+  calcFingerAngles();
+  for(int j=0; j<SENSOR_COUNT; j++){
+    fpos[j] = (uint8_t)angles[j];
+  }
 
+  if(ENABLE_SENSORS_PRINT){
+    Serial.print("fpos - ");
+    for(int j=0; j<SENSOR_COUNT; j++){
+      Serial.print(fpos[j]); Serial.print(" ");
+    }
+    Serial.println();
+  }
   if(ENABLE_SENSORS_PRINT && IMUS_CONNECTED){
+    Serial.print("wpos - ");
     Serial.print(wpos[0]); Serial.print(" ");
     Serial.print(wpos[1]); Serial.print(" ");
     Serial.print(wpos[2]); Serial.println();
-  }
-
-  // format arm position data
-  uint8_t apos[3];
-  
-  // fill with random data (REMOVE LATER)
-  for(int j=0; j<16; j++){
-    fpos[j] = random(1, 255);
-  }
-  for(int j=0; j<3; j++){
-    //wpos[j] = random(1, 255);
-    apos[j] = random(1, 255);
+    Serial.println("\n");
   }
 
   // send data

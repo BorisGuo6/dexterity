@@ -1,186 +1,105 @@
 #include "HallEffectSensors.h"
 
-HallEffectSensors::HallEffectSensors()
-{
-    this->s0 = D3;
-    this->s1 = D4;
-    this->s2 = D5;
-    this->s3 = D6;
-    this->MCP_flexion_min = 0;
-    this->MCP_flexion_max = 160;
-    this->MCP_abduction_min = -40;
-    this->MCP_abduction_max = 40;
-    for (uint8_t i = 0; i < SENSOR_COUNT; i++) {
-        this->angles[i] = 0;
-    }
-}
+ResponsiveAnalogRead analog(HALL_ADC, true);
 
-HallEffectSensors::HallEffectSensorArr(uint8_t s0, uint8_t s1, uint8_t s2, uint8_t s3, int32_t MCP_flexion_min,
-    int32_t MCP_flexion_max, int32_t MCP_abduction_min, int32_t MCP_abduction_max)
-{
-    this->s0 = s0;
-    this->s1 = s1;
-    this->s2 = s2;
-    this->s3 = s3;
-    this->MCP_flexion_min = MCP_flexion_min;
-    this->MCP_flexion_max = MCP_flexion_max;
-    this->MCP_abduction_min = MCP_abduction_min;
-    this->MCP_abduction_max = MCP_abduction_max;
-    for (uint8_t i = 0; i < SENSOR_COUNT; i++) {
-        this->angles[i] = 0;
-    }
-}
+int32_t rawVals[SENSOR_COUNT];
+float proto_angles[SENSOR_COUNT];
+float min_angles[SENSOR_COUNT];
+float max_angles[SENSOR_COUNT];
 
-HallEffectSensors::~HallEffectSensors() {}
+float polyVals[16][3] = {
+    {0.000187500000000,-0.900000000000008,1123.125000000007276}, //0 pinkie abduction
+    {-0.000050824632326,0.326934971850896,-345.507279085339803}, //1 pinkie mcp flex
+    {0.000044387376918,-0.286448052031499,461.919500838532997}, //2 pinkie pip flex
+    {0.000187500000000,-0.900000000000008,1123.125000000007276}, //3 ring abduction 
+    {-0.000050824632326,0.326934971850896,-345.507279085339803}, //4 ring mcp flex
+    {0.000044387376918,-0.286448052031499,461.919500838532997}, //5 ring pip flex
+    {0.000187500000000,-0.900000000000008,1123.125000000007276}, //6 middle abduction
+    {-0.000050824632326,0.326934971850896,-345.507279085339803}, //7 middle mcp flex
+    {0.000044387376918,-0.286448052031499,461.919500838532997}, //8 middle pip flex
+    {0.000187500000000,-0.900000000000008,1123.125000000007276}, //9 index abduction
+    {-0.000050824632326,0.326934971850896,-345.507279085339803},//10 index mcp flex
+    {0.000044387376918,-0.286448052031499,461.919500838532997}, //11 index pip flex
+    {0.000048527756939,-0.317934171042760,519.283570892722651},//12 thumb mcp flex
+    {0.000187500000000,-0.900000000000008,1123.125000000007276}, //13 thumb abduction
+    {0.000044387376918,-0.286448052031499,461.919500838532997}, //14 thumb pip flex
+    {0.000038961038961,-0.270000000000002,459.896103896105330} //15 thumb rotation
+};
 
- void HallEffectSensors::initialize()
-  {
+const int reorder[16] = {15, 14, 13, 12, 10, 11, 9, 7, 8, 6, 4, 5, 1, 2, 0, 3};
+
+void hallEffectSensorsSetup(){
     analogReadResolution(12);
 
-    pinMode(D2, OUTPUT);
+    //pinMode(D2, OUTPUT);
 
-    pinMode(this->s0, OUTPUT);
-    pinMode(this->s1, OUTPUT);
-    pinMode(this->s2, OUTPUT);
-    pinMode(this->s3, OUTPUT);
+    pinMode(S0, OUTPUT);
+    pinMode(S1, OUTPUT);
+    pinMode(S2, OUTPUT);
+    pinMode(S3, OUTPUT);
 
-    digitalWrite(D2, LOW);
+    //digitalWrite(D2, LOW);
 
-    initializeCalibrationValues();
- }
-
-void HallEffectSensors::updateAngles()
-{
-    measureAngles();
-    calibrate();
-    adjustAngles();
-}
-
-void HallEffectSensors::printAngles() {
     for (uint8_t i = 0; i < SENSOR_COUNT; i++){
-        Serial.print(">Joint_");
-        Serial.print(i);
-        Serial.print(":");
-        Serial.println(this->angles[i]);
+        min_angles[i] = 10000;
+        max_angles[i] = -10000;
     }
 }
 
-void HallEffectSensors::sendData() {
-    uint8_t fpos[SENSOR_COUNT];
-    uint8_t wpos[3];
-    uint8_t apos[3];
-    for(int i = 0; i < SENSOR_COUNT; i++){
-        fpos[i] = (uint8_t)this->angles[i];
-    }
-    for(int i = 0; i < 3; i ++){
-        wpos[i] = random(1, 255);
-        apos[i] = random(1, 255);
-    }
-
-    //position_packet.messages_rec = glove_messages_rcv;
-
-    glove_sendData(fpos, wpos, apos);
-
-    //glove_messages_send_attempt += 1;
+float poly(double x, double a,double b,double c){
+    return a*pow(x,2)+b*x+c;
 }
 
-void HallEffectSensors::initializeCalibrationValues(){
+void calibrateHallEffectSensors(){
     for (uint8_t i = 0; i < SENSOR_COUNT; i++){
-        this->min_angles[i] = 10000;
-        this->max_angles[i] = -10000;
-    }
-}
-
-void HallEffectSensors::calibrate(){
-    for (uint8_t i = 0; i < SENSOR_COUNT; i++){
-        if(this->proto_angles[i] < this->min_angles[i]){
-            this->min_angles[i] = this->proto_angles[i];
-        } else if(this->proto_angles[i] > this->max_angles[i]){
-            this->max_angles[i] = this->proto_angles[i];
+        if(proto_angles[i] < min_angles[i]){
+            min_angles[i] = proto_angles[i];
+        } else if(proto_angles[i] > max_angles[i]){
+            max_angles[i] = proto_angles[i];
         }
     }
 }
 
-void HallEffectSensors::measureAngles()
+void reorderArray(int32_t arr[16]) {
+    int32_t temp[16]; // Temporary array to store reordered elements
+
+    // Reorder the elements based on the order array
+    for (int i = 0; i < 16; i++) {
+        temp[i] = arr[reorder[i]];
+    }
+
+    // Copy the reordered elements back to the original array
+    for (int i = 0; i < 16; i++) {
+        arr[i] = temp[i];
+    }
+}
+
+void measureHallEffectSensors()
 {
     for (uint8_t i = 0; i < SENSOR_COUNT; i++){
-        digitalWrite(this->s0, i & 0b1);
-        digitalWrite(this->s1, (i>>1) & 0b1);
-        digitalWrite(this->s2, (i>>2) & 0b1);
-        digitalWrite(this->s3, (i>>3) & 0b1);
+        digitalWrite(S0, i & 0b1);
+        digitalWrite(S1, (i>>1) & 0b1);
+        digitalWrite(S2, (i>>2) & 0b1);
+        digitalWrite(S3, (i>>3) & 0b1);
 
         delay(5); //not sure if this is necessary
 
 
-        this->analog.update();
-        int32_t rawVal = this->analog.getRawValue();
-        this->rawVals[i] = rawVal;
+        analog.update();
+        int32_t rawVal = analog.getRawValue();
+        rawVals[i] = rawVal;
      }
+    reorderArray(rawVals);
 
     for (uint8_t i = 0; i < SENSOR_COUNT; i++){
-        int32_t angle = (int32_t)poly(this->rawVals[i],this->polyVals[i][0],this->polyVals[i][1],this->polyVals[i][2]);
-        this->proto_angles[i] = angle;
+        float angle = poly(rawVals[i],polyVals[i][0],polyVals[i][1],polyVals[i][2]);
+        proto_angles[i] = angle;
     }
+    //jank solution to having the angles for the thumb backwards
+    //TODO remove with glove v2
+    // proto_angles[12] = 150-proto_angles[12];
+    // proto_angles[13] = 150-proto_angles[12];
+    // proto_angles[14] = 150-proto_angles[14];
+    // proto_angles[15] = 150-proto_angles[15];
 }
 
-void HallEffectSensors::adjustAngles()
-{
-    //pinkie
-    this->angles[0] = adjustMCPAbductionAngle(0);
-    this->angles[1] = adjustMCPFlexionAngle(1);
-    this->angles[2] = adjustPIPFlexionAngle(2);
-
-    //ring
-    this->angles[3] = adjustMCPAbductionAngle(3);
-    this->angles[4] = adjustMCPFlexionAngle(4);
-    this->angles[5] = adjustPIPFlexionAngle(5);
-
-    //middle
-    this->angles[6] = adjustMCPAbductionAngle(6);
-    this->angles[7] = adjustMCPFlexionAngle(7);
-    this->angles[8] = adjustPIPFlexionAngle(8);
-
-    //index
-    this->angles[9] = adjustMCPAbductionAngle(9);
-    this->angles[10] = adjustMCPFlexionAngle(10);
-    this->angles[11] = adjustPIPFlexionAngle(11);
-
-    //TODO
-    //thumb
-    this->angles[12] = this->angles[12];
-    this->angles[13] = this->angles[13];
-    this->angles[14] = this->angles[14];
-    this->angles[15] = this->angles[15];
-}
-
-int32_t HallEffectSensors::adjustMCPAbductionAngle(int32_t i)
-{
-    int32_t angle = this->proto_angles[i];
-    float32_t max_angle = this->max_angles[i];
-    float32_t min_angle = this->min_angles[i];
-    int32_t adjusted_angle = (int32_t)((angle - min_angle)/(max_angle-min_angle) * (2*this->MCP_abduction_max));
-    return adjusted_angle;
-}
-
-int32_t HallEffectSensors::adjustMCPFlexionAngle(int32_t i)
-{
-    int32_t angle = this->proto_angles[i];
-    float32_t max_angle = this->max_angles[i];
-    float32_t min_angle = this->min_angles[i];
-    int32_t adjusted_angle = (int32_t)((angle - min_angle)/(max_angle-min_angle) * this->MCP_flexion_max);
-    return adjusted_angle;
-}
-
-//TODO do this properly
-int32_t HallEffectSensors::adjustPIPFlexionAngle(int32_t i)
-{
-    int32_t angle = this->proto_angles[i];
-    float32_t max_angle = this->max_angles[i];
-    float32_t min_angle = this->min_angles[i];
-    int32_t adjusted_angle = (int32_t)((angle - min_angle)/(max_angle-min_angle) * this->MCP_flexion_max);
-    return adjusted_angle;
-}
-
-static float32_t poly(double x, double a,double b,double c){
-    return a*pow(x,2)+b*x+c;
-}

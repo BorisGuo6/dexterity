@@ -3,6 +3,8 @@
 
 #include "HapticGlove.h"
 #include "HapticGlove_ESPNOW.h"
+#include "FingerTracking.h"
+#include "HallEffectSensors.h"
 
 void gloveControlSetup();
 void sendPositionData();
