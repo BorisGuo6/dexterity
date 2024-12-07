@@ -1,4 +1,5 @@
 #include "RoboticArm_ESPNOW.h"
+#include "RoboticArm.h"
 
 // Start RoboticArm_ESPNOW.c:
 
@@ -153,7 +154,7 @@ void arm_sendData(uint8_t fi, uint8_t fm, uint8_t fr, uint8_t fp, uint8_t ft){
 
   if (result == ESP_OK) {
     // Serial.println("Sent with success");
-  } else {
+  } else if (ENABLE_ESPNOW_PRINT){
     Serial.println("Error sending the data");
   }
 }

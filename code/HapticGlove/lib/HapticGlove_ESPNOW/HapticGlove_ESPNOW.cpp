@@ -1,4 +1,5 @@
 #include "HapticGLove_ESPNOW.h"
+#include "HapticGlove.h"
 // Start HapticGlove_ESPNOW.c:
 
 uint8_t peer_mac[6];
@@ -144,7 +145,7 @@ void glove_ESPNOWsetup(uint8_t mac_in[]){
   delay(SYNC_DELAY*1000);
 }
 
-void glove_sendData(uint8_t fpos[], uint8_t wpos[], uint8_t apos[]){
+void glove_sendData(uint8_t fpos[], float wpos[], uint8_t apos[]){
   // Set values to send
   for(int j=0; j<16; j++){
     glove_outData.finger_pos[j] = fpos[j];
@@ -162,7 +163,7 @@ void glove_sendData(uint8_t fpos[], uint8_t wpos[], uint8_t apos[]){
 
   if (result == ESP_OK) {
     // Serial.println("Sent with success");
-  } else {
+  } else if (ENABLE_ESPNOW_PRINT) {
     Serial.println("Error sending the data");
   }
 }

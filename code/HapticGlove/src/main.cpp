@@ -2,6 +2,7 @@
 #include <HapticGlove.h>
 #include "GloveControl.h"
 #include "HapticFeedback.h"
+#include "IMU.hpp"
 // General Arduino Code for Demonstration
 
 TaskHandle_t sensorProcessing;
@@ -76,6 +77,12 @@ void setup() {
   Serial.begin(baud_rate);
   Serial.println("initializing . . .");
   ESPNOW_setup = false;
+
+  // IMU initialization and calibration
+  if(IMUS_CONNECTED){
+    initializeIMUs();
+    calibrateIMUs();
+  }
 
       // assign armControl to core 0
     xTaskCreatePinnedToCore(
