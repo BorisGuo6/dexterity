@@ -15,7 +15,7 @@
 //                  24   :EC   :4A   :45   :23   :A4
 #define PEER_MAC {0x24, 0xEC, 0x4A, 0x45, 0x23, 0xA4}
 #define ENABLE_PRESSURE_PRINT 0
-#define ENABLE_CONTROL_PRINT 1 
+#define ENABLE_CONTROL_PRINT 0 
 #define ENABLE_WRIST_PRINT 0
 #define ENABLE_ESPNOW_PRINT 1
 #define ISR0_FREQ 50 // in Hz

@@ -12,8 +12,8 @@
 #define IMUS_CONNECTED 0
 #define ENABLE_HAPTICS_PRINT 0
 #define ENABLE_SENSORS_PRINT 0
-#define ENABLE_ESPNOW_PRINT 0
-#define TRACK_ISR_0 0
+#define ENABLE_ESPNOW_PRINT 1
+#define TRACK_ISR_0 1
 #define TRACK_ISR_1 1
 #define ISR0_FREQ 50 // in Hz
 #define ISR1_FREQ 50 // in Hz
