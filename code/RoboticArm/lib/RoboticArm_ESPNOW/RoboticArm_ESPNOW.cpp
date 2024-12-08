@@ -12,6 +12,7 @@ haptic_packet arm_outData;
 int arm_messages_send_attempt = 0;
 int arm_messages_send_success = 0;
 int arm_messages_rcv = 0;
+uint8_t forces[5];
 
 // remove when not monitoring success rate:
 uint8_t pos5_in;
@@ -138,13 +139,14 @@ void arm_ESPNOWsetup(uint8_t mac_in[]){
   delay(SYNC_DELAY*1000);
 }
 
-void arm_sendData(uint8_t fi, uint8_t fm, uint8_t fr, uint8_t fp, uint8_t ft){
+void arm_sendData(uint8_t ft, uint8_t fi, uint8_t fm, uint8_t fr, uint8_t fp){
   // Set values to send
-  arm_outData.force_index = fi;
-  arm_outData.force_middle = fm;
-  arm_outData.force_ring = fr;
-  arm_outData.force_pinky = fp;
-  arm_outData.force_thumb = ft;
+  arm_outData.forces[0] = ft;
+  arm_outData.forces[1] = fi;
+  arm_outData.forces[2] = fm;
+  arm_outData.forces[3] = fr;
+  arm_outData.forces[4] = fp;
+  // 0 -> t, 1 -> , 2 -> , 3 -> , 4 -> 
   arm_outData.messages_rec = arm_messages_rcv;
 
   // Send struct message via ESP-NOW

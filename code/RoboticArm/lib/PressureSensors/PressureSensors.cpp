@@ -15,12 +15,24 @@ void setupPressureSensors(){
 
 // IMPORTANT: IMPLEMENT PRESSURE SENSOR READINGS
 void pollPressureSensors(){
-    fi = 0;
-    fm = 0;
-    fr = 0;
-    fp = 0;
-    ft = 0;
-    return;
+    if(k<33){
+        fi = 1; fm = 0; fr = 0; fp = 0; ft = 5;
+    }
+    else if(k<66){
+        fi = 3; fm = 1; fr = 0; fp = 0; ft = 0;
+    }
+    else if(k<100){
+        fi = 5; fm = 3; fr = 1; fp = 0; ft = 0;
+    }
+    else if(k<133){
+        fi = 0; fm = 5; fr = 3; fp = 1; ft = 0;
+    }
+    else if(k<166){
+        fi = 0; fm = 0; fr = 5; fp = 3; ft = 1;
+    }
+    else{
+        fi = 0; fm = 0; fr = 0; fp = 5; ft = 3;
+    }
 }
 
 void sendPressureData(){
@@ -29,7 +41,7 @@ void sendPressureData(){
         Serial.println(xPortGetCoreID());
     }
     pollPressureSensors();
-    arm_sendData(fi, fm, fr, fp, ft);
+    arm_sendData(ft, fi, fm, fr, fp);
     
     k++;
     if(k%200 == 0 && TRACK_ISR_1){
