@@ -22,7 +22,7 @@ void initializeIMUs()
   delay(300);
 
   // initialize I2C
-  IMUWire.begin(I2C_SDA, I2C_SCL);                         
+  IMUWire.begin(IMU_I2C_SDA, IMU_I2C_SCL);                         
   IMUWire.setClock(I2C_CLOCK);
 
   // request desired reports
