@@ -13,8 +13,6 @@ TaskHandle_t hapticControl;
 
 volatile bool ESPNOW_setup;
 
-uint32_t ISR_count;
-
 hw_timer_t *Timer0 = NULL;
 volatile bool timer0_triggered = false; // Flag to indicate timer interrupt occurrence
 hw_timer_t *Timer1 = NULL;
@@ -39,8 +37,6 @@ void hapticControlCode(void* params){
   glove_ESPNOWsetup(mac);
   ESPNOW_setup = true;
 
-  ISR_count = 0;
-
   Timer0 = timerBegin(0, 80, true); // timer speed (Hz) = Timer clock speed (Mhz) / prescaler --> 1 MHz
   timerAttachInterrupt(Timer0, &Timer0_ISR, true); // Attach ISR to Timer0
   timerAlarmWrite(Timer0, 1000000/ISR0_FREQ, true); // Set timer to trigger every 1,000,000/ISR0_FREQ microseconds (1 s/f)
@@ -50,10 +46,6 @@ void hapticControlCode(void* params){
       if (timer0_triggered) { 
           timer0_triggered = false; // Reset the flag
           triggerHapticFeedback();
-          ISR_count++;
-          if(ISR_count%10==0){
-            Serial.print("ISR "); Serial.println(ISR_count);
-          }
       }
       vTaskDelay(10 / portTICK_PERIOD_MS); // Yield CPU for 10 ms to prevent blocking other tasks
   }

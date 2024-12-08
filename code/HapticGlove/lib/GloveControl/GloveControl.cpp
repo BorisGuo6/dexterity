@@ -4,9 +4,12 @@
 float wpos[3];
 uint8_t fpos[16];
 uint8_t apos[3];
+uint8_t i;
+unsigned long time1_elapsed;
 
 void gloveControlSetup(){
   // initialize IMUs, Hall-Effect Sensors, etc
+  i = 0;
   for(int j=0; j<3; j++){
     apos[j] = 0;
     wpos[j] = 0;
@@ -14,6 +17,7 @@ void gloveControlSetup(){
   for(int j=0; j<SENSOR_COUNT; j++){
     fpos[j] = 0;
   }
+  if(TRACK_ISR_1) time1_elapsed = micros();
   // NOTE: IMUs init and cal need to be ran prior to ISRs
   return;
 }
@@ -56,4 +60,11 @@ void sendPositionData(){
 
   // send data
   glove_sendData(fpos, wpos, apos);
+
+  i++;
+  if(i%200 == 0 && TRACK_ISR_1){
+    Serial.print("\ncallback 1 run at "); Serial.print((200*1000000)/(micros() - time1_elapsed)); Serial.println(" Hz\n");
+    i = 0;
+    time1_elapsed = micros();
+  }
 }
