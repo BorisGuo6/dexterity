@@ -1,43 +1,52 @@
 #include "PressureSensors.h"
 
 // IMPORTANT: IMPLEMENT PRESSURE SENSOR TO ARM CONTROL IN FUTURE
-uint8_t hset[5];
-uint32_t forces[5];
-uint8_t iters;
+uint8_t fi;
+uint8_t fm;
+uint8_t fr;
+uint8_t fp;
+uint8_t ft;
+uint8_t k;
+unsigned long time1_elapsed;
 
 void setupPressureSensors(){
-    iters = 0;
-    return;
+    k = 0;
 }
 
 // IMPORTANT: IMPLEMENT PRESSURE SENSOR READINGS
 void pollPressureSensors(){
-    forces[0] = analogRead(FI_TEST_PIN);
-    forces[1] = 0;
-    forces[2] = 0;
-    forces[3] = 0;
-    forces[4] = 0;
+    if(k<33){
+        fi = 1; fm = 0; fr = 0; fp = 0; ft = 5;
+    }
+    else if(k<66){
+        fi = 3; fm = 1; fr = 0; fp = 0; ft = 0;
+    }
+    else if(k<100){
+        fi = 5; fm = 3; fr = 1; fp = 0; ft = 0;
+    }
+    else if(k<133){
+        fi = 0; fm = 5; fr = 3; fp = 1; ft = 0;
+    }
+    else if(k<166){
+        fi = 0; fm = 0; fr = 5; fp = 3; ft = 1;
+    }
+    else{
+        fi = 0; fm = 0; fr = 0; fp = 5; ft = 3;
+    }
 }
 
 void sendPressureData(){
+    if(ENABLE_PRESSURE_PRINT){
+        Serial.print("Sending pressure data from core ");
+        Serial.println(xPortGetCoreID());
+    }
     pollPressureSensors();
-    for(int j=0; j<5; j++){
-        if(forces[j] < 700) hset[j] = 0;
-        else if(forces[j] < 1700) hset[j] = 1;
-        else if(forces[j] < 2700) hset[j] = 2;
-        else if(forces[j] < 3400) hset[j] = 3;
-        else if(forces[j] < 3800) hset[j] = 4;
-        else hset[j] = 5;
-    }
-    if(ENABLE_PRESSURE_PRINT && iters%10 == 0){
-        Serial.print("ADC Values: ");
-        for(int j=0; j<5; j++){
-            Serial.print(forces[j]);
-            Serial.print("\t");
-        }
-        Serial.println();
-    }
-    iters += 1;
-    arm_sendData(hset[0], hset[1], hset[2], hset[3], hset[4]);
-    return;
+    arm_sendData(ft, fi, fm, fr, fp);
+    
+    k++;
+    if(k%200 == 0 && TRACK_ISR_1){
+    Serial.print("\ncallback 1 run at "); Serial.print((200*1000000)/(micros() - time1_elapsed)); Serial.println(" Hz\n");
+    k = 0;
+    time1_elapsed = micros();
+  }
 }

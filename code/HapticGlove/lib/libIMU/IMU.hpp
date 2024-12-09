@@ -31,14 +31,14 @@
 
 // BREADBOARD SETUP
 //#define pinRST      36            // output pin to BNO RST
-//#define I2C_SDA     35              // I2C SDA pin
-//#define I2C_SCL     0               // I2C SCL pin
+//#define IMU_I2C_SDA     35              // I2C SDA pin
+//#define IMU_I2C_SCL     0               // I2C SCL pin
 //#define IMU_CAL_BUTTON    5
 
 // PCB SETUP
 #define pinRST      38            // output pin to BNO RST
-#define I2C_SDA     37              // I2C SDA pin
-#define I2C_SCL     36               // I2C SCL pin
+#define IMU_I2C_SDA     37              // I2C SDA pin
+#define IMU_I2C_SCL     36               // I2C SCL pin
 #define IMU_CAL_BUTTON    11
 
 // _____________ I2C SETTINGS ____________________

@@ -3,6 +3,9 @@
 #include "GloveControl.h"
 #include "HapticFeedback.h"
 #include "IMU.hpp"
+#include "GloveControl.h"
+#include <Adafruit_I2CDevice.h>
+#include <SPI.h>
 // General Arduino Code for Demonstration
 
 TaskHandle_t sensorProcessing;
@@ -83,6 +86,7 @@ void setup() {
     initializeIMUs();
     calibrateIMUs();
   }
+  fingerTrackingSetup();
 
       // assign armControl to core 0
     xTaskCreatePinnedToCore(

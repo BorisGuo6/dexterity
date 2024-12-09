@@ -8,8 +8,8 @@
 #include <Adafruit_DRV2605.h>
 #include <SPI.h>
 
-#define I2C_SDA 35
-#define I2C_SCL 0
+#define HF_I2C_SDA 0
+#define HF_I2C_SCL 35
 
 void setupFeedback();
 void triggerFeedback();

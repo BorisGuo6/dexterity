@@ -20,7 +20,7 @@ void arm_ESPNOWsetup(uint8_t mac_in[], int baud_rate); // starts UART0
 void arm_ESPNOWsetup(uint8_t mac_in[]); // UART0 already started
 
 // general arm code has access to sendData function
-void arm_sendData(uint8_t fi, uint8_t fm, uint8_t fr, uint8_t fp, uint8_t ft);
+void arm_sendData(uint8_t ft, uint8_t fi, uint8_t fm, uint8_t fr, uint8_t fp);
 
 // receive data function will call general arm code
 

@@ -28,11 +28,7 @@ typedef struct haptic_packet {
   // remove when not monitoring success rate:
   int messages_rec;
   // end remove
-  uint8_t force_index;
-  uint8_t force_middle;
-  uint8_t force_ring;
-  uint8_t force_pinky;
-  uint8_t force_thumb;
+  uint8_t forces[5];
 } haptic_packet;
 
 #endif
