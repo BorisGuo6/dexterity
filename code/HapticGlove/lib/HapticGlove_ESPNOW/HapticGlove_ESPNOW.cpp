@@ -17,6 +17,7 @@ void GloveOnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
 
 // Callback function that will be executed when data is received
 void GloveOnDataRecv(const uint8_t *mac_addr, const uint8_t *incomingData, int len) {  // Changed signature to match expected esp_now_recv_cb_t type
+  controlPanel.toggleExtLED(1);
   if (len == sizeof(glove_inData)) {
       memcpy(&glove_inData, incomingData, sizeof(glove_inData));
       // Proceed with processing

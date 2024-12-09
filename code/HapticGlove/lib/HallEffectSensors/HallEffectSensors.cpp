@@ -1,7 +1,7 @@
 #include "HallEffectSensors.h"
 #include <Arduino.h>
 
-#define ANGLE_LIMIT 9.0
+#define ANGLE_LIMIT 4.0
 
 ResponsiveAnalogRead analog(HALL_ADC, true);
 
