@@ -105,7 +105,14 @@ void measureHallEffectSensors()
 
         if (angle_diff_abs >= ANGLE_LIMIT)
         {
-            proto_angles[i] = proto_angles[i] + ANGLE_LIMIT;
+            if (angle_diff >= 0.0)
+            {
+                proto_angles[i] = proto_angles[i] + ANGLE_LIMIT;
+            }
+            else
+            {
+                proto_angles[i] = proto_angles[i] - ANGLE_LIMIT;
+            }
         }
         else
         {
