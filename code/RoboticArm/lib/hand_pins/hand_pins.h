@@ -15,11 +15,11 @@
 #define PRESSURE_SENSOR_4 8     // 8
 // pin 3 unused                 // 3
 // pin 46 unused                // 46
-#define SWITCH_0 9              // 9
+#define SWITCH_0 37              // 37
 #define SWITCH_1 10             // 10
 #define BUTTON_0 37             // 37
 #define BUTTON_1 12             // 12
-#define LED_0 36                // 36
+#define LED_0 14                // 14
 #define LED_1 35                // 35
 
 // right side pins
@@ -27,8 +27,8 @@
 #define U0_RX 44                // RX
 #define IMU_INT_0 1             // 1
 #define IMU_INT_1 2             // 2
-// pin 42 unused                // 42
-// pin 41 unused                // 41
+#define DIGITAL_SERVO_SCL       // 42
+#define DIGITAL_SERVO_SDA       // 41
 // pin 40 unused                // 40
 // pin 39 unused                // 39
 #define IMU_RST 38              // 38

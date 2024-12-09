@@ -2,9 +2,10 @@
 #define EMAXSERVOCONTROL_H
 
 #include <Adafruit_PWMServoDriver.h>
+#include "hand_pins.h"
 
-#define I2C_SDA     4              // I2C SDA pin
-#define I2C_SCL     5               // I2C SCL pin
+#define I2C_SDA     DIGITAL_SERVO_SDA              // I2C SDA pin
+#define I2C_SCL     DIGITAL_SERVO_SCL              // I2C SCL pin
 #define I2C_CLOCK   400000L       // I2C clock rate
 
 
