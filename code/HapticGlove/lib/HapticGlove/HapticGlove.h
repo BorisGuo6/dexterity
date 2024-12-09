@@ -11,12 +11,14 @@
 //                  3C:   84:   27:   14:   7B:   B0
 // #define PEER_MAC {0x3C, 0x84, 0x27, 0x14, 0x7B, 0xB0}
 #define PEER_MAC {0x24, 0xEC, 0x4A, 0x45, 0x23, 0x80}
-#define IMUS_CONNECTED 0
+#define IMUS_CONNECTED 1
+#define ENABLE_HAPTICS 0
 #define ENABLE_HAPTICS_PRINT 0
 #define ENABLE_SENSORS_PRINT 0
-#define ENABLE_ESPNOW_PRINT 0
-#define TRACK_ISR_0 1
-#define TRACK_ISR_1 1
+#define ENABLE_IMU_SENSORS_PRINT 1
+#define ENABLE_ESPNOW_PRINT 1
+#define TRACK_ISR_0 0
+#define TRACK_ISR_1 0
 #define ISR0_FREQ 50 // in Hz
 #define ISR1_FREQ 50 // in Hz
 

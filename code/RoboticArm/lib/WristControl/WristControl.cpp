@@ -1,5 +1,14 @@
 #include "WristControl.h"
 
+#define SERVO3_CENTER_POSITION 511
+#define SERVO4_CENTER_POSITION 511
+#define BITS_PER_DEGREE ((float) (1024.0 / 180.0))
+#define SERVO3_LOWER_LIMIT 20
+#define SERVO3_UPPER_LIMIT 1000
+#define SERVO4_LOWER_LIMIT 20
+#define SERVO4_UPPER_LIMIT 1000
+#define WRIST_SERVO_SPEED  500
+
 SCServo SERVO;
 
 void wristControlSetup(){
@@ -17,21 +26,34 @@ void controlWrist(float* wrist_pos){
         Serial.print(" ");
         Serial.println(wrist_pos[2]);
     }
-    uint16_t pos3 = 511;
-    uint16_t pos4 = 511;
-    if(200 > pos3){
-        pos3 = 200;
+   // convert euler angles to servo commands
+    float yaw =  -1 * wrist_pos[0];
+    float pitch = -1 * wrist_pos[1];
+    float servo3_angle = pitch + yaw;
+    float servo4_angle = yaw - pitch;
+    uint16_t pos3_diff = (uint16_t) (BITS_PER_DEGREE * servo3_angle);
+    uint16_t pos4_diff = (uint16_t) (BITS_PER_DEGREE * servo4_angle);
+    uint16_t pos3 = (uint16_t) (pos3_diff + SERVO3_CENTER_POSITION);
+    uint16_t pos4 = (uint16_t) (pos4_diff + SERVO3_CENTER_POSITION);
+    
+    // set limits for servo 3
+    if(SERVO3_LOWER_LIMIT > pos3){
+        pos3 = SERVO3_LOWER_LIMIT;
     }
-    if(pos3 > 800){
-        pos3 = 800;
+    if(pos3 > SERVO3_UPPER_LIMIT){
+        pos3 = SERVO3_UPPER_LIMIT;
     }
-    if(200 > pos4){
-        pos4 = 200;
+
+    // set limits for servo 4
+    if(SERVO4_LOWER_LIMIT > pos4){
+        pos4 = SERVO4_LOWER_LIMIT;
     }
-    if(pos4 > 800){
-        pos4 = 800;
+    if(pos4 > SERVO4_UPPER_LIMIT){
+        pos4 = SERVO4_UPPER_LIMIT;
     }
-    SERVO.WritePos(SERVO_ID_3, pos3%1000, 100, 20);
-    SERVO.WritePos(SERVO_ID_4, pos4%1000, 100, 20);
+
+    // send position to servos
+    SERVO.WritePos(SERVO_ID_3, pos3%1024, 100, WRIST_SERVO_SPEED);
+    SERVO.WritePos(SERVO_ID_4, pos4%1024, 100, WRIST_SERVO_SPEED);
     return;
 }

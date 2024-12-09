@@ -6,7 +6,7 @@ iquat_t iq[BNOs];           // int quaternion, reported by sensor
 fquat_t fq[BNOs];           // float quaternion, converted from int quat
 fquat_t fq_ref[BNOs];       // reference quaternions for calibration
 
-int imu_cal_button_state = LOW;
+int imu_cal_button_state = BUTTON_NORMAL;
 
 TwoWire IMUWire = TwoWire(TWOWIRE_INSTANCE_ADDRESS); 
 
@@ -43,7 +43,7 @@ void calibrateIMUs()
   }
 
   // get reports until calibration button is pressed
-  while (imu_cal_button_state == LOW) 
+  while (imu_cal_button_state == BUTTON_NORMAL) 
   {
     check_report(0);
     check_report(1);

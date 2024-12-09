@@ -40,6 +40,7 @@
 #define IMU_I2C_SDA     37              // I2C SDA pin
 #define IMU_I2C_SCL     36               // I2C SCL pin
 #define IMU_CAL_BUTTON    11
+#define BUTTON_NORMAL   HIGH
 
 // _____________ I2C SETTINGS ____________________
 #define TWOWIRE_INSTANCE_ADDRESS 1 // used to change the TwoIMUWire address (not I2C address)

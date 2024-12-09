@@ -21,31 +21,33 @@ void setupFeedback(){
 }
 
 void triggerFeedback(){
-  for(int j=0; j<5; j++){
-    mux_select(j);
-    switch(glove_inData.forces[j]){
-      case 1:
-        setHapticMode(drv[j], HAPTIC_1);
-        drv[j].go();
-        break;
-      case 2:
-        setHapticMode(drv[j], HAPTIC_2);
-        drv[j].go();
-        break;
-      case 3:
-        setHapticMode(drv[j], HAPTIC_3);
-        drv[j].go();
-        break;
-      case 4:
-        setHapticMode(drv[j], HAPTIC_4);
-        drv[j].go();
-        break;
-      case 5:
-        setHapticMode(drv[j], HAPTIC_5);
-        drv[j].go();
-        break;
-      default:
-        break;
+  if(ENABLE_HAPTICS){
+    for(int j=0; j<5; j++){
+      mux_select(j);
+      switch(glove_inData.forces[j]){
+        case 1:
+          setHapticMode(drv[j], HAPTIC_1);
+          drv[j].go();
+          break;
+        case 2:
+          setHapticMode(drv[j], HAPTIC_2);
+          drv[j].go();
+          break;
+        case 3:
+          setHapticMode(drv[j], HAPTIC_3);
+          drv[j].go();
+          break;
+        case 4:
+          setHapticMode(drv[j], HAPTIC_4);
+          drv[j].go();
+          break;
+        case 5:
+          setHapticMode(drv[j], HAPTIC_5);
+          drv[j].go();
+          break;
+        default:
+          break;
+      }
     }
   }
   if(k % 200 == 0 && ENABLE_ESPNOW_PRINT){
