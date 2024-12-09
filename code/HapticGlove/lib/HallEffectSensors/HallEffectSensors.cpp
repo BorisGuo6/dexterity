@@ -1,4 +1,7 @@
 #include "HallEffectSensors.h"
+#include <Arduino.h>
+
+#define ANGLE_LIMIT 9.0
 
 ResponsiveAnalogRead analog(HALL_ADC, true);
 
@@ -93,8 +96,21 @@ void measureHallEffectSensors()
     reorderArray(rawVals);
 
     for (uint8_t i = 0; i < SENSOR_COUNT; i++){
+        // apply poly fit to get est. for angle
         float angle = poly(rawVals[i],polyVals[i][0],polyVals[i][1],polyVals[i][2]);
-        proto_angles[i] = angle;
+
+        // compare previous angle with current
+        float angle_diff = angle - proto_angles[i];
+        float angle_diff_abs = abs(angle_diff);
+
+        if (angle_diff_abs >= ANGLE_LIMIT)
+        {
+            proto_angles[i] = proto_angles[i] + ANGLE_LIMIT;
+        }
+        else
+        {
+            proto_angles[i] = angle;
+        }  
     }
     //jank solution to having the angles for the thumb backwards
     //TODO remove with glove v2
