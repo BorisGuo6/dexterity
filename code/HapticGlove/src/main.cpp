@@ -20,6 +20,11 @@ volatile bool timer1_triggered = false; // Flag to indicate timer interrupt occu
 
 void IRAM_ATTR Timer0_ISR();
 void IRAM_ATTR Timer1_ISR();
+void IRAM_ATTR button_0_isr();
+void IRAM_ATTR button_1_isr();
+
+GloveControlPanel controlPanel = GloveControlPanel(&button_0_isr, &button_1_isr);
+volatile bool button_pressed = false;
 
 void triggerGloveControl(){
   sendPositionData();
@@ -74,12 +79,22 @@ void sensorProcessingCode(void* params){
   }
 }
 
+void IRAM_ATTR button_0_isr(){
+  return;
+}
+
+void IRAM_ATTR button_1_isr(){
+  button_pressed = true;
+}
+
 void setup() {
   // Start the Serial Monitor
   int baud_rate = 115200;
   Serial.begin(baud_rate);
   Serial.println("initializing . . .");
   ESPNOW_setup = false;
+  button_pressed = false;
+  controlPanel.initialize();
 
   // IMU initialization and calibration
   if(IMUS_CONNECTED){

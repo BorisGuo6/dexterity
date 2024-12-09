@@ -4,6 +4,7 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "Arduino.h"
+#include "hand_pins.h"
 
 //{0x3C, 0x84, 0x27, 0xE1, 0xB3, 0x8C}
 //{0x54, 0x32, 0x04, 0x89, 0x70, 0x54}
@@ -14,6 +15,7 @@
 //#define PEER_MAC {0x24, 0xEC, 0x4A, 0x45, 0x23, 0x80}
 //                  24   :EC   :4A   :45   :23   :A4
 #define PEER_MAC {0x24, 0xEC, 0x4A, 0x45, 0x23, 0xA4}
+#define PRESSURE_SENSORS_ENABLED 0
 #define ENABLE_PRESSURE_PRINT 0
 #define ENABLE_CONTROL_PRINT 0 
 #define ENABLE_WRIST_PRINT 0

@@ -10,7 +10,7 @@ void mux_select(uint8_t channel);
 void setupFeedback(){
   k = 1;
   if(TRACK_ISR_0) time0_elapsed = micros();
-  I2C_LRA.begin(HF_I2C_SDA, HF_I2C_SCL, 400000);
+  I2C_LRA.begin(HAPTIC_SDA, HAPTIC_SCL, 400000);
   for(int j=0; j<5; j++){
     mux_select(j);
     drv[j].begin(&I2C_LRA);

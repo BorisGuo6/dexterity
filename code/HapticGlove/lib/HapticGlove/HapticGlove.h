@@ -3,7 +3,9 @@
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "haptic_glove_pins.h"
 #include "Arduino.h"
+#include "GloveControlPanel.h"
 
 // #define PEER_MAC {0x54, 0x32, 0x04, 0x89, 0x70, 0x54}
 //                  3C:   84:   27:   14:   7B:   B0
@@ -17,6 +19,9 @@
 #define TRACK_ISR_1 1
 #define ISR0_FREQ 50 // in Hz
 #define ISR1_FREQ 50 // in Hz
+
+extern GloveControlPanel controlPanel;
+extern volatile bool button_pressed;
 
 void sensorProcessingCode(void* params);
 void hapticControlCode(void* params);
