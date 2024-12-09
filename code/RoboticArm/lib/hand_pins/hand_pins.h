@@ -27,8 +27,8 @@
 #define U0_RX 44                // RX
 #define IMU_INT_0 1             // 1
 #define IMU_INT_1 2             // 2
-#define DIGITAL_SERVO_SCL       // 42
-#define DIGITAL_SERVO_SDA       // 41
+#define DIGITAL_SERVO_SCL 42    // 42
+#define DIGITAL_SERVO_SDA 41    // 41
 // pin 40 unused                // 40
 // pin 39 unused                // 39
 #define IMU_RST 38              // 38
