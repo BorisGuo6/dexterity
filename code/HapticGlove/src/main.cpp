@@ -6,12 +6,15 @@
 #include "GloveControl.h"
 #include <Adafruit_I2CDevice.h>
 #include <SPI.h>
+#include "driver/gpio.h"
 // General Arduino Code for Demonstration
 
 TaskHandle_t sensorProcessing;
 TaskHandle_t hapticControl;
 
 volatile bool ESPNOW_setup;
+
+gpio_config_t myGPIOconfig;
 
 hw_timer_t *Timer0 = NULL;
 volatile bool timer0_triggered = false; // Flag to indicate timer interrupt occurrence
@@ -22,6 +25,8 @@ void IRAM_ATTR Timer0_ISR();
 void IRAM_ATTR Timer1_ISR();
 void IRAM_ATTR button_0_isr();
 void IRAM_ATTR button_1_isr();
+
+uint8_t button_counter;
 
 GloveControlPanel controlPanel = GloveControlPanel(&button_0_isr, &button_1_isr);
 volatile bool button_pressed = false;
@@ -52,6 +57,13 @@ void hapticControlCode(void* params){
           timer0_triggered = false; // Reset the flag
           triggerHapticFeedback();
       }
+      if (button_pressed){
+        button_counter--;
+        if(button_counter == 0){
+          button_pressed = false;
+        }
+        setupFeedback();
+      }
       vTaskDelay(10 / portTICK_PERIOD_MS); // Yield CPU for 10 ms to prevent blocking other tasks
   }
 
@@ -75,6 +87,17 @@ void sensorProcessingCode(void* params){
           timer1_triggered = false; // Reset the flag
           triggerGloveControl();
       }
+      if (button_pressed){
+        button_counter--;
+        if(button_counter == 0){
+          button_pressed = false;
+        }
+        if(IMUS_CONNECTED){
+          initializeIMUs();
+          calibrateIMUs();
+        }
+        fingerTrackingSetup();
+      }
       vTaskDelay(10 / portTICK_PERIOD_MS); // Yield CPU for 10 ms to prevent blocking other tasks
   }
 }
@@ -85,20 +108,31 @@ void IRAM_ATTR button_0_isr(){
 
 void IRAM_ATTR button_1_isr(){
   button_pressed = true;
+  button_counter = 2;
 }
 
 void setup() {
+  myGPIOconfig.pin_bit_mask = (0x1);
+  myGPIOconfig.pull_down_en = GPIO_PULLDOWN_DISABLE;
+  myGPIOconfig.pull_up_en = GPIO_PULLUP_DISABLE;
+  myGPIOconfig.mode = GPIO_MODE_OUTPUT;
+  myGPIOconfig.intr_type = GPIO_INTR_DISABLE;
+  gpio_config(&myGPIOconfig);
+  button_counter = 0;
   // Start the Serial Monitor
   int baud_rate = 115200;
   Serial.begin(baud_rate);
   Serial.println("initializing . . .");
   ESPNOW_setup = false;
   button_pressed = false;
+  Serial.println("Control Panel");
   controlPanel.initialize();
-
+  Serial.println("IMUs");
   // IMU initialization and calibration
   if(IMUS_CONNECTED){
+    Serial.println("init IMUs");
     initializeIMUs();
+    Serial.println("calibrate IMUs");
     calibrateIMUs();
   }
   fingerTrackingSetup();

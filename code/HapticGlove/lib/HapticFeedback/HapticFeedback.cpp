@@ -8,6 +8,7 @@ uint8_t force_settings[5];
 void mux_select(uint8_t channel);
 
 void setupFeedback(){
+  Serial.println("setupFeedback");
   k = 1;
   if(TRACK_ISR_0) time0_elapsed = micros();
   I2C_LRA.begin(HAPTIC_SDA, HAPTIC_SCL, 400000);

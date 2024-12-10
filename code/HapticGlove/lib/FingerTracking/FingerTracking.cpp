@@ -5,6 +5,7 @@ int32_t angles[SENSOR_COUNT];
 
 void fingerTrackingSetup()
 {
+	Serial.println("fingerTrackingSetup");
 	hallEffectSensorsSetup();
 
 	for (uint8_t i = 0; i < SENSOR_COUNT; i++)

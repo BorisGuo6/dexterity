@@ -14,6 +14,7 @@ TwoWire IMUWire = TwoWire(TWOWIRE_INSTANCE_ADDRESS);
 // _________________ FUNCTION DEFINITIONS ______________________
 void initializeIMUs()
 {
+  Serial.println("initializeIMUs");
   // reset all BNOs
   pinMode(pinRST,OUTPUT);               
   digitalWrite(pinRST,LOW);
@@ -32,16 +33,19 @@ void initializeIMUs()
 
 void calibrateIMUs()
 {
+  Serial.println("calibrateIMUs");
   // set pin for calibration button
   pinMode(IMU_CAL_BUTTON, INPUT);
 
   // get IMU reports until both quats are non zero
+  Serial.println("check nonzero");
   while (isIntQuatZero(0) || isIntQuatZero(1))
   {
     check_report(0);
     check_report(1);
   }
 
+  Serial.println("wait for button");
   // get reports until calibration button is pressed
   while (imu_cal_button_state == BUTTON_NORMAL) 
   {
@@ -50,6 +54,7 @@ void calibrateIMUs()
 
     // poll calibration button
     imu_cal_button_state = digitalRead(IMU_CAL_BUTTON);
+    Serial.println(digitalRead(IMU_CAL_BUTTON));
   }
 
   // set float quaternions
