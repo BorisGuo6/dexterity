@@ -112,6 +112,12 @@ void controlFingers(uint8_t finger_pos[]){
 void controlFinger(uint8_t finger_num, uint8_t finger_pos[]){
 
     int MCP_flexion, MCP_abduction, PIP_flexion;
+
+    if(digitalRead(37)==0){
+        MCP_flexion=(int)(2*MCP_flexion);
+        PIP_flexion=(int)(2*PIP_flexion);
+    }
+
     uint8_t M0_servo_num, M1_servo_num, T_servo_num;
     bool flip_abduction = false;
     switch(finger_num){
@@ -175,6 +181,10 @@ void controlThumb(uint8_t finger_pos[]){
     int CMC_flexion = finger_pos[12];
     int CMC_abduction = finger_pos[13] + THUMB_CMC_ABDUCTION_MIN;
     int PIP_flexion = finger_pos[14];
+
+    if(digitalRead(37)==0){
+        CMC_abduction=(int)(2*CMC_abduction);
+    }
 
     int* servo_positions = thumbCMCServoCalc(CMC_flexion,CMC_abduction,true);
     controlEmaxServo(TM0_SERVO_PIN, servo_positions[0]);

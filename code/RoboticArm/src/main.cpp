@@ -77,6 +77,7 @@ void setup() {
   Serial.begin(baud_rate);
   Serial.println("initializing . . .");
   ESPNOW_setup = false;
+  pinMode(LED_0, OUTPUT);
 
     // assign armControl to core 0
   xTaskCreatePinnedToCore(

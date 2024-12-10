@@ -10,7 +10,7 @@
 #define ESPNOW_WIFI_MODE    WIFI_STA     // WiFi mode to be used by ESP-NOW. Any mode can be used.
 #define ESPNOW_WIFI_IF      WIFI_IF_STA  // WiFi interface to be used by ESP-NOW. Any interface can be used.
 #define DATA_RATE           100          // In Hz
-#define SYNC_DELAY          10           // delay (in sec) between setting up ESPNOW and sending packets
+#define SYNC_DELAY          2           // delay (in sec) between setting up ESPNOW and sending packets
 #define PEER_MAC_1          {0x3C, 0x84, 0x27, 0x14, 0x7B, 0xB0} // MAC for board 1
 #define PEER_MAC_2          {0x3C, 0x84, 0x27, 0xE1, 0xB3, 0x8C} // MAC for board 2
 
@@ -20,7 +20,7 @@ typedef struct position_packet {
   int messages_rec;
   // end remove
   uint8_t finger_pos[16];
-  uint8_t wrist_pos[3];
+  float wrist_pos[3];
   uint8_t arm_pos[3];
 } position_packet;
 
@@ -28,11 +28,7 @@ typedef struct haptic_packet {
   // remove when not monitoring success rate:
   int messages_rec;
   // end remove
-  uint8_t force_index;
-  uint8_t force_middle;
-  uint8_t force_ring;
-  uint8_t force_pinky;
-  uint8_t force_thumb;
+  uint8_t forces[5];
 } haptic_packet;
 
 #endif

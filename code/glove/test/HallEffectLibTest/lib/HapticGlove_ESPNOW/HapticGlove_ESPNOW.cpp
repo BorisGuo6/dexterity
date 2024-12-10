@@ -49,9 +49,57 @@ void glove_ESPNOWsetup(uint8_t mac_in[], int baud_rate){
     peer_mac[i] = mac_in[i];
   }
 
-  // while (!Serial) {
-  //   delay(10);
-  // }
+  // Set the WiFi to the mode and channel to be used by ESP-NOW
+  Serial.println("Setting up WiFi...");
+  WiFi.mode(ESPNOW_WIFI_MODE);
+  // WiFi.setChannel(ESPNOW_WIFI_CHANNEL, WIFI_SECOND_CHAN_NONE);  // Replaced this line
+  esp_wifi_set_channel(ESPNOW_WIFI_CHANNEL, WIFI_SECOND_CHAN_NONE);  // Correct method to set channel on ESP32
+
+  // Wait for the WiFi to start
+  while (!WiFi.status() == WL_CONNECTED) {  // Replaced STA check with WiFi.status() for general WiFi check
+    delay(100);
+  }
+
+  // Print the MAC address of this device
+  Serial.print("MAC Address: ");
+  Serial.println(WiFi.macAddress());
+
+  // Initialize ESP-NOW
+  if (esp_now_init() != ESP_OK) {
+    Serial.println("Error initializing ESP-NOW");
+    return;
+  }
+
+  // Register the send callback function
+  esp_now_register_send_cb(GloveOnDataSent);
+
+  // Register the receive callback function
+  esp_now_register_recv_cb(GloveOnDataRecv);
+
+  // Add the peer (receiver) device
+  esp_now_peer_info_t peerInfo;
+  memset(&peerInfo, 0, sizeof(peerInfo));  // Clear the peer info
+  memcpy(peerInfo.peer_addr, peer_mac, 6); // Set peer MAC address
+  peerInfo.channel = ESPNOW_WIFI_CHANNEL;  // Same WiFi channel as sender
+  peerInfo.encrypt = false;  // No encryption
+  
+  if (esp_now_add_peer(&peerInfo) != ESP_OK) {
+    Serial.println("Failed to add peer");
+    return;
+  }
+
+  // DELAY: enter delay if trying to sync up MAC addresses
+  delay(SYNC_DELAY*1000);
+}
+
+void glove_ESPNOWsetup(uint8_t mac_in[]){
+  glove_messages_send_attempt = 0;
+  glove_messages_send_success = 0;
+  glove_messages_rcv = 0;
+
+  for(int i=0; i<6; i++){
+    peer_mac[i] = mac_in[i];
+  }
 
   // Set the WiFi to the mode and channel to be used by ESP-NOW
   Serial.println("Setting up WiFi...");
@@ -93,10 +141,10 @@ void glove_ESPNOWsetup(uint8_t mac_in[], int baud_rate){
   }
 
   // DELAY: enter delay if trying to sync up MAC addresses
-  //delay(SYNC_DELAY*1000);
+  delay(SYNC_DELAY*1000);
 }
 
-void glove_sendData(uint8_t fpos[], uint8_t wpos[], uint8_t apos[]){
+void glove_sendData(uint8_t fpos[], float wpos[], uint8_t apos[]){
   // Set values to send
   for(int j=0; j<16; j++){
     glove_outData.finger_pos[j] = fpos[j];
@@ -114,7 +162,7 @@ void glove_sendData(uint8_t fpos[], uint8_t wpos[], uint8_t apos[]){
 
   if (result == ESP_OK) {
     // Serial.println("Sent with success");
-  } else {
+  } else if (0) {
     Serial.println("Error sending the data");
   }
 }

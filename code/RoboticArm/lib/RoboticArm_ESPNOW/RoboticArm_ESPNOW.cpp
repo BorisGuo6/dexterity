@@ -27,6 +27,8 @@ void ArmOnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
 
 // Callback function that will be executed when data is received
 void ArmOnDataRecv(const uint8_t *mac_addr, const uint8_t *incomingData, int len) {  // Changed signature to match expected esp_now_recv_cb_t type
+  uint8_t led_state = digitalRead(LED_0);
+  digitalWrite(LED_0, !led_state);
   if (len == sizeof(arm_inData)) {
       memcpy(&arm_inData, incomingData, sizeof(arm_inData));
       // Proceed with processing

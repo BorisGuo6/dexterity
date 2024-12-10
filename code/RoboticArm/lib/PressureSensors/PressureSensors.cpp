@@ -47,11 +47,11 @@ void sendPressureData(){
     pollPressureSensors();
     if(PRESSURE_SENSORS_ENABLED){
         for(int j=0; j<5; j++){
-            if(force_data[j] < 700) force_settings[j] = 0;
-            else if(force_data[j] < 1700) force_settings[j] = 1;
-            else if(force_data[j] < 2700) force_settings[j] = 2;
-            else if(force_data[j] < 3400) force_settings[j] = 3;
-            else if(force_data[j] < 3800) force_settings[j] = 4;
+            if(force_data[j] < 10) force_settings[j] = 0;
+            else if(force_data[j] < 90) force_settings[j] = 1;
+            else if(force_data[j] < 130) force_settings[j] = 2;
+            else if(force_data[j] < 160) force_settings[j] = 3;
+            else if(force_data[j] < 200) force_settings[j] = 4;
             else force_settings[j] = 5;
         }
     }
