@@ -24,12 +24,12 @@ void gloveControlSetup(){
 
 void sendPositionData(){
   // get IMU euler angles
-  if(button_pressed){
-    Serial.println("button pressed");
-    calibrateHallEffectSensors();
-    vTaskDelay(1000 / portTICK_PERIOD_MS);
-    button_pressed = false;
-  }
+  // if(button_pressed){
+  //   Serial.println("button pressed");
+  //   calibrateHallEffectSensors();
+  //   vTaskDelay(1000 / portTICK_PERIOD_MS);
+  //   button_pressed = false;
+  // }
 
   if(IMUS_CONNECTED){
     euler_t ypr = getAngleDifference();

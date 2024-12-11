@@ -60,6 +60,14 @@ void triggerFeedback(){
     k = 1;
     time0_elapsed = micros();
   }
+  if(k%50 == 0 && ENABLE_HAPTICS_PRINT){
+    Serial.print("index setting: "); Serial.println(glove_inData.forces[1]);
+    Serial.print("middle setting: "); Serial.println(glove_inData.forces[2]);
+    Serial.print("ring setting: "); Serial.println(glove_inData.forces[3]);
+    Serial.print("pinky setting: "); Serial.println(glove_inData.forces[4]);
+    Serial.print("thumb setting: "); Serial.println(glove_inData.forces[0]);
+    Serial.println();
+  }
   k++;
 }
 

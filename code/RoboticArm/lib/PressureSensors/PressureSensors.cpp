@@ -47,21 +47,31 @@ void sendPressureData(){
     pollPressureSensors();
     if(PRESSURE_SENSORS_ENABLED){
         for(int j=0; j<5; j++){
-            if(force_data[j] < 700) force_settings[j] = 0;
-            else if(force_data[j] < 1700) force_settings[j] = 1;
-            else if(force_data[j] < 2700) force_settings[j] = 2;
-            else if(force_data[j] < 3400) force_settings[j] = 3;
-            else if(force_data[j] < 3800) force_settings[j] = 4;
+            if(force_data[j] < 10) force_settings[j] = 0;
+            else if(force_data[j] < 80) force_settings[j] = 1;
+            else if(force_data[j] < 120) force_settings[j] = 2;
+            else if(force_data[j] < 160) force_settings[j] = 3;
+            else if(force_data[j] < 200) force_settings[j] = 4;
             else force_settings[j] = 5;
         }
     }
-    if(ENABLE_PRESSURE_PRINT && iters%10 == 0){
-        Serial.print("ADC Values: ");
-        for(int j=0; j<5; j++){
-            Serial.print(force_data[j]);
-            Serial.print("\t");
+    if(ENABLE_PRESSURE_PRINT && iters%50 == 0){
+        if(PRESSURE_SENSORS_ENABLED){
+            Serial.print("ADC Values: ");
+            for(int j=0; j<5; j++){
+                Serial.print(force_data[j]);
+                Serial.print("\t");
+            }
+            Serial.println();
         }
-        Serial.println();
+        else{
+            Serial.print("index setting: "); Serial.println(force_settings[1]);
+            Serial.print("middle setting: "); Serial.println(force_settings[2]);
+            Serial.print("ring setting: "); Serial.println(force_settings[3]);
+            Serial.print("pinky setting: "); Serial.println(force_settings[4]);
+            Serial.print("thumb setting: "); Serial.println(force_settings[0]);
+            Serial.println();
+        }
     }
     iters += 1;
     arm_sendData(force_settings[0], force_settings[1], force_settings[2], force_settings[3], force_settings[4]);
