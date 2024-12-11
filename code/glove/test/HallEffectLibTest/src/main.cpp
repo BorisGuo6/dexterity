@@ -9,15 +9,16 @@
 
 void sendData() {
     uint8_t fpos[SENSOR_COUNT];
-    uint8_t wpos[3];
+    float wpos[3];
     uint8_t apos[3];
     for(int i = 0; i < SENSOR_COUNT; i++){
         fpos[i] = (uint8_t)angles[i];
     }
     for(int i = 0; i < 3; i ++){
-        wpos[i] = random(1, 255);
+        wpos[i] = 0;
         apos[i] = random(1, 255);
     }
+    wpos[1] = 0;
 
     //position_packet.messages_rec = glove_messages_rcv;
 

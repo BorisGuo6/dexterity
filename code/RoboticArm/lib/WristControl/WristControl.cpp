@@ -28,7 +28,7 @@ void controlWrist(float* wrist_pos){
     }
    // convert euler angles to servo commands
     float yaw =  -1 * wrist_pos[0];
-    float pitch = -1 * wrist_pos[1];
+    float pitch = wrist_pos[1];
     float servo3_angle = pitch + yaw;
     float servo4_angle = yaw - pitch;
     uint16_t pos3_diff = (uint16_t) (BITS_PER_DEGREE * servo3_angle);
