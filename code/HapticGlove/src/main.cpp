@@ -133,12 +133,12 @@ void setup() {
   int baud_rate = 115200;
   Serial.begin(baud_rate);
   Serial.println("initializing . . .");
+  controlPanel.initialize();
   controlPanel.setIntLED(1);
   controlPanel.setIntLEDColor(51, 51, 255); //blue
   ESPNOW_setup = false;
   button_pressed = false;
   Serial.println("Control Panel");
-  controlPanel.initialize();
   Serial.println("IMUs");
   // IMU initialization and calibration
   if(IMUS_CONNECTED){
