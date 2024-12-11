@@ -45,6 +45,7 @@ void printFingerAngles();
 
 void printRawAngles();
 
+
 void adjustAngles();
 int32_t adjustMCPAbductionAngle(int32_t i);
 int32_t adjustMCPFlexionAngle(int32_t i);

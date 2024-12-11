@@ -6,7 +6,7 @@
 #include <esp_wifi.h>  // Required for using ESP32-specific WiFi functions
 #include <stdint.h>
 
-#define ESPNOW_WIFI_CHANNEL 11            // WiFi channel to be used by ESP-NOW. The available channels will depend on your region.
+#define ESPNOW_WIFI_CHANNEL 5            // WiFi channel to be used by ESP-NOW. The available channels will depend on your region.
 #define ESPNOW_WIFI_MODE    WIFI_STA     // WiFi mode to be used by ESP-NOW. Any mode can be used.
 #define ESPNOW_WIFI_IF      WIFI_IF_STA  // WiFi interface to be used by ESP-NOW. Any interface can be used.
 #define DATA_RATE           100          // In Hz
