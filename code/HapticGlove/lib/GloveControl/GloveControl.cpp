@@ -1,11 +1,19 @@
 #include "GloveControl.h"
 #include "IMU.hpp"
 
+#define NUM_TAPS 5
+
 float wpos[3];
-uint8_t fpos[16];
+uint8_t fpos[16] = {0};
 uint8_t apos[3];
 uint8_t i;
 unsigned long time1_elapsed;
+
+// Moving average filter state
+uint8_t fpos_buffer[16][5];
+uint8_t cur_buf_pos = 0;
+uint8_t delay_count = 0;
+uint8_t fpos_sums[16] = {0};
 
 void gloveControlSetup(){
   // initialize IMUs, Hall-Effect Sensors, etc
@@ -39,9 +47,30 @@ void sendPositionData(){
   }
   
   calcFingerAngles();
+  if (delay_count < NUM_TAPS) {
+    for (uint8_t i = 0; i < SENSOR_COUNT; i++) {
+      fpos_buffer[i][delay_count] = (uint8_t)angles[i];
+      fpos_sums[i] += (uint8_t)angles[i];
+    }
+    delay_count++;
+  } else if (delay_count == NUM_TAPS) {
+    for (uint8_t i = 0; i < SENSOR_COUNT; i++) {
+      fpos[i] = fpos_sums[i] / NUM_TAPS;
+    }
+    delay_count++;
+  } else {
+    for (uint8_t i = 0; i < SENSOR_COUNT; i++) {
+      fpos_sums[i] = fpos_sums[i] + (uint8_t)angles[i] - fpos_buffer[i][cur_buf_pos];
+      fpos_buffer[i][cur_buf_pos] = (uint8_t)angles[i];
+    }
+    cur_buf_pos = (cur_buf_pos + 1) % 5;
+  }
+  
+  /*
   for(int j=0; j<SENSOR_COUNT; j++){
     fpos[j] = (uint8_t)angles[j];
   }
+  */
 
   if(ENABLE_SENSORS_PRINT){
     Serial.print("fpos - ");
