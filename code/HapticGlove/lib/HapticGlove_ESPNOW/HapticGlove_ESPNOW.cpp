@@ -169,7 +169,8 @@ void glove_sendData(uint8_t fpos[], float wpos[], uint8_t apos[]){
   if (result == ESP_OK) {
     // Serial.println("Sent with success");
   } else if (ENABLE_ESPNOW_PRINT) {
-    Serial.println("Error sending the data");
+    Serial.print("Error sending the data - Error code ");
+    Serial.println(result);
   }
 }
 

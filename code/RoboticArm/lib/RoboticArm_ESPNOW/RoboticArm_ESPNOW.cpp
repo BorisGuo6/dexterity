@@ -171,7 +171,8 @@ void arm_sendData(uint8_t ft, uint8_t fi, uint8_t fm, uint8_t fr, uint8_t fp){
   if (result == ESP_OK) {
     // Serial.println("Sent with success");
   } else if (ENABLE_ESPNOW_PRINT){
-    Serial.println("Error sending the data");
+    Serial.print("Error sending the data - Error code ");
+    Serial.println(result);
   }
 }
 
