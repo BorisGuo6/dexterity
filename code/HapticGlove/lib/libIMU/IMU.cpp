@@ -48,7 +48,7 @@ void calibrateIMUs()
   Serial.println("wait for button");
   // get reports until calibration button is pressed
   controlPanel.setIntLED(1);
-  controlPanel.setIntLEDColor(102, 51, 204);
+  controlPanel.setIntLEDColor(190, 0, 255);
   while (imu_cal_button_state == BUTTON_NORMAL) 
   {
     check_report(0);

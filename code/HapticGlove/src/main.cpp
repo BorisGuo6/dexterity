@@ -58,15 +58,15 @@ void hapticControlCode(void* params){
           triggerHapticFeedback();
       }
       if (button_pressed){
-        if(button_counter == 2){
-          controlPanel.setIntLED(1);
-          controlPanel.setIntLEDColor(0, 255, 0); // green
-        }
+        // if(button_counter == 2){
+        //   controlPanel.setIntLED(1);
+        //   controlPanel.setIntLEDColor(0, 255, 0); // green
+        // }
         button_counter--;
         setupFeedback();
         if(button_counter == 0){
           button_pressed = false;
-          controlPanel.setIntLED(0);
+          // controlPanel.setIntLED(0);
         }
       }
       vTaskDelay(10 / portTICK_PERIOD_MS); // Yield CPU for 10 ms to prevent blocking other tasks
@@ -94,8 +94,8 @@ void sensorProcessingCode(void* params){
       }
       if (button_pressed){
         if(button_counter == 2){
-          controlPanel.setIntLED(1);
-          controlPanel.setIntLEDColor(0, 255, 0); // green
+          // controlPanel.setIntLED(1);
+          // controlPanel.setIntLEDColor(0, 255, 0); // green
         }
         button_counter--;
         // if(IMUS_CONNECTED){
@@ -105,7 +105,7 @@ void sensorProcessingCode(void* params){
         fingerTrackingSetup();
         if(button_counter == 0){
           button_pressed = false;
-          controlPanel.setIntLED(0);
+          // controlPanel.setIntLED(0);
         }
       }
       vTaskDelay(10 / portTICK_PERIOD_MS); // Yield CPU for 10 ms to prevent blocking other tasks
@@ -135,7 +135,8 @@ void setup() {
   Serial.println("initializing . . .");
   controlPanel.initialize();
   controlPanel.setIntLED(1);
-  controlPanel.setIntLEDColor(51, 51, 255); //blue
+  controlPanel.setIntLEDColor(0, 0, 255); //blue
+  delay(1000);
   ESPNOW_setup = false;
   button_pressed = false;
   Serial.println("Control Panel");
@@ -144,15 +145,19 @@ void setup() {
   if(IMUS_CONNECTED){
     controlPanel.setIntLED(1);
     controlPanel.setIntLEDColor(255, 0, 0); //red
+    delay(1000);
     Serial.println("init IMUs");
     initializeIMUs();
     controlPanel.setIntLED(1);
-    controlPanel.setIntLEDColor(255, 102, 204); // pink
+    controlPanel.setIntLEDColor(193, 28, 132); // pink
+    delay(1000);
     Serial.println("calibrate IMUs");
     calibrateIMUs(); // pink at wait nonzero and purple at wait button
+    delay(1000);
   }
   controlPanel.setIntLED(1);
   controlPanel.setIntLEDColor(255, 102, 0); // orange
+  delay(1000);
   fingerTrackingSetup();
   controlPanel.setIntLED(0);
 

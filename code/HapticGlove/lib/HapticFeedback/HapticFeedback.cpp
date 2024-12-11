@@ -9,6 +9,8 @@ void mux_select(uint8_t channel);
 
 void setupFeedback(){
   Serial.println("setupFeedback");
+  controlPanel.setIntLED(1);
+  controlPanel.setIntLEDColor(0, 255, 0); // green
   k = 1;
   if(TRACK_ISR_0) time0_elapsed = micros();
   I2C_LRA.begin(HAPTIC_SDA, HAPTIC_SCL, 400000);
@@ -19,6 +21,7 @@ void setupFeedback(){
     drv[j].setMode(DRV2605_MODE_INTTRIG);
     drv[j].useLRA();
   }
+  controlPanel.setIntLED(0);
 }
 
 void triggerFeedback(){
