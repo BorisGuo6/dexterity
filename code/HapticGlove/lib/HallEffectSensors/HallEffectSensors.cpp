@@ -126,4 +126,3 @@ void measureHallEffectSensors()
     // proto_angles[14] = 150-proto_angles[14];
     // proto_angles[15] = 150-proto_angles[15];
 }
-

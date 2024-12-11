@@ -6,6 +6,7 @@
 
 #include <Arduino.h>
 #include <Wire.h>
+#include "HapticGlove.h"
 
 // _____________  COMPILATION SETTINGS ____________________
 #define DEBUG       0           // output extra info: 0 off, 1 on. Beware this causes too much output data at low baud rates and/or high sensor rates.

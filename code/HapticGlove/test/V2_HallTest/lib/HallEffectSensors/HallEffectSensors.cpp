@@ -82,7 +82,7 @@ void measureHallEffectSensors()
         digitalWrite(S2, (i>>2) & 0b1);
         digitalWrite(S3, (i>>3) & 0b1);
 
-        delay(5); //not sure if this is necessary
+        //delay(5); //not sure if this is necessary
 
 
         analog.update();
