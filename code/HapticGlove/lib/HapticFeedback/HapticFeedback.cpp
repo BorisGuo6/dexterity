@@ -8,6 +8,9 @@ uint8_t force_settings[5];
 void mux_select(uint8_t channel);
 
 void setupFeedback(){
+  Serial.println("setupFeedback");
+  controlPanel.setIntLED(1);
+  controlPanel.setIntLEDColor(INT_GREEN); // green
   k = 1;
   if(TRACK_ISR_0) time0_elapsed = micros();
   I2C_LRA.begin(HAPTIC_SDA, HAPTIC_SCL, 400000);
@@ -18,6 +21,7 @@ void setupFeedback(){
     drv[j].setMode(DRV2605_MODE_INTTRIG);
     drv[j].useLRA();
   }
+  controlPanel.setIntLED(0);
 }
 
 void triggerFeedback(){
@@ -58,6 +62,14 @@ void triggerFeedback(){
     Serial.print("\ncallback 0 run at "); Serial.print((200*1000000)/(micros() - time0_elapsed)); Serial.println(" Hz\n");
     k = 1;
     time0_elapsed = micros();
+  }
+  if(k%50 == 0 && ENABLE_HAPTICS_PRINT){
+    Serial.print("index setting: "); Serial.println(glove_inData.forces[1]);
+    Serial.print("middle setting: "); Serial.println(glove_inData.forces[2]);
+    Serial.print("ring setting: "); Serial.println(glove_inData.forces[3]);
+    Serial.print("pinky setting: "); Serial.println(glove_inData.forces[4]);
+    Serial.print("thumb setting: "); Serial.println(glove_inData.forces[0]);
+    Serial.println();
   }
   k++;
 }

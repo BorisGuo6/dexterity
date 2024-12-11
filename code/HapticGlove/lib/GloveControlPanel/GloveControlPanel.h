@@ -5,6 +5,13 @@
 #include <FastLED.h>
 #include <haptic_glove_pins.h>
 
+#define INT_BLUE 0,0,255
+#define INT_RED 255,0,0
+#define INT_PINK 193,28,132
+#define INT_ORANGE 255,102,0
+#define INT_PURPLE 190,0,255
+#define INT_GREEN 0,255,0
+
 /**
  * Class to provide access to the switch, buttons, and LEDs (including the internal LED) available om the control glove
  */

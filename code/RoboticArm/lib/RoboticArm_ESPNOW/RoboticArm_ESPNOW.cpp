@@ -54,10 +54,16 @@ void arm_ESPNOWsetup(uint8_t mac_in[], int baud_rate){
 
   // Set the WiFi to the mode and channel to be used by ESP-NOW
   Serial.println("Setting up WiFi...");
-  WiFi.mode(ESPNOW_WIFI_MODE);
-  
+  wifi_init_config_t wifi_config = WIFI_INIT_CONFIG_DEFAULT();
+  esp_wifi_init(&wifi_config);
+  esp_wifi_set_mode(ESPNOW_WIFI_MODE);
   // WiFi.setChannel(ESPNOW_WIFI_CHANNEL, WIFI_SECOND_CHAN_NONE);  // Replaced this line
   esp_wifi_set_channel(ESPNOW_WIFI_CHANNEL, WIFI_SECOND_CHAN_NONE);  // Correct method to set channel on ESP32
+
+  // Wait for the WiFi to start
+  while (!WiFi.status() == WL_CONNECTED) {  // Replaced STA check with WiFi.status() for general WiFi check
+    delay(100);
+  }
 
   // Wait for the WiFi to start (removed unnecessary check for WiFi.STA)
   // Print the MAC address of this device
@@ -103,10 +109,16 @@ void arm_ESPNOWsetup(uint8_t mac_in[]){
 
   // Set the WiFi to the mode and channel to be used by ESP-NOW
   Serial.println("Setting up WiFi...");
-  WiFi.mode(ESPNOW_WIFI_MODE);
-  
+  wifi_init_config_t wifi_config = WIFI_INIT_CONFIG_DEFAULT();
+  esp_wifi_init(&wifi_config);
+  esp_wifi_set_mode(ESPNOW_WIFI_MODE);
   // WiFi.setChannel(ESPNOW_WIFI_CHANNEL, WIFI_SECOND_CHAN_NONE);  // Replaced this line
   esp_wifi_set_channel(ESPNOW_WIFI_CHANNEL, WIFI_SECOND_CHAN_NONE);  // Correct method to set channel on ESP32
+
+  // Wait for the WiFi to start
+  while (!WiFi.status() == WL_CONNECTED) {  // Replaced STA check with WiFi.status() for general WiFi check
+    delay(100);
+  }
 
   // Wait for the WiFi to start (removed unnecessary check for WiFi.STA)
   // Print the MAC address of this device
