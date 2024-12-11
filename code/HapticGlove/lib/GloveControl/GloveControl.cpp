@@ -53,7 +53,9 @@ void sendPositionData(){
       fpos_sums[i] += (uint8_t)angles[i];
     }
     delay_count++;
-  } else if (delay_count == NUM_TAPS) {
+  }
+
+  if (delay_count == NUM_TAPS) {
     for (uint8_t i = 0; i < SENSOR_COUNT; i++) {
       fpos[i] = fpos_sums[i] / NUM_TAPS;
     }
@@ -62,6 +64,7 @@ void sendPositionData(){
     for (uint8_t i = 0; i < SENSOR_COUNT; i++) {
       fpos_sums[i] = fpos_sums[i] + (uint8_t)angles[i] - fpos_buffer[i][cur_buf_pos];
       fpos_buffer[i][cur_buf_pos] = (uint8_t)angles[i];
+      fpos[i] = fpos_sums[i] / NUM_TAPS;
     }
     cur_buf_pos = (cur_buf_pos + 1) % 5;
   }
