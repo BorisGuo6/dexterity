@@ -58,15 +58,10 @@ void hapticControlCode(void* params){
           triggerHapticFeedback();
       }
       if (button_pressed){
-        // if(button_counter == 2){
-        //   controlPanel.setIntLED(1);
-        //   controlPanel.setIntLEDColor(0, 255, 0); // green
-        // }
         button_counter--;
         setupFeedback();
         if(button_counter == 0){
           button_pressed = false;
-          // controlPanel.setIntLED(0);
         }
       }
       vTaskDelay(10 / portTICK_PERIOD_MS); // Yield CPU for 10 ms to prevent blocking other tasks
@@ -93,10 +88,6 @@ void sensorProcessingCode(void* params){
           triggerGloveControl();
       }
       if (button_pressed){
-        if(button_counter == 2){
-          // controlPanel.setIntLED(1);
-          // controlPanel.setIntLEDColor(0, 255, 0); // green
-        }
         button_counter--;
         // if(IMUS_CONNECTED){
         //   initializeIMUs();
@@ -105,7 +96,6 @@ void sensorProcessingCode(void* params){
         fingerTrackingSetup();
         if(button_counter == 0){
           button_pressed = false;
-          // controlPanel.setIntLED(0);
         }
       }
       vTaskDelay(10 / portTICK_PERIOD_MS); // Yield CPU for 10 ms to prevent blocking other tasks
