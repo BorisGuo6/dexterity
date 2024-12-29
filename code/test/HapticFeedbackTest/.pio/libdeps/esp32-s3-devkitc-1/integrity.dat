@@ -1,6 +1,0 @@
-fastled/FastLED@^3.8.0
-adafruit/Adafruit DRV2605 Library@^1.2.4
-SPI
-adafruit/Adafruit BusIO @ ^1.16.0
-dxinteractive/ResponsiveAnalogRead@^1.2.1
-Wire
