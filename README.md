@@ -1,4 +1,5 @@
 # Project Dexterity
+![Team Pic at Humanoids Summmit](media/images/summit_team_pic.jpeg)
 
 ## Overview
 Dexterity is a capstone project developed by ECE students at the University of Virginia (Class of 2025). The project consists of a robotic hand that can be controlled using a haptic feedback glove, providing a natural and intuitive way to control robotic movements while receiving tactile feedback.
@@ -6,14 +7,14 @@ Dexterity is a capstone project developed by ECE students at the University of V
 An summary of the project can be found in these [Figma slides](https://www.figma.com/deck/h1ZrgHnDu9oTQfUKUapgQW/Dexterity-Progress-Report?node-id=32-46&t=BGETurAAA480CFCk-1).
 
 ## Project Structure
-### Firmware
+### [Firmware](firmware/)
 - `HapticGlove/` - Firmware for the V2 control glove
 - `RoboticArm/` - Firmware for the dexhand
 - `PrototypeGlove/` - Firmware for the prototype control glove 
 - `ESPNOW/` - ESP-NOW wireless communication implementations
 - `test/` - Various test implementations and debugging tools
 
-### Hardware
+### [Hardware](hardware/)
 - `cad/` - CAD files for 3D printing
   - `arm base/` - CAD files for the arm base and wire organization
   - `glove v2.4/` - CAD files for the latest interation of the V2 glove
@@ -24,11 +25,11 @@ An summary of the project can be found in these [Figma slides](https://www.figma
   - `Library/` - KiCad library files
   - `gerber/` - Gerber files for manufacturing
 
-### Documentation
+### [Documentation](documentation/)
 - `requirements/` - Project requirements and specifications from our capstone class 
 - `reports/` - Project reports and presentations from our capstone class 
 
-### Media
+### [Media](media/)
 - `images/` - Photos of the project and components
 - `videos/` - Demo videos and presentations
 - `diagrams/` - System diagrams and illustrations
@@ -43,7 +44,7 @@ An summary of the project can be found in these [Figma slides](https://www.figma
   - 3 DOF per finger (flexion of PIP, flexion of MCP, abduction/adduction)
   - 4 DOF for thumb (extra degree for rotation)
   - Controlled by EMAX ES3352 digital servos
-- 2 degrees of freedom in the wrist (pitch and yaw)
+- 2 DOF in the wrist (pitch and yaw)
   - Controlled by Feetech SCS2332 serial servos 
   - These provide increased range of motion and torque in addition to having overcurrent protection
 - Controlled by ESP32-S3 DevKitC-1 microcontroller
@@ -104,24 +105,24 @@ An summary of the project can be found in these [Figma slides](https://www.figma
 ## Authors
 - Max Titov 
   - Led the team by doing high level design of the whole sytem, assembled the robotic arm, designed the control gloves, and developed finger tracking libraries
-  - [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/maxim-titov/) [![Twitter](https://img.shields.io/badge/Twitter-1DA1F2?style=flat&logo=twitter&logoColor=white)](https://x.com/MaxTitovvv)
+  - [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/maxim-titov/) [![GitHub](https://img.shields.io/badge/GitHub-100000?style=flat&logo=github&logoColor=white)](https://github.com/max-titov) [![Twitter](https://img.shields.io/badge/Twitter-1DA1F2?style=flat&logo=twitter&logoColor=white)](https://x.com/MaxTitovvv)
 - Alex Schaefer 
   - Architected the embedded software system, implemented ESP-NOW communication, and developed the high-level control structure using multi-threading
-  - [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/alexschaefer2025/)
+  - [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/alexschaefer2025/) [![GitHub](https://img.shields.io/badge/GitHub-100000?style=flat&logo=github&logoColor=white)](https://github.com/wmk7fe)
 - Jackson Lamb 
   - Designed and tested the dual PCB system for the control glove and developed libraries for the control panel interfaces
-  - [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/jllamb/)
+  - [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/jllamb/) [![GitHub](https://img.shields.io/badge/GitHub-100000?style=flat&logo=github&logoColor=white)](https://github.com/jack85082)
 - Jacob Hall 
   - Implemented the dual IMU system for wrist tracking, including quaternion mathematics and calibration routines
-  - [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/jakethesnakehall/)
+  - [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/jakethesnakehall/) [![GitHub](https://img.shields.io/badge/GitHub-100000?style=flat&logo=github&logoColor=white)](https://github.com/jacobhall03)
 - Bhargav Moosani 
   - Designed and implemented the haptic feedback system using LRAs and force sensors, including wireless integration
-  - [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/bmoosani/)
+  - [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/bmoosani/) [![GitHub](https://img.shields.io/badge/GitHub-100000?style=flat&logo=github&logoColor=white)](https://github.com/bmoosani23)
 
 
 ## Acknowledgments
 - [Original Dexhand Repository](https://github.com/TheRobotStudio/V1.0-Dexhand/) - Our robotic hand design is based on The Robot Studio's Dexhand project, licensed under CC BY-NC-SA 4.0.
-- [Dexhand Website](https://www.dexhand.org/) - Trent Shumay from IoT Design Shop built two Dexhands and put together a website that compiled info about the Dexhand project into a single page.
+- [Dexhand Website](https://www.dexhand.org/) - Trent Shumay from IoT Design Shop built two Dexhands and put together a website that compiled info about the project into a single page.
 - [Prototype Finger Tracker](https://github.com/max-titov/finger-tracker) - My first glove that tracked 16 DOF of the fingers. This glove was used in a lot of the demonstrations of the teleop due to its better finger tracking capabilities.
 - [Nepyope's Youtube](https://www.youtube.com/watch?v=iPtgvh6fNdQ) - The video of the first 16 DOF glove using hall effect sensors that inspired this whole project.
 - [Nepyope's Project Homunculus](https://github.com/nepyope/Project-Homunculus) - The codebase for the glove that inspired this project.

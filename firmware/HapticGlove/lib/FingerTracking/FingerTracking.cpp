@@ -118,12 +118,6 @@ void adjustAngles()
 	angles[13] = adjustThumbCMCAbductionAngle(13);
 	angles[14] = adjustThumbPIPFlexionAngle(14);
 	angles[15] = proto_angles[15]; // not using this data currently
-
-	//jank solution to inverted thumb movement on prototype glove
-	//TODO remove with glove v2
-	// angles[12] = THUMB_CMC_FLEXION_MAX - angles[12];
-	// angles[13] = THUMB_CMC_ABDUCTION_MAX*2 - angles[13];
-	// angles[14] = THUMB_PIP_FLEXION_MAX - angles[14];
 }
 
 void calcFingerAngles()
