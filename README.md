@@ -60,7 +60,7 @@ An summary of the project can be found in these [Figma slides](https://www.figma
 
 <p float="left">
   <img src="./media/images/complete_hand_base.png" width="300" />
-  <img src="./media/images/complete_hand.jpg" width="268" /> 
+  <img src="./media/images/complete_hand.JPG" width="268" /> 
 </p>
 
 ### Prototype Glove
@@ -102,7 +102,7 @@ An summary of the project can be found in these [Figma slides](https://www.figma
 - Control panel with LED indicators and mode switches
 - Capable of running on battery power due to the onboard 3.3V regulator
 
-![V2 Glove](media/images/glove_v2_top_down.jpeg)
+![V2 Glove](media/images/V2_glove_side.jpeg)
 
 ## Getting Started
 1. Good luck with building everything :)
