@@ -74,7 +74,9 @@ An summary of the project can be found in these [Figma slides](https://www.figma
   - ESP-NOW protocol for low-latency communication
 - Provided very accurate and responsive finger tracking
 
-![Prototype glove](media/images/prototype_glove.png)
+<p float="left">
+  <img src="./media/images/prototype_glove.png" width="600" />
+</p>
 
 ### V2 Control Glove
 - Same hall effect sensor-based finger tracking as the prototype glove
@@ -102,7 +104,9 @@ An summary of the project can be found in these [Figma slides](https://www.figma
 - Control panel with LED indicators and mode switches
 - Capable of running on battery power due to the onboard 3.3V regulator
 
-![V2 Glove](media/images/V2_glove_side.jpeg)
+<p float="left">
+  <img src="./media/images/V2_glove_side.jpeg" width="600" />
+</p>
 
 ## Getting Started
 1. Good luck with building everything :)
