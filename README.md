@@ -58,6 +58,11 @@ An summary of the project can be found in these [Figma slides](https://www.figma
   - 3.3V regulation for control electronics
   - Wired through an amp meter for monitoring current draw
 
+<p float="left">
+  <img src="./media/images/complete_hand_base.png" width="300" />
+  <img src="./media/images/complete_hand.jpg" width="268" /> 
+</p>
+
 ### Prototype Glove
 - Original repository can be found here: [Prototype Finger Tracker](https://github.com/max-titov/finger-tracker)
 - Hall effect sensor-based finger tracking
@@ -68,6 +73,8 @@ An summary of the project can be found in these [Figma slides](https://www.figma
 - Controlled by a Xiao ESP32-C3 microcontroller
   - ESP-NOW protocol for low-latency communication
 - Provided very accurate and responsive finger tracking
+
+![Prototype glove](media/images/prototype_glove.png)
 
 ### V2 Control Glove
 - Same hall effect sensor-based finger tracking as the prototype glove
@@ -95,6 +102,8 @@ An summary of the project can be found in these [Figma slides](https://www.figma
 - Control panel with LED indicators and mode switches
 - Capable of running on battery power due to the onboard 3.3V regulator
 
+![V2 Glove](media/images/glove_v2_top_down.jpeg)
+
 ## Getting Started
 1. Good luck with building everything :)
 2. Clone the repository
@@ -104,7 +113,7 @@ An summary of the project can be found in these [Figma slides](https://www.figma
 
 ## Authors
 - Max Titov 
-  - Led the team by doing high level design of the whole sytem, assembled the robotic arm, designed the control gloves, and developed finger tracking libraries
+  - Led the team by doing high level design of the whole sytem, assembled the robotic arm, designed the control gloves, and developed finger tracking/control libraries
   - [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/maxim-titov/) [![GitHub](https://img.shields.io/badge/GitHub-100000?style=flat&logo=github&logoColor=white)](https://github.com/max-titov) [![Twitter](https://img.shields.io/badge/Twitter-1DA1F2?style=flat&logo=twitter&logoColor=white)](https://x.com/MaxTitovvv)
 - Alex Schaefer 
   - Architected the embedded software system, implemented ESP-NOW communication, and developed the high-level control structure using multi-threading
