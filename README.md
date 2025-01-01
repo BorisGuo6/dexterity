@@ -6,6 +6,17 @@ Dexterity is a capstone project developed by ECE students at the University of V
 
 An summary of the project can be found in these [Figma slides](https://www.figma.com/deck/h1ZrgHnDu9oTQfUKUapgQW/Dexterity-Progress-Report?node-id=32-46&t=BGETurAAA480CFCk-1).
 
+
+
+
+https://github.com/user-attachments/assets/b5050c01-b495-40dd-bd65-899a9acaca80
+
+
+
+https://github.com/user-attachments/assets/4d67e1bd-996e-49d0-b71a-232bf0a58b3a
+
+
+
 ## Project Structure
 ### [Firmware](firmware/)
 - `HapticGlove/` - Firmware for the V2 control glove
