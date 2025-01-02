@@ -1,16 +1,18 @@
 # Project Dexterity
+
 ![Team Pic at Humanoids Summmit](media/images/summit_team_pic.jpeg)
 
 ## Overview
-Dexterity is a capstone project developed by ECE students at the University of Virginia (Class of 2025). The project consists of a robotic hand that can be controlled using a haptic feedback glove, providing a natural and intuitive way to control robotic movements while receiving tactile feedback.
+Dexterity is a capstone project developed by ECE students at the University of Virginia (Class of 2025). The project consists of a robotic hand that can be controlled using a haptic feedback glove, providing a natural and intuitive way to control robotic movements while receiving tactile feedback. Three members of our team traveled to the Bay Area in December 2024 to showcase the project at the [Humanoids Summit](https://humanoidssummit.com/).
 
 An summary of the project can be found in these [Figma slides](https://www.figma.com/deck/h1ZrgHnDu9oTQfUKUapgQW/Dexterity-Progress-Report?node-id=32-46&t=BGETurAAA480CFCk-1).
 
 
+## Videos
 
+The videos below showcase how the system's responsiveness and precision enable it to consistently catch balls.
 
 https://github.com/user-attachments/assets/b5050c01-b495-40dd-bd65-899a9acaca80
-
 
 
 https://github.com/user-attachments/assets/4d67e1bd-996e-49d0-b71a-232bf0a58b3a
@@ -36,7 +38,7 @@ https://github.com/user-attachments/assets/4d67e1bd-996e-49d0-b71a-232bf0a58b3a
   - `Library/` - KiCad library files
   - `gerber/` - Gerber files for manufacturing
 
-### [Documentation](documentation/)
+### [Capstone](capstone/)
 - `requirements/` - Project requirements and specifications from our capstone class 
 - `reports/` - Project reports and presentations from our capstone class 
 
@@ -127,8 +129,11 @@ https://github.com/user-attachments/assets/4d67e1bd-996e-49d0-b71a-232bf0a58b3a
 5. Build and upload to your device
 
 ## Authors
+
+![Team Pic at UVA Demo Day](media/images/team_photo.jpeg)
+
 - Max Titov 
-  - Led the team by doing high level design of the whole sytem, assembled the robotic arm, designed the control gloves, and developed finger tracking/control libraries
+  - Led the team by doing high level design of the whole system, assembled the robotic arm, designed the control gloves, and developed finger tracking/control libraries
   - [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/maxim-titov/) [![GitHub](https://img.shields.io/badge/GitHub-100000?style=flat&logo=github&logoColor=white)](https://github.com/max-titov) [![Twitter](https://img.shields.io/badge/Twitter-1DA1F2?style=flat&logo=twitter&logoColor=white)](https://x.com/MaxTitovvv)
 - Alex Schaefer 
   - Architected the embedded software system, implemented ESP-NOW communication, and developed the high-level control structure using multi-threading
