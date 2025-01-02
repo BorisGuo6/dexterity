@@ -1,9 +1,0 @@
-Manufacturer=Molex
-PartNumber=0522071233
-PartCategory=Connector
-PackageCategory=Other
-PinCount=14
-Version=2.4
-Released=2017-11-03 10:01:13
-Downloaded=2024-10-16 17:58:10
-3D=Y
