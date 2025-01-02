@@ -3,7 +3,7 @@
 ![Team Pic at Humanoids Summmit](media/images/summit_team_pic.jpeg)
 
 ## Overview
-Dexterity is a capstone project developed by ECE students at the University of Virginia (Class of 2025). The project consists of a robotic hand that can be controlled using a haptic feedback glove, providing a natural and intuitive way to control robotic movements while receiving tactile feedback. Three members of our team traveled to the Bay Area in December 2024 to showcase the project at the [Humanoids Summit](https://humanoidssummit.com/).
+Dexterity is a capstone project developed by ECE students at the University of Virginia (Class of 2025). The project consists of a robotic hand that can be controlled using a haptic feedback glove, providing a natural and intuitive way to control robotic movements while receiving tactile feedback. Three members of our team traveled to the Bay Area in December 2024 to showcase the project at the [Humanoids Summit](https://humanoidssummit.com/) in the Hugging Face booth (pictured above).
 
 An summary of the project can be found in these [Figma slides](https://www.figma.com/deck/h1ZrgHnDu9oTQfUKUapgQW/Dexterity-Progress-Report?node-id=32-46&t=BGETurAAA480CFCk-1).
 
@@ -154,7 +154,7 @@ https://github.com/user-attachments/assets/4d67e1bd-996e-49d0-b71a-232bf0a58b3a
 - [Dexhand Website](https://www.dexhand.org/) - Trent Shumay from IoT Design Shop built two Dexhands and put together a website that compiled info about the project into a single page.
 - [Prototype Finger Tracker](https://github.com/max-titov/finger-tracker) - My first glove that tracked 16 DOF of the fingers. This glove was used in a lot of the demonstrations of the teleop due to its better finger tracking capabilities.
 - [Nepyope's Youtube](https://www.youtube.com/watch?v=iPtgvh6fNdQ) - The video of the first 16 DOF glove using hall effect sensors that inspired this whole project.
-- [Nepyope's Project Homunculus](https://github.com/nepyope/Project-Homunculus) - The codebase for the glove that inspired this project.
+- [Nepyope's Project Homunculus](https://github.com/nepyope/Project-Homunculus) - The repository for the glove that inspired this project.
 
 ## License
 Shield: [![CC BY-NC-SA 4.0][cc-by-nc-sa-shield]][cc-by-nc-sa]
